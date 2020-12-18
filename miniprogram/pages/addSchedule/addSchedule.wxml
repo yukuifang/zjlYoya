@@ -1,0 +1,17 @@
+<view class="container">
+   <image mode="aspectFill" src="{{customer.avatar.length>0?customer.avatar:'../../images/yujia.png'}}" class="head-view"></image>
+   <view class="item-content-view">
+     <view class="item-view" bindtap="selectCustomer">
+         <image src="../../images/yujia.png" class="left-image"></image>
+         <text>{{customer.name.length>0?customer.name:'选择预约会员'}}</text>
+     </view>
+     <view class="item-view">
+         <image src="../../images/time.png" class="left-image"></image>
+         <picker mode="time" start="05:00" end="23:00" bindchange='changeTime'>
+             <view>{{date.length>0?date:'选择预约时间'}}</view>
+         </picker>
+    </view>
+   </view>
+   <button  class="submit-view" style="width:80%" bindtap="addSchedule">预约</button>
+   
+</view>

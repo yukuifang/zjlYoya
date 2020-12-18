@@ -1,0 +1,25 @@
+.calendar-view{
+  border-bottom:1px dashed rgb(180, 149, 103);
+}
+.schedule-view{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.tianjia{
+   font-size: 60rpx;
+   right: 44rpx;
+   bottom: 44rpx;
+   position: fixed;
+   color:rgb(180, 149, 103);
+}
+.no-schedule-view{
+   font-size: 28rpx;
+   color:rgb(189, 189, 236);
+   text-align: center;
+   display: flex;
+   align-items: center;
+
+}
+

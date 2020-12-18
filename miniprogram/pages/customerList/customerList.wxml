@@ -1,0 +1,11 @@
+<view class="container-view">
+  <block wx:for="{{customerlist}}" wx:key="index">
+    <view class="item-view" bindtap="itemClick" data-idx="{{index}}">
+      <image mode="aspectFill" class="avatar" src="{{item.avatar.length>0?item.avatar:'../../images/selecte-avatar.png'}}"></image>
+      <view class="content-view">
+        <text class="name">{{item.name}}</text>
+        <text class="content">{{item.content}}</text>
+      </view>
+    </view>
+  </block>
+</view>

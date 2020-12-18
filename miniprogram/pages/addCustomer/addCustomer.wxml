@@ -1,0 +1,54 @@
+<view class="container">
+   <image src="../../images/selecte-avatar.png" class="avater"></image>
+   <form bindsubmit="submit" class="message-view">
+
+      <view class="item-view" bindtap="chooseImage" style="height:90rpx">
+         <text class="iconfont icon-xingming item-name"></text>
+         <text wx:if="{{avatarUrl.length==0}}" class="head-view">上传头像</text>
+         <image wx:else class="avatar-image" src="{{avatarUrl}}" mode="aspectFill"></image>
+      </view>
+      
+      <view class="item-view">
+         <text class="iconfont icon-xingming item-name"></text>
+         <input type="text" placeholder="请输入姓名" class="item-input" name="name"/>
+      </view>
+
+      <view class="item-view">
+         <text class="iconfont icon-xingming item-name"></text>
+         <input type="text" placeholder="请输入昵称" class="item-input" name="nick_name"/>
+      </view>
+
+      <view class="item-view">
+         <text class="iconfont icon-nianling item-name"></text>
+         <input type="text" placeholder="请输入年龄" class="item-input" name="age"/>
+      </view>
+
+      <view class="item-view">
+         <text class="iconfont icon-xingbie item-name"></text>
+         <radio-group class="radio-group" bindchange="radioChange" name="sex">
+           <label class="radio" >
+              男 <radio value="1" checked=""/>
+           </label>
+           <label class="radio" >
+             女 <radio value="2" checked="ture"/>
+            </label>
+         </radio-group>
+      </view>
+
+      <view class="item-view">
+         <text class="iconfont icon-shengri item-name"></text>
+         <picker mode="date" name="birth_date"  value="{{birdthDate}}" start="2015-09-01" end="2017-09-01" bindchange="bindDateChange" class="item-input">
+            <text style="color:gray">{{birdthDate.length>0? birdthDate:'请选择生日'}}</text>
+          </picker>
+      </view>
+
+      <view class="item-content-view">
+         <text class="iconfont icon-xingming item-name"></text>
+         <textarea placeholder="请输入备注" name="content" class="content"></textarea>
+      </view>
+   
+   
+   <button form-type="submit" class="submit-view" style="width:80%">提交</button>
+   </form>
+   
+</view>

@@ -48,17 +48,6 @@ Page({
       })
     })
   },
-  showCustomes(e){
-     wx.navigateTo({
-       url: '../customerList/customerList',
-     })
-  },
-  schedulePlan(e){
-    wx.navigateTo({
-      url: '../memberschedule/memberschedule',
-    })
-  },
-
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -107,6 +96,20 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
+
+  },
+  itemClick(e){
+    console.log(e);
+    var pages = getCurrentPages();var currPage = pages[pages.length - 1]; //当前页面
+    var prevPage = pages[pages.length - 2]; //上一个页面
+    //直接调用上一个页面的setData()方法，把数据存到上一个页面中去
+    prevPage.setData({ 
+      customer: this.data.customerlist[e.currentTarget.dataset.idx]
+    },()=>{
+       wx.navigateBack({
+         delta: 0,
+       })
+    })
 
   }
 })

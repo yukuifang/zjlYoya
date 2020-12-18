@@ -39,17 +39,15 @@
   "libVersion": "2.8.1",
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
   "condition": {
-    "search": {
-      "list": []
-    },
-    "conversation": {
-      "list": []
-    },
     "plugin": {
       "list": []
     },
     "game": {
+      "list": []
+    },
+    "gamePlugin": {
       "list": []
     },
     "miniprogram": {
@@ -57,7 +55,26 @@
         {
           "id": -1,
           "name": "db guide",
-          "pathName": "pages/databaseGuide/databaseGuide"
+          "pathName": "pages/databaseGuide/databaseGuide",
+          "query": ""
+        },
+        {
+          "name": "pages/addCustomer/addCustomer",
+          "pathName": "pages/addCustomer/addCustomer",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/memberschedule/memberschedule",
+          "pathName": "pages/memberschedule/memberschedule",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/addSchedule/addSchedule",
+          "pathName": "pages/addSchedule/addSchedule",
+          "query": "",
+          "scene": null
         }
       ]
     }

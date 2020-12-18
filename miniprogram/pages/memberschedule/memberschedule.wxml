@@ -1,0 +1,21 @@
+<calendar
+  id="calendar" 
+  class="calendar-view"
+  config="{{calendarConfig}}"
+  bind:takeoverTap="takeoverTap"
+  bind:afterTapDate="afterTapDate"
+  bind:afterCalendarRender="afterCalendarRender"
+  bind:onSwipe="onSwipe"
+  bind:whenChangeMonth="whenChangeMonth"
+/>
+
+<view class="schedule-view">
+   <view class="no-schedule-view">
+     <text>没有日程哦，点击</text>
+     <text class="iconfont icon-tianjia"></text>
+     <text>快速添加吧～～</text>
+   </view>
+</view>
+
+
+<text class="iconfont icon-tianjia tianjia" bindtap="addSchedule"></text>

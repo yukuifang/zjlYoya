@@ -1,2 +1,36 @@
-<!--pages/home/home.wxml-->
-<text>pages/home/home.wxml22</text>
+<view class="container-view">
+  <view class="enter-view">
+   <view class="enter-item-view" bindtap="toAddUser">
+       <view class="enter-item-leftview">
+         <text class="enter-text1">新增会员</text>
+         <text class="enter-text2">录入可爱的会员信息</text>
+       </view>
+       <text class="iconfont icon-xinzengkehu enter-item-rightview"></text>
+    </view>
+    <view class="enter-item-view" bindtap="showCustomes">
+       <view class="enter-item-leftview">
+         <text class="enter-text1">查看会员</text>
+         <text class="enter-text2">康康你的小可爱们</text>
+       </view>
+       <text class="iconfont icon-xinzengkehu enter-item-rightview"></text>
+    </view>
+    <view class="enter-item-view" bindtap="schedulePlan">
+       <view class="enter-item-leftview">
+         <text class="enter-text1">日程安排</text>
+         <text class="enter-text2">预约你的小可爱们</text>
+       </view>
+       <text class="iconfont icon-xinzengkehu enter-item-rightview"></text>
+    </view>
+  </view>
+
+  <block wx:for="{{customerlist}}" wx:key="index">
+    <view class="item-view">
+      <image mode="aspectFill" class="avatar" src="{{item.avatar.length>0?item.avatar:'../../images/selecte-avatar.png'}}"></image>
+      <view class="content-view">
+        <text class="name">{{item.name}}</text>
+        <text class="content">{{item.content}}</text>
+      </view>
+    </view>
+  </block>
+
+</view>
