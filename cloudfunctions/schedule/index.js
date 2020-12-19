@@ -9,6 +9,19 @@ exports.main = async (event, context) => {
   const app = new TcbRouter({
     event
   })
+
+  app.router('getCurrentSchedule', async (ctx, next) => {
+    const workdate = event.workdate
+    ctx.body = await cloud.database().collection('schedule')
+    .where({
+      workdate
+    })
+    .get()
+    .then(res => {
+      return res.data
+    })
+  })
+
   app.router('updateSchedule', async (ctx, next) => {
     const workdate = event.workdate
     const worktime = event.worktime
@@ -22,41 +35,46 @@ exports.main = async (event, context) => {
        return res.data
      })
 
+
+    var schedule ; 
     if(json.length == 0){
+      schedule = {
+        workdate,
+        lessions:[
+          {
+            worktime,
+            customer_id
+          }
+        ]
+
+      }
       await cloud.database().collection('schedule')
       .add({
+        data:schedule
+      })
+      .then(res=>{
+         return res.data
+       })
+       ctx.body = "创建当天安排"
+    }else{
+      var oldSchedule = json[0]
+      var lessions  =  oldSchedule.lessions 
+      lessions[lessions.length]  = {
+        worktime,
+        customer_id
+      }
+      await cloud.database().collection('schedule')
+      .doc(oldSchedule._id)
+      .update({
         data:{
-          workdate,
-          lessions:[
-            {
-              worktime,
-              customer_id
-            }
-          ]
-
+          lessions
         }
       })
       .then(res=>{
          return res.data
        })
-       ctx.body = "新增"
-    }else{
        ctx.body = "更新"
     }
-
-     
-
-
-
-
-    // ctx.body = await cloud.database().collection('schedule')
-    // .where(event.workDate)
-    // .update({
-       
-    // })
-    // .then(res => {
-    //   return res
-    // })
   })
   return app.serve()
 }

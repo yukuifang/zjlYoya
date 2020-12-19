@@ -99,7 +99,7 @@ Page({
     }
     const {year,month,date}= dateJson
     const workdate = year + '-' + month + '-' + date
-    const worktime = this.data.date 
+    const worktime = workdate + ' ' +  this.data.date 
     wx.showLoading({
       title: '预约中..',
       mask:true
@@ -115,25 +115,8 @@ Page({
         $url:'updateSchedule'
       }//参数
     }).then(res=>{
-       console.log(res)
-    }).catch(err=>{
-      console.log('err')
-      console.log(err)
-    })
-
-    return;
-
-
-    db.collection('schedule').add({
-      data:{
-        workdate,
-        lessions:[
-          
-        ]
-      }
-    }).then(res=>{
-      wx.hideLoading()
-      wx.showToast({
+       wx.hideLoading()
+       wx.showToast({
        title: '提交成功',
       })
 
@@ -141,11 +124,13 @@ Page({
         delta: 0,
       })
     }).catch(err=>{
-     wx.hideLoading()
+      console.log(err)
+      wx.hideLoading()
      wx.showToast({
        title: err,
      })
     })
 
+  
   }
 })

@@ -15,7 +15,7 @@ plugin
   .use(timeRange)
   .use(holidays)
 
-  
+
 
 Page({
 
@@ -54,6 +54,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+      
+
 
   },
 
@@ -110,6 +112,10 @@ Page({
    */
   afterCalendarRender(e) {
     console.log('afterCalendarRender', e)
+    const calendar = this.selectComponent('#calendar').calendar
+    const selected = calendar.getSelectedDates()
+    console.log(selected)
+    
   },
   /**
    * 日期点击事件（此事件会完全接管点击事件），需自定义配置 takeoverTap 值为真才能生效
@@ -125,6 +131,10 @@ Page({
   afterTapDate(e) {
     this.data.selectDateJson = e.detail
     console.log('afterTapDate', this.data.selectDateJson) // => { year: 2019, month: 12, date: 3, ...}
+
+    this.addSchedule()
+   
+  
   },
   /**
    * 当日历滑动时触发(适用于周/月视图)
@@ -141,15 +151,41 @@ Page({
     console.log('whenChangeMonth', e.detail)
     // => { current: { month: 3, ... }, next: { month: 4, ... }}
   },
+
+
+  getCurrentSchedule(){
+    const{ year,month,date } = this.data.selectDateJson
+    const workdate = year + '-' + month + '-' + date
+    console.log(workdate)
+    wx.cloud.callFunction({
+      name:'schedule',
+      data:{
+        workdate,
+        $url:'getCurrentSchedule'
+      },
+      
+    }).then(res=>{
+       console.log(res)
+    }).catch(err=>{
+      console.log('err')
+       console.log(err)
+    })
+  },
   addSchedule(){
-    
+
+    wx.navigateTo({
+      url: '../editSchedule/editSchedule?dateJson=' + JSON.stringify(this.data.selectDateJson),
+    })
+    return;
+
+
+
+
     wx.navigateTo({
       url: '../addSchedule/addSchedule?dateJson=' + JSON.stringify(this.data.selectDateJson),
     })
-
-
-
     return;
+
     var {year,month,date}= this.data.selectDateJson
     const calendar = this.selectComponent('#calendar').calendar
 

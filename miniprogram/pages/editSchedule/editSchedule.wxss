@@ -1,0 +1,6 @@
+.container{
+  background-color: red;
+}
+.item-view{
+  background-color: seagreen;
+}
