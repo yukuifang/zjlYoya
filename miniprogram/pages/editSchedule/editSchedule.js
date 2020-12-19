@@ -15,8 +15,11 @@ Page({
    */
   onLoad: function (options) {
     dateJson = JSON.parse(options.dateJson)
-    this.getCurrentSchedule()
+    
 
+  },
+  onShow: function () {
+     this.getCurrentSchedule()
   },
   getCurrentSchedule(){
     const{ year,month,date } = dateJson
@@ -47,7 +50,8 @@ Page({
     var ids = []
     for (let index = 0; index < this.data.daySchedule.length; index++) {
        var customerJson = this.data.daySchedule[index]
-       customerJson.worktime =customerJson.worktime.split(" ")[1]
+       customerJson.worktime_begin =customerJson.worktime_begin.split(" ")[1]
+       customerJson.worktime_end =customerJson.worktime_end.split(" ")[1]
       //  console.log(customerJson.worktime.split(" ")[1])
        ids.push(customerJson.customer_id)
     }

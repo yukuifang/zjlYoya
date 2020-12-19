@@ -24,7 +24,8 @@ exports.main = async (event, context) => {
 
   app.router('updateSchedule', async (ctx, next) => {
     const workdate = event.workdate
-    const worktime = event.worktime
+    const worktime_begin = event.worktime_begin
+    const worktime_end = event.worktime_end
     const customer_id = event.customer_id
     var json =  await cloud.database().collection('schedule')
     .where({
@@ -42,7 +43,8 @@ exports.main = async (event, context) => {
         workdate,
         lessions:[
           {
-            worktime,
+            worktime_begin,
+            worktime_end,
             customer_id
           }
         ]
@@ -60,7 +62,8 @@ exports.main = async (event, context) => {
       var oldSchedule = json[0]
       var lessions  =  oldSchedule.lessions 
       lessions[lessions.length]  = {
-        worktime,
+        worktime_begin,
+        worktime_end,
         customer_id
       }
       await cloud.database().collection('schedule')

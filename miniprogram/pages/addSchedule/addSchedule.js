@@ -7,7 +7,8 @@ Page({
    */
  
   data: {
-     date:'',
+     beginDate:'',
+     endDate:'',
      customer:''
   },
 
@@ -72,12 +73,19 @@ Page({
         url: '../customerList/customerList',
       })
   },
-  changeTime(e){
+  changeBeginTime(e){
     //改变时间
     var time = e.detail.value;
     console.log("当前选择时间"+time);
     this.setData({
-      date:time
+      beginDate:time
+    })
+  },
+  changeEndTime(e){
+    var time = e.detail.value;
+    console.log("当前选择时间"+time);
+    this.setData({
+      endDate:time
     })
   },
   addSchedule(e){
@@ -89,17 +97,29 @@ Page({
       })
       return;
     }
-    
-    if(this.data.date == undefined){
+    console.log('hhhh')
+    console.log(this.data.date)
+    if(this.data.beginDate == undefined || this.data.beginDate.length == 0){
       wx.showToast({
-        title: '请选择预约时间',
+        title: '请选择开始预约时间',
+        icon:'none'
+      })
+      return;
+    }
+    if(this.data.endDate == undefined || this.data.endDate.length == 0){
+      wx.showToast({
+        title: '请选择结束预约时间',
         icon:'none'
       })
       return;
     }
     const {year,month,date}= dateJson
     const workdate = year + '-' + month + '-' + date
-    const worktime = workdate + ' ' +  this.data.date 
+    const worktime_begin = workdate + ' ' +  this.data.beginDate 
+    const worktime_end =  workdate + ' ' +  this.data.endDate
+    console.log('aaabb')
+    console.log(worktime_begin)
+    console.log(worktime_end)
     wx.showLoading({
       title: '预约中..',
       mask:true
@@ -110,7 +130,8 @@ Page({
       name: 'schedule',// 云函数的名称
       data: {
         workdate,
-        worktime,
+        worktime_begin,
+        worktime_end,
         customer_id:this.data.customer._id,
         $url:'updateSchedule'
       }//参数
