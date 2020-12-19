@@ -1,8 +1,11 @@
 <view class="container">
     <block wx:for="{{customers}}" wx:key="index">
        <view class="item-view">
+          <text class="time-view">{{daySchedule[index].worktime}}</text>
+          <image src="{{item.avatar}}" class="avatar-view"></image>
           <text>{{item.name}}</text>
-          <image src="{{item.avatar}}"></image>
        </view>
       </block>
 </view>
+
+<text class="iconfont icon-tianjia tianjia" bindtap="addSchedule"></text>

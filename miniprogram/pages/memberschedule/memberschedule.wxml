@@ -18,4 +18,3 @@
 </view>
 
 
-<text class="iconfont icon-tianjia tianjia" bindtap="addSchedule"></text>

@@ -33,12 +33,9 @@ Page({
       
     }).then(res=>{
        console.log(res)
-       this.setData({
-        daySchedule:res.result[0].lessions
-       })
-
-      this.getCustomerById()
-      wx.hideLoading()
+       this.data.daySchedule = res.result[0].lessions
+       this.getCustomerById()
+       wx.hideLoading()
       
     }).catch(err=>{
       console.log(err)
@@ -50,6 +47,8 @@ Page({
     var ids = []
     for (let index = 0; index < this.data.daySchedule.length; index++) {
        var customerJson = this.data.daySchedule[index]
+       customerJson.worktime =customerJson.worktime.split(" ")[1]
+      //  console.log(customerJson.worktime.split(" ")[1])
        ids.push(customerJson.customer_id)
     }
     wx.showLoading({
@@ -64,15 +63,21 @@ Page({
       
     }).then(res=>{
        this.setData({
-         customers:res.result.data
+         customers:res.result.data,
+         daySchedule:this.data.daySchedule
        })
        wx.hideLoading()
     }).catch(err=>{
       console(err)
       wx.hideLoading()
     })
-
-    
+  },
+  addSchedule(){
+   
+    wx.navigateTo({
+      url: '../addSchedule/addSchedule?dateJson=' + JSON.stringify(dateJson),
+    })
+  
   }
 
  

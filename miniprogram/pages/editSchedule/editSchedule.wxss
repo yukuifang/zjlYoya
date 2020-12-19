@@ -1,6 +1,26 @@
 .container{
-  background-color: red;
+  /* background-color: red; */
 }
 .item-view{
+  width: 100%;
+  display: flex;
+  align-items: center;
   background-color: seagreen;
+  padding: 20rpx;
+  margin: 20rpx;
+}
+.avatar-view{
+  width: 100rpx;
+  height: 100rpx;
+
+}
+.time-view{
+  font-size: 40rpx;
+}
+.tianjia{
+  font-size: 60rpx;
+  right: 44rpx;
+  bottom: 44rpx;
+  position: fixed;
+  color:rgb(180, 149, 103);
 }
