@@ -1,5 +1,5 @@
 const db = wx.cloud.database()
-var dataJson;
+var dateJson;
 Page({
 
   /**
@@ -15,8 +15,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    dataJson = JSON.parse(options.dateJson)
-    console.log(dataJson)
+    dateJson = JSON.parse(options.dateJson)
+    
   },
 
   /**
@@ -97,26 +97,38 @@ Page({
       })
       return;
     }
-
-   
+    const {year,month,date}= dateJson
+    const workdate = year + '-' + month + '-' + date
+    const worktime = this.data.date 
     wx.showLoading({
       title: '预约中..',
       mask:true
     })
-
     
+    console.log(workdate)
+    wx.cloud.callFunction({
+      name: 'schedule',// 云函数的名称
+      data: {
+        workdate,
+        worktime,
+        customer_id:this.data.customer._id,
+        $url:'updateSchedule'
+      }//参数
+    }).then(res=>{
+       console.log(res)
+    }).catch(err=>{
+      console.log('err')
+      console.log(err)
+    })
+
+    return;
+
+
     db.collection('schedule').add({
       data:{
-        workdate:this.data.date,
+        workdate,
         lessions:[
-          {
-            name:'a',
-            age:12
-          },
-          {
-            name:'b',
-            age:13
-          }
+          
         ]
       }
     }).then(res=>{
