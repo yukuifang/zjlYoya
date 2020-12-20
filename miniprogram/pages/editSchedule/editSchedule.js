@@ -119,7 +119,7 @@ Page({
        wx.hideLoading()
        this.getCurrentSchedule()
     }).catch(err=>{
-      console(err)
+      console.log(err)
       wx.hideLoading()
     })
 

@@ -35,8 +35,8 @@ exports.main = async (event, context) => {
            break
          }
       }
-      if(findId > 0){
-        lessions.splice(1,1)
+      if(findId >=0){
+        lessions.splice(findId,1)
         console.log(lessions)
       }
      await cloud.database().collection('schedule')
