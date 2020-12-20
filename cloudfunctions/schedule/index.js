@@ -122,5 +122,57 @@ exports.main = async (event, context) => {
        ctx.body = "更新"
     }
   })
+
+
+  app.router('editCurrentSchedule', async (ctx, next) => {
+    const workdate = event.workdate
+    const worktime_begin = event.worktime_begin
+    const worktime_end = event.worktime_end
+    const customer_id = event.customer_id
+    const edit_customer_id =  event.edit_customer_id
+    var json =  await cloud.database().collection('schedule')
+    .where({
+      workdate
+    })
+    .get()
+    .then(res=>{
+       return res.data
+     })
+
+    if(json.length > 0 ){
+      var oldSchedule = json[0]
+      var lessions  =  oldSchedule.lessions 
+      var findId = -1
+      for(var i = 0;i< lessions.length;i++){
+         var tmp = lessions[i]
+         if(tmp.customer_id == edit_customer_id){
+           findId = i
+           break;
+         }
+      }
+
+      if(findId >= 0){
+        lessions[findId] =  {
+          worktime_begin,
+          worktime_end,
+          customer_id
+        }
+      }
+      await cloud.database().collection('schedule')
+      .doc(oldSchedule._id)
+      .update({
+        data:{
+          lessions
+        }
+      })
+      .then(res=>{
+         return res.data
+       })
+       ctx.body = findId
+       
+    }else{
+       ctx.body = "数据库没找到"
+    }
+  })
   return app.serve()
 }

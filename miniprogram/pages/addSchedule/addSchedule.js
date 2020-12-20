@@ -1,6 +1,8 @@
 import util from '../../util/util'
 const db = wx.cloud.database()
 var dateJson;
+var isEdit = false
+var edit_customer_id = ''
 Page({
 
   /**
@@ -18,21 +20,19 @@ Page({
    */
   onLoad: function (options) {
     dateJson = JSON.parse(options.dateJson)
-    const customer = options.customer
-    const beginDate = options.worktime_begin
-    const endDate = options.worktime_end
-
-
-    console.log('yyyy')
-    console.log(customer)
-    
-    if(customer!=undefined && beginDate.length >0 && endDate.length > 0){
+    const undecode_customer = options.customer
+    const beginDate = options.show_worktime_begin
+    const endDate = options.show_worktime_end
+    isEdit = false
+    if(undecode_customer!=undefined && beginDate.length >0 && endDate.length > 0){
+      const customer =  JSON.parse(decodeURIComponent(undecode_customer))
+      isEdit = true
+      edit_customer_id = customer._id
        this.setData({
-           customer:JSON.parse(decodeURIComponent(customer)),
-           beginDate:options.worktime_begin,
-           endDate:options.worktime_end
-
-       })
+           customer,
+           beginDate,
+           endDate
+      })
     }
     
     
@@ -143,6 +143,7 @@ Page({
     })
     
     console.log(workdate)
+    console.log(edit_customer_id)
     wx.cloud.callFunction({
       name: 'schedule',// 云函数的名称
       data: {
@@ -150,16 +151,20 @@ Page({
         worktime_begin,
         worktime_end,
         customer_id:this.data.customer._id,
-        $url:'updateSchedule'
+        edit_customer_id,
+        $url: isEdit?'editCurrentSchedule':'updateSchedule'
       }//参数
     }).then(res=>{
+       console.log(res)
        wx.hideLoading()
        wx.showToast({
        title: '提交成功',
+      }).catch(err=>{
+        console.log(err)
       })
 
 
-      var pages = getCurrentPages();
+    var pages = getCurrentPages();
      var currPage = pages[pages.length - 1];   //当前页面
      var prevPage = pages[pages.length - 2];  //上一个页面
      prevPage.getCurrentSchedule()

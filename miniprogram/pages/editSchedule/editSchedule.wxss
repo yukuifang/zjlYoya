@@ -28,9 +28,10 @@
 
 }
 .time-view{
-  font-size: 30rpx;
+  font-size: 28rpx;
   color: gray;
   margin-right: 20rpx;
+  width: 65rpx;
 
 
 }

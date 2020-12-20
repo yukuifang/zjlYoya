@@ -54,9 +54,8 @@ Page({
     var ids = []
     for (let index = 0; index < this.data.daySchedule.length; index++) {
        var customerJson = this.data.daySchedule[index]
-       customerJson.worktime_begin =customerJson.worktime_begin.split(" ")[1]
-       customerJson.worktime_end =customerJson.worktime_end.split(" ")[1]
-      //  console.log(customerJson.worktime.split(" ")[1])
+       customerJson.show_worktime_begin =customerJson.worktime_begin.split(" ")[1]
+       customerJson.show_worktime_end =customerJson.worktime_end.split(" ")[1]
        ids.push(customerJson.customer_id)
     }
     wx.showLoading({
@@ -70,6 +69,13 @@ Page({
       },
       
     }).then(res=>{
+
+        // this.data.daySchedule.sort(function(a,b) {
+        //     return Date.parse(a.worktime_begin)-Date.parse(b.worktime_begin)
+        // })
+        console.log('abcdef')
+        console.log(this.data.daySchedule)
+
        this.setData({
          customers:res.result.data,
          daySchedule:this.data.daySchedule
@@ -90,10 +96,11 @@ Page({
   itemClick(e){
     const idx = e.currentTarget.dataset.idx
     const customer =  this.data.customers[idx]
-    const {worktime_begin,worktime_end} = this.data.daySchedule[idx]
+    const {show_worktime_begin,show_worktime_end} = this.data.daySchedule[idx]
+    console.log(customer._id)
     let item = JSON.stringify(customer)
     wx.navigateTo({
-      url: '../addSchedule/addSchedule?dateJson=' + JSON.stringify(dateJson) + '&customer=' + encodeURIComponent(item) + '&worktime_begin=' + worktime_begin + '&worktime_end=' + worktime_end,
+      url: '../addSchedule/addSchedule?dateJson=' + JSON.stringify(dateJson) + '&customer=' + encodeURIComponent(item) + '&show_worktime_begin=' + show_worktime_begin + '&show_worktime_end=' + show_worktime_end,
     })
   },
   delecteClick(e){
