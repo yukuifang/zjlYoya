@@ -1,15 +1,26 @@
 <view class="container">
-    <block wx:for="{{customers}}" wx:key="index">
-       <view class="item-view">
+   <block wx:if="{{customers.length >0}}" wx:for="{{customers}}" wx:key="index">
+       <view class="item-view" bindtap="itemClick" data-idx="{{index}}">
           <text class="time-view">{{daySchedule[index].worktime_begin}}</text>
           <text class="time-view">{{daySchedule[index].worktime_end}}</text>
           <view class="right-view">
             <image src="{{item.avatar}}" mode="aspectFill" class="avatar-view"></image>
             <text class="name-view">{{item.name}}</text>
+            <text class="iconfont icon-shanchuanniu delete-view" catchtap="delecteClick" data-idx="{{index}}"></text>
           </view>
-          
        </view>
-      </block>
+   </block>
+
+   <block wx:if="{{customers.length == 0}}">
+      <view class="schedule-view">
+      <view class="no-schedule-view">
+      <text>没有日程哦，点击</text>
+      <text class="iconfont icon-tianjia"></text>
+      <text>快速添加吧～～</text>
+      </view>
+      </view>
+   </block>
+   
 </view>
 
 <text class="iconfont icon-tianjia tianjia" bindtap="addSchedule"></text>

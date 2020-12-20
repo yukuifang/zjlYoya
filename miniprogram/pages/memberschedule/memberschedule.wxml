@@ -9,12 +9,6 @@
   bind:whenChangeMonth="whenChangeMonth"
 />
 
-<view class="schedule-view">
-   <view class="no-schedule-view">
-     <text>没有日程哦，点击</text>
-     <text class="iconfont icon-tianjia"></text>
-     <text>快速添加吧～～</text>
-   </view>
-</view>
+
 
 

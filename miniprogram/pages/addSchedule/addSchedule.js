@@ -1,3 +1,4 @@
+import util from '../../util/util'
 const db = wx.cloud.database()
 var dateJson;
 Page({
@@ -17,6 +18,26 @@ Page({
    */
   onLoad: function (options) {
     dateJson = JSON.parse(options.dateJson)
+    const customer = options.customer
+    const beginDate = options.worktime_begin
+    const endDate = options.worktime_end
+
+
+    console.log('yyyy')
+    console.log(customer)
+    
+    if(customer!=undefined && beginDate.length >0 && endDate.length > 0){
+       this.setData({
+           customer:JSON.parse(decodeURIComponent(customer)),
+           beginDate:options.worktime_begin,
+           endDate:options.worktime_end
+
+       })
+    }
+    
+    
+    
+
     
   },
 
@@ -89,7 +110,6 @@ Page({
     })
   },
   addSchedule(e){
-    // console.log(this.data.customer == undefined)
     if(this.data.customer.name == undefined){
       wx.showToast({
         title: '请选择预约会员',
@@ -117,9 +137,6 @@ Page({
     const workdate = year + '-' + month + '-' + date
     const worktime_begin = workdate + ' ' +  this.data.beginDate 
     const worktime_end =  workdate + ' ' +  this.data.endDate
-    console.log('aaabb')
-    console.log(worktime_begin)
-    console.log(worktime_end)
     wx.showLoading({
       title: '预约中..',
       mask:true
@@ -141,13 +158,18 @@ Page({
        title: '提交成功',
       })
 
+
+      var pages = getCurrentPages();
+     var currPage = pages[pages.length - 1];   //当前页面
+     var prevPage = pages[pages.length - 2];  //上一个页面
+     prevPage.getCurrentSchedule()
       wx.navigateBack({
         delta: 0,
       })
     }).catch(err=>{
       console.log(err)
       wx.hideLoading()
-     wx.showToast({
+      wx.showToast({
        title: err,
      })
     })

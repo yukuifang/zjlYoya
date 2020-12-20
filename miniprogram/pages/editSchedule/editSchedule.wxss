@@ -39,6 +39,7 @@
   align-items: center;
   background-color: white;
   flex: 1;
+  position: relative;
 
 }
 .tianjia{
@@ -47,4 +48,26 @@
   bottom: 44rpx;
   position: fixed;
   color:rgb(180, 149, 103);
+}
+
+.schedule-view{
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-schedule-view{
+   font-size: 28rpx;
+   color:rgb(189, 189, 236);
+   text-align: center;
+   display: flex;
+   align-items: center;
+
+}
+.delete-view{
+  position: absolute;
+  font-size: 50rpx;
+  right: 44rpx;
+  color: rgb(230, 196, 134);
 }

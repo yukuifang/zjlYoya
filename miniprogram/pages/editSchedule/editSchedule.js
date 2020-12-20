@@ -1,4 +1,5 @@
 // pages/editSchedule/editSchedule.js
+
 var dateJson;
 Page({
 
@@ -15,11 +16,11 @@ Page({
    */
   onLoad: function (options) {
     dateJson = JSON.parse(options.dateJson)
-    
+    this.getCurrentSchedule()
 
   },
   onShow: function () {
-     this.getCurrentSchedule()
+    
   },
   getCurrentSchedule(){
     const{ year,month,date } = dateJson
@@ -36,8 +37,11 @@ Page({
       
     }).then(res=>{
        console.log(res)
-       this.data.daySchedule = res.result[0].lessions
-       this.getCustomerById()
+       if(res.result.length>0){
+        this.data.daySchedule = res.result[0].lessions
+        this.getCustomerById()
+       }
+       
        wx.hideLoading()
       
     }).catch(err=>{
@@ -82,6 +86,43 @@ Page({
       url: '../addSchedule/addSchedule?dateJson=' + JSON.stringify(dateJson),
     })
   
+  },
+  itemClick(e){
+    const idx = e.currentTarget.dataset.idx
+    const customer =  this.data.customers[idx]
+    const {worktime_begin,worktime_end} = this.data.daySchedule[idx]
+    let item = JSON.stringify(customer)
+    wx.navigateTo({
+      url: '../addSchedule/addSchedule?dateJson=' + JSON.stringify(dateJson) + '&customer=' + encodeURIComponent(item) + '&worktime_begin=' + worktime_begin + '&worktime_end=' + worktime_end,
+    })
+  },
+  delecteClick(e){
+
+    console.log('hhhhyyyyyyyy')
+    const idx = e.currentTarget.dataset.idx
+    const {customer_id} = this.data.daySchedule[idx]
+    const{ year,month,date } = dateJson
+    const workdate = year + '-' + month + '-' + date
+
+    console.log(customer_id)
+    console.log(workdate)
+    wx.cloud.callFunction({
+      name:'schedule',
+      data:{
+        workdate,
+        customer_id,
+        $url:'deleteCurrentSchedule'
+      },
+      
+    }).then(res=>{
+       console.log(res)
+       wx.hideLoading()
+       this.getCurrentSchedule()
+    }).catch(err=>{
+      console(err)
+      wx.hideLoading()
+    })
+
   }
 
  

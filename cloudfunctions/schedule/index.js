@@ -10,6 +10,49 @@ exports.main = async (event, context) => {
     event
   })
 
+  app.router('deleteCurrentSchedule', async (ctx, next) => {
+    const workdate = event.workdate
+    const customer_id = event.customer_id
+    var json =  await cloud.database().collection('schedule')
+    .where({
+      workdate
+    })
+    .get()
+    .then(res=>{
+       return res.data
+     })
+
+
+     var oldSchedule = json[0]
+      var lessions  =  oldSchedule.lessions 
+      var findId = -1;
+      for(var i= 0 ; i < lessions.length; i++){
+         var tmp = lessions[i]
+         console.log(tmp.customer_id)
+         if(tmp.customer_id == customer_id){
+           findId = i
+           console.log('找到了')
+           break
+         }
+      }
+      if(findId > 0){
+        lessions.splice(1,1)
+        console.log(lessions)
+      }
+     await cloud.database().collection('schedule')
+      .doc(oldSchedule._id)
+      .update({
+        data:{
+          lessions
+        }
+      })
+      .then(res=>{
+         return res.data
+       })
+       ctx.body = "更新好了"
+
+  })
+
   app.router('getCurrentSchedule', async (ctx, next) => {
     const workdate = event.workdate
     ctx.body = await cloud.database().collection('schedule')
