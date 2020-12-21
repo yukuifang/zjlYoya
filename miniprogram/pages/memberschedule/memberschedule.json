@@ -1,5 +1,7 @@
 {
   "usingComponents": {
     "calendar":"../../components/calendar/index"
-  }
+  
+  },
+  "navigationBarTitleText": "日程安排"
 }

@@ -4,10 +4,59 @@ const TcbRouter = require('tcb-router')
 
 cloud.init()
 
+
+
+
+
+
 // 云函数入口函数
 exports.main = async (event, context) => {
   const app = new TcbRouter({
     event
+  })
+
+
+  app.router('siginIn', async (ctx, next) => {
+    const customer_id = event.customer_id
+    var d =  new Date()
+    const workdate = getYYMMDD(d)
+    var json =  await cloud.database().collection('schedule')
+    .where({
+      workdate
+    })
+    .get()
+    .then(res=>{
+       return res.data
+     })
+
+
+     var oldSchedule = json[0]
+      var lessions  =  oldSchedule.lessions 
+      var findId = -1;
+      for(var i= 0 ; i < lessions.length; i++){
+         var tmp = lessions[i]
+         console.log(tmp.customer_id)
+         if(tmp.customer_id == customer_id){
+           findId = i
+           console.log('找到了')
+           break
+         }
+      }
+      if(findId >=0){
+        lessions[findId].is_sigin_in = true
+      }
+     await cloud.database().collection('schedule')
+      .doc(oldSchedule._id)
+      .update({
+        data:{
+          lessions
+        }
+      })
+      .then(res=>{
+         return res.data
+       })
+       ctx.body = "签到好了"
+
   })
 
   app.router('deleteCurrentSchedule', async (ctx, next) => {
@@ -54,7 +103,11 @@ exports.main = async (event, context) => {
   })
 
   app.router('getCurrentSchedule', async (ctx, next) => {
-    const workdate = event.workdate
+    var workdate = event.workdate
+    if(workdate== undefined || workdate.length == 0){
+       var d =  new Date()
+       workdate = getYYMMDD(d)
+    }
     ctx.body = await cloud.database().collection('schedule')
     .where({
       workdate
@@ -175,4 +228,21 @@ exports.main = async (event, context) => {
     }
   })
   return app.serve()
+}
+
+function getYYMMDD(d){
+    function change(t){
+      if(t<10){
+       return "0"+t;
+      }else{
+       return t;
+      }
+    }
+    var year=d.getFullYear();
+    var month=change(d.getMonth()+1);
+    var day=change(d.getDate());
+    var hour=change(d.getHours());
+    var minute=change(d.getMinutes());
+    var second=change(d.getSeconds());
+    return year+'-'+month+'-'+day
 }
