@@ -6,6 +6,7 @@
         <text class="name">{{item.name}}</text>
         <text class="content">{{item.content}}</text>
       </view>
+      <view class="dotline-view"></view>
     </view>
   </block>
 </view>

@@ -23,11 +23,11 @@ exports.main = async (event, context) => {
   })
 
   app.router('getCustomersWithIds', async (ctx, next) => {
-    var ids = event.ids
+    var daySchedule = event.daySchedule
     const tasks = []
-    for(var i = 0;i < ids.length;i++){
+    for(var i = 0;i < daySchedule.length;i++){
       let promise = customerCollection.where({
-         _id:ids[i]
+         _id:daySchedule[i].customer_id
       }).get()
       tasks.push(promise)
     }
@@ -35,7 +35,30 @@ exports.main = async (event, context) => {
       data:[]
     }
     if(tasks.length>0){
-      list =(await Promise.all(tasks)).reduce((acc,cur)=>{
+      list =(await Promise.all(tasks)).reduce((acc,cur,index)=>{
+        
+        if (index==1 && acc.data.length > 0){
+          var customer =  acc.data[0]
+          customer.worktime_begin = daySchedule[0].worktime_begin
+          customer.worktime_end = daySchedule[0].worktime_end
+          acc.data = [customer]
+        }
+
+        if(cur.data.constructor.toString().indexOf("Array")>-1 && cur.data.length > 0){
+          var customer =  cur.data[0]
+          customer.worktime_begin = daySchedule[index-1].worktime_begin
+          customer.worktime_end = daySchedule[index-1].worktime_end
+          return {
+            data:acc.data.concat([customer])
+          }
+        }
+        // var customer =  cur.data
+        // customer.worktime_begin = daySchedule[index].worktime_begin
+        // customer.worktime_end = daySchedule[index].worktime_end
+        // return {
+        //   data:acc.data.concat([customer])
+        // }
+        
         return {
           data:acc.data.concat(cur.data)
         }

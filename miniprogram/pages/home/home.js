@@ -19,7 +19,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-     this.getCustomerlist()
+    // [5,8,0,1].reduce((acc,cur,index)=>{
+    //    console.log(acc + ' ' + cur + ' '+ index)
+    // })
+    //  this.getCustomerlist()
   },
   getCustomerlist(){
     
@@ -57,6 +60,12 @@ Page({
     wx.navigateTo({
       url: '../memberschedule/memberschedule',
     })
+  },
+  signIn(e){
+    wx.navigateTo({
+      url: '../siginInList/siginInList',
+    })
+    
   },
 
 

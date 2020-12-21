@@ -1,4 +1,5 @@
 <view class="container-view">
+  <image class="banner-view" mode="aspectFill" src="../../images/banner.jpeg"></image>
   <view class="enter-view">
    <view class="enter-item-view" bindtap="toAddUser">
        <view class="enter-item-leftview">
@@ -21,9 +22,16 @@
        </view>
        <text class="iconfont icon-xinzengkehu enter-item-rightview"></text>
     </view>
+    <view class="enter-item-view" bindtap="signIn">
+       <view class="enter-item-leftview">
+         <text class="enter-text1">今日签到</text>
+         <text class="enter-text2">上课签到了哦</text>
+       </view>
+       <text class="iconfont icon-xinzengkehu enter-item-rightview"></text>
+    </view>
   </view>
 
-  <block wx:for="{{customerlist}}" wx:key="index">
+  <!-- <block wx:for="{{customerlist}}" wx:key="index">
     <view class="item-view">
       <image mode="aspectFill" class="avatar" src="{{item.avatar.length>0?item.avatar:'../../images/selecte-avatar.png'}}"></image>
       <view class="content-view">
@@ -31,6 +39,6 @@
         <text class="content">{{item.content}}</text>
       </view>
     </view>
-  </block>
+  </block> -->
 
 </view>

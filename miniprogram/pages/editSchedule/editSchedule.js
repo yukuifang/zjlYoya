@@ -51,12 +51,12 @@ Page({
   },
 
   getCustomerById(){
-    var ids = []
+    // var ids = []
     for (let index = 0; index < this.data.daySchedule.length; index++) {
        var customerJson = this.data.daySchedule[index]
        customerJson.show_worktime_begin =customerJson.worktime_begin.split(" ")[1]
        customerJson.show_worktime_end =customerJson.worktime_end.split(" ")[1]
-       ids.push(customerJson.customer_id)
+      //  ids.push(customerJson.customer_id)
     }
     wx.showLoading({
       title: '加载中..',
@@ -64,17 +64,15 @@ Page({
     wx.cloud.callFunction({
       name:'customer',
       data:{
-        ids,
+        daySchedule:this.data.daySchedule,
         $url:'getCustomersWithIds'
       },
       
     }).then(res=>{
-
         // this.data.daySchedule.sort(function(a,b) {
         //     return Date.parse(a.worktime_begin)-Date.parse(b.worktime_begin)
         // })
-        console.log('abcdef')
-        console.log(this.data.daySchedule)
+        console.log(res.result.data)
 
        this.setData({
          customers:res.result.data,
@@ -82,7 +80,7 @@ Page({
        })
        wx.hideLoading()
     }).catch(err=>{
-      console(err)
+      console.log(err)
       wx.hideLoading()
     })
   },
@@ -104,8 +102,6 @@ Page({
     })
   },
   delecteClick(e){
-
-    console.log('hhhhyyyyyyyy')
     const idx = e.currentTarget.dataset.idx
     const {customer_id} = this.data.daySchedule[idx]
     const{ year,month,date } = dateJson

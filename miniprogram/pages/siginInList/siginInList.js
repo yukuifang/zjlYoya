@@ -1,4 +1,4 @@
-// pages/mine/mine.js
+// pages/siginInList/siginInList.js
 Page({
 
   /**
@@ -62,8 +62,5 @@ Page({
    */
   onShareAppMessage: function () {
 
-  },
-  onGotUserInfo: function(event){
-    console.log(event);
-  },
+  }
 })

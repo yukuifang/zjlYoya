@@ -13,6 +13,15 @@
   margin-bottom: 10rpx;
   padding-left: 20rpx;
   padding-right: 100rpx;
+  position: relative;
+}
+.dotline-view{
+  position: absolute;
+  right: 20rpx;
+  bottom: 1rpx;
+  height: 1px;
+  left: 120rpx;
+  background-color: rgba(0, 0, 0, 0.055)
 }
 .avatar{
   width: 100rpx;

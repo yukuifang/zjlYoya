@@ -4,6 +4,10 @@
   height: 100%;
   overflow-x: hidden;
 }
+.banner-view{
+  height: 400rpx;
+  width: 100%;
+}
 .item-view{
   height: 160rpx;
   width: 100%;
@@ -56,7 +60,7 @@ overflow: hidden;
   align-items: center;
   justify-content: center;
   margin: 10rpx;
-  border-radius: 5rpx;
+  border-radius: 10rpx;
 
 
 }
@@ -68,6 +72,9 @@ overflow: hidden;
 }
 .enter-item-view:nth-of-type(3){
   background-color: gray;
+}
+.enter-item-view:nth-of-type(4){
+  background-color:rgb(190, 190, 117);
 }
 .enter-item-leftview{
    display: flex;
