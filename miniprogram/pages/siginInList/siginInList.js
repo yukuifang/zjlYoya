@@ -111,9 +111,17 @@ Page({
   },
   signinClick(e){
     const idx = e.currentTarget.dataset.idx
-    const {customer_id} = this.data.daySchedule[idx]
+    const {customer_id,is_sigin_in} = this.data.daySchedule[idx]
     const {name} = this.data.customers[idx]
     var that = this
+
+    if(is_sigin_in){
+      wx.showToast({
+        title: '已经签到了哦😯',
+        icon:'none'
+      })
+      return
+    }
     wx.showModal({
       title:'今日签到',
       content:name+'签到',

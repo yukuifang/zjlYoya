@@ -74,6 +74,7 @@ Page({
     if(customer.name.length == 0){
       wx.showToast({
         title: '请输入姓名',
+        icon:'none'
       })
       return;
     }
@@ -98,6 +99,7 @@ Page({
           console.log(err)
           wx.showToast({
             title: err,
+            icon:'none'
           })
           wx.hideLoading()
         }
@@ -121,6 +123,7 @@ Page({
        wx.hideLoading()
        wx.showToast({
         title: '提交成功',
+        icon:'none'
       })
 
       var pages = getCurrentPages();
@@ -135,6 +138,7 @@ Page({
       wx.hideLoading()
       wx.showToast({
         title: err,
+        icon:'none'
       })
      })
   },

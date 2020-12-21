@@ -159,6 +159,7 @@ Page({
        wx.hideLoading()
        wx.showToast({
        title: '提交成功',
+       icon:'none'
       }).catch(err=>{
         console.log(err)
       })
@@ -176,6 +177,7 @@ Page({
       wx.hideLoading()
       wx.showToast({
        title: err,
+       icon:'none'
      })
     })
 

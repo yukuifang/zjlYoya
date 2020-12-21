@@ -45,6 +45,7 @@ Page({
       wx.stopPullDownRefresh()//停止当前页面下拉刷新
       wx.showToast({
         title: err,
+        icon:'none'
       })
     })
   },
