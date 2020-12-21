@@ -69,24 +69,49 @@ Page({
       },
       
     }).then(res=>{
-        // this.data.daySchedule.sort(function(a,b) {
-        //     return Date.parse(a.worktime_begin)-Date.parse(b.worktime_begin)
-        // })
-        console.log(res.result.data)
+       this.dealPaixu(res).then((c)=>{
+        this.setData({
+          customers:c,
+          daySchedule:this.data.daySchedule
+        })
+        wx.hideLoading()
 
-       this.setData({
-         customers:res.result.data,
-         daySchedule:this.data.daySchedule
        })
-       wx.hideLoading()
+       
     }).catch(err=>{
       console.log(err)
       wx.hideLoading()
     })
   },
+  dealPaixu(res){
+    var that = this
+    return new Promise(function(resolve, reject){
+       var  customers =  res.result.data
+       var  daySchedule = that.data.daySchedule
+       var new_customers = []
+        // 时间排序
+        daySchedule.sort(function(a,b) {
+            return Date.parse(a.worktime_begin)-Date.parse(b.worktime_begin)
+        })
+        // 客户对应排序
+        for(var i = 0;i < daySchedule.length;i++){
+           var d =  daySchedule[i]
+           for(var j= 0;j < customers.length;j++){
+             var c = customers[j]
+             if(d.customer_id == c._id){
+               new_customers.push(c)
+               break
+             }
+           }
+        }
+        resolve(new_customers)
+      });
+       
+  },
+
+
   addSchedule(){
-   
-    wx.navigateTo({
+   wx.navigateTo({
       url: '../addSchedule/addSchedule?dateJson=' + JSON.stringify(dateJson),
     })
   

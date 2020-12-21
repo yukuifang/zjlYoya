@@ -2,7 +2,9 @@
 const cloud = require('wx-server-sdk')
 const TcbRouter = require('tcb-router')
 
-cloud.init()
+cloud.init({
+  // env: "product-env-4gxq75gu2a5a651d"
+})
 
 var customerCollection =  cloud.database().collection('customer')
 
@@ -36,29 +38,6 @@ exports.main = async (event, context) => {
     }
     if(tasks.length>0){
       list =(await Promise.all(tasks)).reduce((acc,cur,index)=>{
-        
-        if (index==1 && acc.data.length > 0){
-          var customer =  acc.data[0]
-          customer.worktime_begin = daySchedule[0].worktime_begin
-          customer.worktime_end = daySchedule[0].worktime_end
-          acc.data = [customer]
-        }
-
-        if(cur.data.constructor.toString().indexOf("Array")>-1 && cur.data.length > 0){
-          var customer =  cur.data[0]
-          customer.worktime_begin = daySchedule[index-1].worktime_begin
-          customer.worktime_end = daySchedule[index-1].worktime_end
-          return {
-            data:acc.data.concat([customer])
-          }
-        }
-        // var customer =  cur.data
-        // customer.worktime_begin = daySchedule[index].worktime_begin
-        // customer.worktime_end = daySchedule[index].worktime_end
-        // return {
-        //   data:acc.data.concat([customer])
-        // }
-        
         return {
           data:acc.data.concat(cur.data)
         }
