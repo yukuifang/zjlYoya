@@ -51,6 +51,7 @@ Page({
   },
 
   getCustomerById(){
+    var that = this
     // var ids = []
     for (let index = 0; index < this.data.daySchedule.length; index++) {
        var customerJson = this.data.daySchedule[index]
@@ -69,14 +70,14 @@ Page({
       },
       
     }).then(res=>{
-       this.dealPaixu(res).then((c)=>{
-        this.setData({
-          customers:c,
-          daySchedule:this.data.daySchedule
+        that.dealPaixu(res).then((c)=>{
+           that.setData({
+              customers:c,
+              daySchedule:that.data.daySchedule
+           })
+           wx.hideLoading()
         })
-        wx.hideLoading()
-
-       })
+        
        
     }).catch(err=>{
       console.log(err)
@@ -91,7 +92,7 @@ Page({
        var new_customers = []
         // 时间排序
         daySchedule.sort(function(a,b) {
-            return Date.parse(a.worktime_begin)-Date.parse(b.worktime_begin)
+          return Date.parse(a.worktime_begin.replace(/-/g,"/"))-Date.parse(b.worktime_begin.replace(/-/g,"/"))
         })
         // 客户对应排序
         for(var i = 0;i < daySchedule.length;i++){
@@ -108,8 +109,6 @@ Page({
       });
        
   },
-
-
   addSchedule(){
    wx.navigateTo({
       url: '../addSchedule/addSchedule?dateJson=' + JSON.stringify(dateJson),
