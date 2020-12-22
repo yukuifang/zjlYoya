@@ -9,7 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "excel-export": "^0.5.1",
     "node-xlsx": "^0.15.0",
+    "tcb-router": "^1.1.2",
     "wx-server-sdk": "~2.3.2"
   }
 }
