@@ -10,5 +10,8 @@
 />
 
 
+<button bindtap="getSiginXslClick">获取当月签到表</button>
+
+
 
 

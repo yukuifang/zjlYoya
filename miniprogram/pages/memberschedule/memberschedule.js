@@ -122,14 +122,22 @@ Page({
    * currentSelect 当前点击的日期
    */
   takeoverTap(e) {
-    this.data.selectDateJson = e.detail
-    console.log('takeoverTap', this.data.selectDateJson) // => { year: 2019, month: 12, date: 3, ...}
+    console.log('takeoverTap', e) // => { year: 2019, month: 12, date: 3, ...}
   },
   /**
    * 选择日期后执行的事件
    */
   afterTapDate(e) {
-    this.data.selectDateJson = e.detail
+    var selectDateJson = e.detail
+    
+    if(selectDateJson.month<10){
+      selectDateJson.month = '0' + selectDateJson.month
+    }
+    if(selectDateJson.date<10){
+      selectDateJson.date = '0' + selectDateJson.date
+    }
+    this.data.selectDateJson = selectDateJson
+
     console.log('afterTapDate', this.data.selectDateJson) // => { year: 2019, month: 12, date: 3, ...}
 
     this.addSchedule()
@@ -172,37 +180,111 @@ Page({
     })
   },
   addSchedule(){
-
     wx.navigateTo({
       url: '../editSchedule/editSchedule?dateJson=' + JSON.stringify(this.data.selectDateJson),
     })
-    return;
+  },
+  getSiginXslClick(e){
 
-
-
-
-    wx.navigateTo({
-      url: '../addSchedule/addSchedule?dateJson=' + JSON.stringify(this.data.selectDateJson),
+    wx.showLoading({
+      title: '正在导出',
     })
-    return;
+    wx.cloud.callFunction({
+      name:'xlsxgenerate',
+      data:{
+        $url:'signXlsx'
+      },
+    }).then(res=>{
+      console.log(res)
+      wx.hideLoading()
+      const fileID = res.result.fileID;
+      //下载文件
+      wx.cloud.downloadFile({
+        fileID
+      }).then(res1 => {
+      console.log(res1)
+      this.writePhotosAlbumAuth(res1)//保存文件到相册
+      this.delCloudFile(fileID)//删除云存储文件
+      
+    }).catch(error => {
+      // handle error
+      console.log(error)
+    })
+        
+       
+    }).catch(err=>{
+      console.log(err)
+      wx.hideLoading()
+    })
+     
+  },
 
-    var {year,month,date}= this.data.selectDateJson
-    const calendar = this.selectComponent('#calendar').calendar
+ //保存文件到本地相册
+ saveFileToPhotosAlbum(res){
+  // 保存文件
+  var saveTempPath = wx.env.USER_DATA_PATH + "/exportFile"+new Date().getTime()+".jpg"
+  wx.saveFile({
+    tempFilePath: res.tempFilePath,
+    filePath: saveTempPath ,
+    success:res1=> {
+      //获取了相册的访问权限，使用 wx.saveImageToPhotosAlbum 将图片保存到相册中
+      wx.saveImageToPhotosAlbum({
+        filePath: saveTempPath ,
+        success: res2 => {
+          //保存成功弹出提示，告知一下用户
+          wx.hideLoading();
+          wx.showModal({
+            title: '文件已保存到手机相册',
+            content: '文件位于tencent/MicroMsg/WeiXin下 \r\n将保存的文件重命名改为[ .xlsx ]后缀即可正常打开',
+            confirmColor: '#0bc183',
+            confirmText: '知道了',
+            showCancel: false
+          });
+        },
+        fail(err2) {
+          console.log(err2)
+        }
+      })
+    }
+  });
 
+ },
+ //微信图片保存到本地相册授权
+ writePhotosAlbumAuth(res){
+  var that = this
+  wx.getSetting({
+    success(res1) {
+      if (!res1.authSetting['scope.writePhotosAlbum']) {
+        wx.authorize({
+          scope:'scope.writePhotosAlbum',
+          success() {
+            // 授权成功
+            that.saveFileToPhotosAlbum(res)
 
+          }
+        })
+      }else{
+        // 已经授权
+        that.saveFileToPhotosAlbum(res)
 
-    const dates = [
-      {
-        year,
-        month,
-        date,
-        todoText:'hello'
       }
-    ]
-    calendar["setTodos"]({
-      showLabelAlways: true,
-      dates
-    })
-  }
+    }
+  })
+},
+//删除云存储文件
+delCloudFile(fileID){
+  const fileIDs=[];
+  fileIDs.push(fileID);
+  //删除云存储中的excel文件
+  wx.cloud.deleteFile({
+    fileList: fileIDs,
+    success: res => {
+      // handle success
+      console.log(res.fileList);
+    },
+    fail: console.error
+  })
+}
+  
 
 })
