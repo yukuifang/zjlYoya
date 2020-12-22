@@ -1,11 +1,12 @@
-<view class="profile-header">
+<view class="container" wx:if="{{isLogin}}">
+  <view class="profile-header">
   <view class="avatar-url">
     <open-data type="userAvatarUrl"></open-data>
   </view>
   <open-data type="userNickName" class="nickname"></open-data>
-</view>
+  </view>
 
-<view class="nav">
+  <view class="nav">
   <view class="nav-item">
     <navigator class="content" hover-class="none" url="/pages/profile-playhistory/profile-playhistory">
       <i class="iconfont icon-ziyuanldpi"></i>
@@ -27,7 +28,19 @@
       <i class="iconfont icon-xiangyou"></i>
     </view>
   </view>
-  <!-- <button open-type="getUserInfo" bindgetuserinfo="onGotUserInfo">获取用户信息</button> -->
+  
 
 </view>
+</view>
+
+
+
+<view wx:else class="unlogin-view">
+     <button open-type="getUserInfo" bindgetuserinfo="onGotUserInfo" class="login-view" style="width:80%;">授权登陆</button>
+
+</view>
+
+
+
+
 

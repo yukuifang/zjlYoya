@@ -60,20 +60,34 @@ exports.main = async (event, context) => {
     // }
 
 
+    var id_signsJson =  {}
     for(var i =0 ;i < json.length;i++){
-       var contents = []
        var lessions = json[i].lessions
-       var wd = json[i].workdate
-       contents.push(wd)
        for(var j = 0; j < lessions.length ; j++){
           var sigin = lessions[j]
-          contents.push(sigin.customer_id)
+          if(sigin.is_sigin_in){
+             if(id_signsJson[sigin.customer_id] == undefined){
+               id_signsJson[sigin.customer_id] = [sigin]
+             }else{
+               id_signsJson[sigin.customer_id].push(sigin)
+             }
+          }
        }
-       tableMap.rows[i] = contents
-
     }
+    
+    var k = 0
+    for (let key of Object.keys(id_signsJson)) {
+      var contents = []
+      let sigin = id_signsJson[key];
+      contents.push(sigin[0].name)
+      contents.push(sigin.length + '')
+      tableMap.rows[k] = contents
+      k++
+    }
+    
 
-    //保存excelResult到相应位置
+    
+   //保存excelResult到相应位置
     var excelResult = nodeExcel.execute(tableMap);
     var filePath = "outputExcels";
     var fileName = cloud.getWXContext().OPENID + "-" + Date.now()/1000 + '.xlsx';
