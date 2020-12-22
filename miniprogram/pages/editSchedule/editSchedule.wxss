@@ -46,7 +46,7 @@
 .tianjia{
   font-size: 60rpx;
   right: 44rpx;
-  bottom: 44rpx;
+  bottom: 100rpx;
   position: fixed;
   color:rgb(180, 149, 103);
 }
@@ -71,4 +71,20 @@
   font-size: 50rpx;
   right: 44rpx;
   color: rgb(230, 196, 134);
+}
+.copy-view{
+  position:absolute;
+  bottom: 44rpx;
+  width: 200rpx;
+  height: 80rpx;
+  color: white;
+  font-size: 24rpx;
+  text-align: center;
+  line-height: 80rpx;
+  left: 50%; 
+  border-radius: 10rpx;
+  transform: translate(-50%, -50%);
+  background-color: rgb(247, 186, 73);
+
+
 }

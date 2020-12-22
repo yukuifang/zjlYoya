@@ -40,7 +40,7 @@ exports.main = async (event, context) => {
       cols: [],
       rows: [],
     }
-    var tableHead = ["日期","1","1","1","1","1","1","1"];
+    var tableHead = ["会员信息","本月节数"];
     //添加表头
     for(var i=0;i<tableHead.length;i++){
       tableMap.cols[tableMap.cols.length]={

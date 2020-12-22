@@ -150,6 +150,7 @@ Page({
         workdate,
         worktime_begin,
         worktime_end,
+        name:this.data.customer.name,
         customer_id:this.data.customer._id,
         edit_customer_id,
         $url: isEdit?'editCurrentSchedule':'updateSchedule'

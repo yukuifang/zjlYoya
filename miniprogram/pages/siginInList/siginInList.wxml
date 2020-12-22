@@ -15,9 +15,9 @@
    <block wx:if="{{customers.length == 0}}">
       <view class="schedule-view">
       <view class="no-schedule-view">
-      <text>今日没签到</text>
-      <text class="iconfont icon-tianjia"></text>
-      <text>休闲....～～</text>
+      <text>今日没有安排会员签到</text>
+      <text class="iconfont icon-tianjia" style="margin:10rpx"></text>
+      <text> 约起来....～～</text>
       </view>
       </view>
    </block>

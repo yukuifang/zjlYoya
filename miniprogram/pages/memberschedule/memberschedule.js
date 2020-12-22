@@ -199,17 +199,17 @@ Page({
       wx.hideLoading()
       const fileID = res.result.fileID;
       //下载文件
-      wx.cloud.downloadFile({
-        fileID
-      }).then(res1 => {
-      console.log(res1)
-      this.writePhotosAlbumAuth(res1)//保存文件到相册
-      this.delCloudFile(fileID)//删除云存储文件
-      
-    }).catch(error => {
-      // handle error
-      console.log(error)
-    })
+      // wx.cloud.downloadFile({
+      //   fileID
+      // }).then(res1 => {
+      // console.log(res1)
+      // this.writePhotosAlbumAuth(res1)//保存文件到相册
+      // this.delCloudFile(fileID)//删除云存储文件
+      // }).catch(error => {
+      //  console.log(error)
+      // })
+
+      this.getFileUrl(fileID)
         
        
     }).catch(err=>{
@@ -218,16 +218,56 @@ Page({
     })
      
   },
+  //获取云存储文件下载地址，这个地址有效期一天
+  getFileUrl(fileID) {
+    let that = this;
+    wx.cloud.getTempFileURL({
+      fileList: [fileID],
+      success: res => {
+        // get temp file URL
+        const fileUrl =  res.fileList[0].tempFileURL
+        console.log("文件下载链接", fileUrl)
+        this.copyFileUrl(fileUrl)
+
+      },
+      fail: err => {
+        // handle error
+      }
+    })
+  },
+  //复制excel文件下载链接
+  copyFileUrl(fileUrl) {
+    wx.setClipboardData({
+      data: fileUrl,
+      success(res) {
+        wx.getClipboardData({
+          success(res) {
+            console.log("复制成功",res.data) // data
+            wx.showToast({
+              title: '复制成功',
+            })
+          }
+        })
+      }
+    })
+  },
+
+
+
+
 
  //保存文件到本地相册
  saveFileToPhotosAlbum(res){
   // 保存文件
   var saveTempPath = wx.env.USER_DATA_PATH + "/exportFile"+new Date().getTime()+".jpg"
+  console.log(saveTempPath)
+  console.log(res.tempFilePath)
   wx.saveFile({
     tempFilePath: res.tempFilePath,
     filePath: saveTempPath ,
     success:res1=> {
       //获取了相册的访问权限，使用 wx.saveImageToPhotosAlbum 将图片保存到相册中
+      console.log(res1)
       wx.saveImageToPhotosAlbum({
         filePath: saveTempPath ,
         success: res2 => {

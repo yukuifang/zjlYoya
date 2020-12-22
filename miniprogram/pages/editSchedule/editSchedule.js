@@ -1,6 +1,8 @@
 // pages/editSchedule/editSchedule.js
 
 var dateJson;
+var  daySchedule_tomorrow = []
+var  customers_tomorrow = []
 Page({
 
   /**
@@ -8,7 +10,8 @@ Page({
    */
   data: {
      daySchedule:[],
-     customers:[]
+     customers:[],
+     copystr:''
   },
 
   /**
@@ -17,6 +20,7 @@ Page({
   onLoad: function (options) {
     dateJson = JSON.parse(options.dateJson)
     this.getCurrentSchedule()
+    // this.getTomorrowSchedule()
 
   },
   onShow: function () {
@@ -150,7 +154,32 @@ Page({
       wx.hideLoading()
     })
 
-  }
+  },
+  dayPlanClick(e){
+     this.data.copystr = '今日课程:\n'
+     for (let index = 0; index < this.data.customers.length; index++) {
+       const element = this.data.customers[index]
+       this.data.copystr +=( index + '.' + element.name  + '\n')
+     }
+     console.log(this.data.copystr)
+     this.copyFileUrl(this.data.copystr)
+     
+  },
+  copyFileUrl(copyStr) {
+    wx.setClipboardData({
+      data: copyStr,
+      success(res) {
+        wx.getClipboardData({
+          success(res) {
+            console.log("复制成功",res.data) // data
+            wx.showToast({
+              title: '复制成功',
+            })
+          }
+        })
+      }
+    })
+  },
 
  
 })
