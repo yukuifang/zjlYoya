@@ -23,6 +23,7 @@ App({
       key:"is_teacher",
       success:function(res){
         var result = res.data
+        console.log(result)
         if(result != undefined){
           that.toHome()
         }

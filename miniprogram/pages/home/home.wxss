@@ -61,6 +61,7 @@ overflow: hidden;
   justify-content: center;
   margin: 10rpx;
   border-radius: 10rpx;
+  position: relative;
 
 
 }
@@ -81,6 +82,9 @@ overflow: hidden;
    flex-direction: column;
    margin-right: 40rpx;
    color: white;
+   flex: 1;
+   margin-left: 20rpx;
+  
 }
 
 
@@ -93,6 +97,8 @@ overflow: hidden;
   font-size: 22rpx;
 }
 .enter-item-rightview{
+  position: absolute;
+  right: 20rpx;
   font-size: 80rpx;
   color:white;
 }

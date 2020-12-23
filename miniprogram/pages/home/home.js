@@ -8,7 +8,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    customerlist:[]
+    customerlist:[],
+    isTeacher:''
+    
   },
   toAddUser(){
     if(!this.toMine())return;
@@ -21,10 +23,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    [5,8,0,1].reduce((acc,cur,index)=>{
-       console.log(acc + ' ' + cur + ' '+ index)
-    })
-     this.getCustomerlist()
+     wx.getStorage({
+       key: 'is_teacher',
+       success:res=>{
+         this.setData({
+          isTeacher:res.data
+         })
+       }
+     })
   },
   getCustomerlist(){
     wx.showLoading({
@@ -116,7 +122,7 @@ Page({
    */
   onPullDownRefresh: function () {
      this.data.customerlist = []
-     this.getCustomerlist()
+     
   },
 
   /**
