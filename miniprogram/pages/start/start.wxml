@@ -1,0 +1,7 @@
+<view class="container">
+     <image src="../../images/unlogin.jpeg" class="logo-view"></image>
+     <view class="btn-view" bindtap="teacherClick">您是瑜伽老师</view>
+     <view class="btn-view" bindtap="studentClick">您是瑜伽会员</view>
+</view>
+
+<view class="company-view">感谢使用精灵瑜伽软件</view>

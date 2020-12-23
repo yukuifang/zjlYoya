@@ -1,0 +1,39 @@
+.container{
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  position: relative;
+
+}
+.logo-view{
+  margin-top: 100rpx;
+  width: 400rpx;
+  height: 400rpx;
+
+}
+.btn-view{
+  width: 70%;
+  height: 90rpx;
+  color: white;
+  font-size: 38rpx;
+  text-align: center;
+  line-height: 90rpx;
+  background-color: rgb(163, 164, 250);
+  border-radius: 10rpx;
+  margin-top: 80rpx;
+
+}
+.btn-view:nth-of-type(1){
+  background-color: rgb(245, 181, 63);
+}
+.company-view{
+    position: absolute;
+    bottom: 30rpx;
+    font-size: 25rpx;
+    left: 50%;
+    right: 50%;
+    transform: translate(-50%, -50%);
+    width: 300rpx;
+    text-align: center;
+
+}

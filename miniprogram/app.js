@@ -16,6 +16,22 @@ App({
     }
     this.globalData = {}
     this.userAuthoried()
+
+
+    var that = this
+    wx.getStorage({//获取本地缓存
+      key:"is_teacher",
+      success:function(res){
+        var result = res.data
+        if(result != undefined){
+          that.toHome()
+        }
+      },
+    })
+
+
+
+
   },
   userAuthoried(){
     wx.getSetting({
@@ -25,6 +41,12 @@ App({
         
       }
     })
-  }
+  },
+  toHome(){
+    const url = '../../pages/home/home'
+    wx.switchTab({
+      url
+    })
+  },
 
 })
