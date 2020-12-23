@@ -1,12 +1,12 @@
 <view class="container" wx:if="{{isAuthoried && isLogin}}">
-  <view class="profile-header">
+   <view class="profile-header">
   <view class="avatar-url">
     <open-data type="userAvatarUrl"></open-data>
   </view>
   <open-data type="userNickName" class="nickname"></open-data>
-  </view>
+   </view>
 
-  <view class="nav">
+   <view class="nav">
   <view class="nav-item">
     <navigator class="content" hover-class="none" url="/pages/profile-playhistory/profile-playhistory">
       <i class="iconfont icon-ziyuanldpi"></i>
@@ -30,8 +30,12 @@
   </view>
   
 
-</view>
-</view>
+   </view>
+
+
+
+   <view class="company-view">感谢使用精灵瑜伽软件</view>  
+   </view>
 
 
 
