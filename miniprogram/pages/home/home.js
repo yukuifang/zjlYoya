@@ -1,4 +1,5 @@
 // pages/home/home.js
+const app = getApp()
 
 const MAX_LIMIT = 15
 Page({
@@ -10,6 +11,7 @@ Page({
     customerlist:[]
   },
   toAddUser(){
+    if(!this.toMine())return;
     wx.navigateTo({
       url: '../addCustomer/addCustomer',
     })
@@ -25,7 +27,6 @@ Page({
      this.getCustomerlist()
   },
   getCustomerlist(){
-    
     wx.showLoading({
       title: '加载中',
     })
@@ -53,20 +54,32 @@ Page({
     })
   },
   showCustomes(e){
+    if(!this.toMine())return;
      wx.navigateTo({
        url: '../customerList/customerList',
      })
   },
   schedulePlan(e){
+    if(!this.toMine())return;
     wx.navigateTo({
       url: '../memberschedule/memberschedule',
     })
   },
   signIn(e){
+    if(!this.toMine())return;
     wx.navigateTo({
       url: '../siginInList/siginInList',
     })
     
+  },
+  toMine(){
+    if(!app.globalData.isAuthoried){
+      wx.switchTab({
+        url: '../mine/mine',
+      })
+      return false
+    }
+    return true
   },
 
 

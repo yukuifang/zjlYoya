@@ -1,4 +1,4 @@
-<view class="container" wx:if="">
+<view class="container">
    <block wx:if="{{customers.length >0}}" wx:for="{{customers}}" wx:key="index">
        <view class="item-view" bindtap="itemClick" data-idx="{{index}}">
           <text class="time-view">{{daySchedule[index].show_worktime_begin}}</text>

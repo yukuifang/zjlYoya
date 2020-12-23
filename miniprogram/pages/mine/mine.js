@@ -85,6 +85,9 @@ Page({
     })
   },
   uploadUserMessage(userInfo){
+    wx.showLoading({
+      title: '登陆中...',
+    })
     var customer  = userInfo
     wx.cloud.callFunction({
       name:'wxcustomer',
@@ -95,8 +98,14 @@ Page({
       
     }).then(res=>{
       console.log(res)
+      wx.showToast({
+        title: res.result,
+        icon:'none'
+      })
+      wx.hideLoading()
     }).then(err=>{
       console.log(err)
+      wx.hideLoading()
     })
    
     
