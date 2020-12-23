@@ -14,7 +14,17 @@ App({
        traceUser: true,
       })
     }
-
     this.globalData = {}
+    this.userAuthoried()
+  },
+  userAuthoried(){
+    wx.getSetting({
+      success:res=>{
+        var isAuthoried = res.authSetting['scope.userInfo']
+        this.globalData.isAuthoried = (isAuthoried == undefined ? false:isAuthoried)
+        
+      }
+    })
   }
+
 })

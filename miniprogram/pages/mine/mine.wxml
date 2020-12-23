@@ -1,4 +1,4 @@
-<view class="container" wx:if="{{isLogin}}">
+<view class="container" wx:if="{{isAuthoried}}">
   <view class="profile-header">
   <view class="avatar-url">
     <open-data type="userAvatarUrl"></open-data>

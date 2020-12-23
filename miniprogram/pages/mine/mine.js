@@ -1,11 +1,12 @@
 // pages/mine/mine.js
+var app = getApp()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    isLogin:false
+    isAuthoried:false
 
   },
 
@@ -13,6 +14,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    
+    console.log(app.globalData.isAuthoried)
+    this.setData({
+      isAuthoried:app.globalData.isAuthoried
+    })
 
   },
 
@@ -66,5 +72,35 @@ Page({
   },
   onGotUserInfo: function(event){
     console.log(event);
+    var userInfo =  event.detail.userInfo
+    if(userInfo == undefined){
+      app.globalData.isAuthoried = false
+    }else{
+      app.globalData.isAuthoried = true
+      wx.setStorageSync('userInfo', userInfo)
+      this.uploadUserMessage(userInfo)
+    }
+    this.setData({
+      isAuthoried:app.globalData.isAuthoried
+    })
   },
+  uploadUserMessage(userInfo){
+    var customer  = userInfo
+    wx.cloud.callFunction({
+      name:'wxcustomer',
+      data:{
+        customer,
+        $url:'addWxCustomer'
+      },
+      
+    }).then(res=>{
+      console.log(res)
+    }).then(err=>{
+      console.log(err)
+    })
+   
+    
+  }
+
+  
 })
