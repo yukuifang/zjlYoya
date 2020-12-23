@@ -18,35 +18,79 @@ App({
     this.userAuthoried()
 
 
-    var that = this
-    wx.getStorage({//获取本地缓存
-      key:"is_teacher",
-      success:function(res){
-        var result = res.data
-        console.log(result)
-        if(result != undefined){
-          that.toHome()
-        }
-      },
-    })
-
-
-
-
   },
   userAuthoried(){
-    wx.getSetting({
-      success:res=>{
-        var isAuthoried = res.authSetting['scope.userInfo']
-        this.globalData.isAuthoried = (isAuthoried == undefined ? false:isAuthoried)
-        
-      }
-    })
+      var that = this
+      var a = new Promise(function(resolve, reject){
+        wx.getStorage({
+          key: 'is_login',
+          success:res=>{
+             that.globalData.isLogin = (res.data == undefined?false:res.data)
+             resolve()
+          },
+          fail:err=>{
+            resolve()
+          }
+        })
+      })
+      var b = new Promise(function(resolve, reject){
+        wx.getSetting({
+          success:res=>{
+            var isAuthoried = res.authSetting['scope.userInfo']
+            that.globalData.isAuthoried = (isAuthoried == undefined ? false:isAuthoried)
+            resolve()
+          },
+          fail:err=>{
+            resolve()
+          }
+        })
+      })
+      var c = new Promise(function(resolve, reject){
+        wx.getStorage({ //获取本地缓存
+          key:"is_teacher",
+          success:res =>{
+            that.globalData.isTeacher = (res.data == undefined?false:res.data)
+            resolve()
+          },
+          fail:err=>{
+            resolve()
+
+          }
+        })
+      })
+
+      Promise.all([a, b,c]).then((result) => {
+        console.log('123')
+        if(that.globalData.isTeacher != undefined){
+          that.toHome()
+        } else{
+          that.toStart()
+        }           
+      })
+
+      
+
+
+
+    
   },
   toHome(){
     const url = '../../pages/home/home'
     wx.switchTab({
       url
+    })
+  },
+  toStart(){
+    // const url = '../../pages/start/start'
+    // wx.navigateTo({
+    //   url,
+    // })
+    console.log("tostart")
+   console.log(this.globalData.isTeacher)
+    var pages = getCurrentPages()
+    var currentPage = pages[pages.length - 1]
+    currentPage.setData({
+      isLauchPage:(this.globalData.isTeacher == undefined ? false:true)
     })
   },
 

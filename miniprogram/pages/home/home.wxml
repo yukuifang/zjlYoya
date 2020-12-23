@@ -35,23 +35,17 @@
   <view wx:else class="enter-view">
    <view class="enter-item-view" bindtap="toAddUser">
        <view class="enter-item-leftview">
-         <text class="enter-text1">新增会员</text>
-         <text class="enter-text2">录入可爱的会员信息</text>
+         <text class="enter-text1">预约上课</text>
+         <text class="enter-text2">预约上瑜伽老师去上课</text>
        </view>
        <text class="iconfont icon-xinzengkehu enter-item-rightview"></text>
     </view>
     <view class="enter-item-view" bindtap="showCustomes">
        <view class="enter-item-leftview">
-         <text class="enter-text1">查看会员</text>
-         <text class="enter-text2">康康你的小可爱们</text>
+         <text class="enter-text1">查看打卡</text>
+         <text class="enter-text2">康康你的上课足迹吧</text>
        </view>
        <text class="iconfont icon-xinzengkehu enter-item-rightview"></text>
     </view>
   </view>
-
-
-
-
- 
-
 </view>

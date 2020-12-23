@@ -6,7 +6,7 @@
 
 }
 .logo-view{
-  margin-top: 100rpx;
+  margin-top: 180rpx;
   width: 400rpx;
   height: 400rpx;
 
@@ -35,5 +35,12 @@
     transform: translate(-50%, -50%);
     width: 300rpx;
     text-align: center;
+    color: gray;
 
+}
+
+.logo-view2{
+  margin-top: 440rpx;
+  width: 400rpx;
+  height: 400rpx;
 }

@@ -6,7 +6,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    isAuthoried:false
+    isAuthoried:false,
+    isLogin:false
 
   },
 
@@ -15,10 +16,7 @@ Page({
    */
   onLoad: function (options) {
     
-    console.log(app.globalData.isAuthoried)
-    this.setData({
-      isAuthoried:app.globalData.isAuthoried
-    })
+  
 
   },
 
@@ -33,7 +31,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.setData({
+      isAuthoried:app.globalData.isAuthoried,
+      isLogin:app.globalData.isLogin
+    })
   },
 
   /**
@@ -103,6 +104,16 @@ Page({
         icon:'none'
       })
       wx.hideLoading()
+      this.setData({
+        isLogin:true
+      })
+      app.globalData.isLogin = true
+      wx.setStorage({
+        data: 1,
+        key: 'is_login',
+      })
+
+
     }).then(err=>{
       console.log(err)
       wx.hideLoading()
