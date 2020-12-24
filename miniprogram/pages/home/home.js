@@ -75,6 +75,20 @@ Page({
     })
   },
   signIn(e){
+    wx.requestSubscribeMessage({
+      tmplIds: ['UgxSFEgfxASQgj6E1IW_vLyQu07aasNidkbeQqHq-Ig'],
+      success:res=> { 
+        console.log('授权成功', res)
+        this.senCustomerMessage()
+      },fail:res=>{
+        console.log('授权失败', res)
+      }
+    })
+
+    return;
+
+
+
     if(!this.toMine())return;
     wx.navigateTo({
       url: '../siginInList/siginInList',
@@ -125,6 +139,22 @@ Page({
        console.log(err)
     })
   },
+  senCustomerMessage(){
+    wx.cloud.callFunction({
+      name: 'schedule',// 云函数的名称
+      data: {
+        $url:'sendCustomerMessage'
+      }//参数
+    }).then((res) => {
+      console.log(res)
+    }).catch(err=>{
+      console.log(err)
+     
+    })
+
+    
+  },
+
 
 
   /**

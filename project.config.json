@@ -29,7 +29,7 @@
   },
   "appid": "wxf5369b614dceede6",
   "projectname": "zjl-yoga",
-  "libVersion": "2.10.0",
+  "libVersion": "2.10.2",
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
