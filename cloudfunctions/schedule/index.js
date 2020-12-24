@@ -4,6 +4,9 @@ const TcbRouter = require('tcb-router')
 
 cloud.init()
 
+const db = cloud.database()
+const scheduleCollection =  db.collection('schedule')
+const cm = db.command
 
 
 
@@ -15,6 +18,9 @@ exports.main = async (event, context) => {
     event
   })
 
+  const wxContext = cloud.getWXContext()
+  var _openid = wxContext.OPENID
+
 
   app.router('siginIn', async (ctx, next) => {
     const customer_id = event.customer_id
@@ -22,6 +28,7 @@ exports.main = async (event, context) => {
     const workdate = getYYMMDD(d)
     var json =  await cloud.database().collection('schedule')
     .where({
+      _openid,
       workdate
     })
     .get()
@@ -64,6 +71,7 @@ exports.main = async (event, context) => {
     const customer_id = event.customer_id
     var json =  await cloud.database().collection('schedule')
     .where({
+      _openid,
       workdate
     })
     .get()
@@ -110,6 +118,7 @@ exports.main = async (event, context) => {
     }
     ctx.body = await cloud.database().collection('schedule')
     .where({
+      _openid,
       workdate
     })
     .get()
@@ -126,6 +135,7 @@ exports.main = async (event, context) => {
     const name = event.name
     var json =  await cloud.database().collection('schedule')
     .where({
+      _openid,
       workdate
     })
     .get()
@@ -138,6 +148,7 @@ exports.main = async (event, context) => {
     if(json.length == 0){
       schedule = {
         workdate,
+        _openid,
         lessions:[
           {
             worktime_begin,
@@ -189,6 +200,7 @@ exports.main = async (event, context) => {
     const edit_customer_id =  event.edit_customer_id
     var json =  await cloud.database().collection('schedule')
     .where({
+      _openid,
       workdate
     })
     .get()
