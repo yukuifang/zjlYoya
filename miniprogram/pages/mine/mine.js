@@ -89,9 +89,14 @@ Page({
     wx.showLoading({
       title: '登陆中...',
     })
-    var customer  = userInfo
+    var customer  = {} 
+    customer.avatar = userInfo.avatarUrl
+    customer.name = userInfo.nickName
+    customer.sex = userInfo.gender
+    customer.is_teacher = app.globalData.is_teacher
+    customer.is_from_wx = true
     wx.cloud.callFunction({
-      name:'wxcustomer',
+      name:'customer',
       data:{
         customer,
         $url:'addWxCustomer'

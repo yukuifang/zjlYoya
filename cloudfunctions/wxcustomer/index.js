@@ -2,7 +2,7 @@
 const cloud = require('wx-server-sdk')
 const TcbRouter = require('tcb-router')
 cloud.init()
-var wx_customer_db =  cloud.database().collection('wxcustomer')
+var wx_customer_db =  cloud.database().collection('customer')
 
 
  // 云函数入口函数
@@ -45,5 +45,26 @@ exports.main = async (event, context) => {
     }
 
   })
+
+  app.router('wxcustomerlist', async (ctx, next) => {
+    ctx.body = await wx_customer_db
+    .where({
+       is_teacher:1
+    })
+    .skip(event.start)
+    .limit(event.count)
+    .orderBy('createTime', 'desc')
+    .get()
+    .then(res => {
+      return res
+    })
+  })
+
+
+
+
+
+
+
   return app.serve()
 }

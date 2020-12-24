@@ -5,22 +5,92 @@ const TcbRouter = require('tcb-router')
 cloud.init({
   // env: "product-env-4gxq75gu2a5a651d"
 })
-
-var customerCollection =  cloud.database().collection('customer')
+const db = cloud.database()
+const customerCollection =  db.collection('customer')
+const cm = db.command
 
 // 云函数入口函数
 exports.main = async (event, context) => {
+  const wxContext = cloud.getWXContext()
+  var _openid = wxContext.OPENID
   const app = new TcbRouter({
     event
   })
-  app.router('customerlist', async (ctx, next) => {
+
+
+  app.router('wxcustomerlist', async (ctx, next) => {
     ctx.body = await customerCollection
+    .where({
+       is_teacher:1
+    })
     .skip(event.start)
     .limit(event.count)
     .orderBy('createTime', 'desc')
     .get()
     .then(res => {
-      return res
+      return res.data
+    })
+  })
+
+  // 微信登陆，新增用户信息
+  app.router('addWxCustomer', async (ctx, next) => {
+    var customer = event.customer
+    customer._openid = _openid
+    var json  = await customerCollection.where({
+      _openid
+    })
+    .get()
+    .then(res=>{
+      return res.data
+    })
+    if(json == undefined || json.length == 0){
+      await customerCollection.add({
+        data:customer
+      }).then(res=>{
+         return res.data
+      })
+      ctx.body = '首次登陆成功'
+ 
+    }else{
+      await customerCollection.where({
+        _openid,
+        is_from_wx:true
+      }).update({
+        data:customer
+      }).then(res=>{
+        return res.data
+      })
+      ctx.body = '登陆成功,欢迎再次回来'
+
+   }
+
+  })
+
+
+  // 获取会员列表，（来自微信和手动）
+  app.router('customerlist', async (ctx, next) => {
+    ctx.body = await customerCollection
+    .where(cm.or([
+      {
+        _openid,
+        is_from_wx:false,
+        is_teacher:0
+        
+
+      },
+      {
+        _openid:cm.neq(_openid),
+        is_from_wx:true,
+        is_teacher:0
+      }
+      
+    ]))
+    .skip(event.start)
+    .limit(event.count)
+    .orderBy('createTime', 'desc')
+    .get()
+    .then(res => {
+      return res.data
     })
   })
 

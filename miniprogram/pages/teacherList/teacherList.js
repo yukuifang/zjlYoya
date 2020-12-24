@@ -31,7 +31,7 @@ Page({
       data: {
         start: this.data.customerlist.length,
         count: MAX_LIMIT,
-        $url:'customerlist'
+        $url:'wxcustomerlist'
       }//参数
     }).then((res) => {
       console.log(res)
@@ -43,7 +43,10 @@ Page({
     }).catch(err=>{
       wx.hideLoading()
       wx.stopPullDownRefresh()//停止当前页面下拉刷新
-      console.log(err)
+      wx.showToast({
+        title: err,
+        icon:'none'
+      })
     })
   },
 

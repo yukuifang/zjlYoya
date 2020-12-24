@@ -66,6 +66,13 @@ App({
         } else{
           that.toStart()
         }           
+      }).catch(err=>{
+        if(that.globalData.isTeacher != undefined){
+          that.toHome()
+        } else{
+          that.toStart()
+        } 
+
       })
 
       

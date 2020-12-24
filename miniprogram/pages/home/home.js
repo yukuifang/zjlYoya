@@ -9,7 +9,8 @@ Page({
    */
   data: {
     customerlist:[],
-    isTeacher:''
+    isTeacher:'',
+    config:''
     
   },
   toAddUser(){
@@ -23,6 +24,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.getConfig()
+    this.getlogin()
      wx.getStorage({
        key: 'is_teacher',
        success:res=>{
@@ -86,6 +89,41 @@ Page({
       return false
     }
     return true
+  },
+  s_bookClick(){
+    if(!this.toMine())return;
+    wx.navigateTo({
+      url: '../../pages/todayClassPlan/todayClassPlan',
+    })
+
+  },
+  getConfig(){
+    wx.cloud.callFunction({
+      name: 'config',// 云函数的名称
+      data: {
+        $url:'config_one'
+      }//参数
+    }).then((res) => {
+      console.log(res)
+      this.setData({
+        config:res.result
+      })
+      wx.hideLoading()
+
+    }).catch(err=>{
+      wx.hideLoading()
+      console.log(err)
+    })
+  },
+  getlogin(){
+    wx.cloud.callFunction({
+      name: 'login',// 云函数的名称
+      
+    }).then((res) => {
+      console.log(res)
+    }).catch(err=>{
+       console.log(err)
+    })
   },
 
 

@@ -1,6 +1,7 @@
 // pages/addCustomer/addCustomer.js
 const db = wx.cloud.database()
 var customer = {};
+var app = getApp()
 Page({
 
   /**
@@ -113,6 +114,8 @@ Page({
 
   uploadUser(){
     console.log(customer)
+    customer.is_teacher = 0
+    customer.is_from_wx = false
      wx.showLoading({
        title: '提交中',
        mask:true

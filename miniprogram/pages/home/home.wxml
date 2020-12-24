@@ -1,7 +1,7 @@
 <view class="container-view">
   <image class="banner-view" mode="aspectFill" src="../../images/banner.jpeg"></image>
   <view wx:if="{{isTeacher}}"  class="enter-view">
-   <view class="enter-item-view" bindtap="toAddUser">
+   <view wx:if="{{config.addCustomerSwitch}}" class="enter-item-view" bindtap="toAddUser">
        <view class="enter-item-leftview">
          <text class="enter-text1">新增会员</text>
          <text class="enter-text2">录入可爱的会员信息</text>
@@ -33,17 +33,17 @@
 
 
   <view wx:else class="enter-view">
-   <view class="enter-item-view" bindtap="toAddUser">
+   <view class="enter-item-view" bindtap="s_bookClick">
        <view class="enter-item-leftview">
-         <text class="enter-text1">预约上课</text>
-         <text class="enter-text2">预约上瑜伽老师去上课</text>
+         <text class="enter-text1">上课时间表</text>
+         <text class="enter-text2">查看您今日上课时间表</text>
        </view>
        <text class="iconfont icon-xinzengkehu enter-item-rightview"></text>
     </view>
     <view class="enter-item-view" bindtap="showCustomes">
        <view class="enter-item-leftview">
-         <text class="enter-text1">查看打卡</text>
-         <text class="enter-text2">康康你的上课足迹吧</text>
+         <text class="enter-text1">打卡记录</text>
+         <text class="enter-text2">康康您的上课足迹吧</text>
        </view>
        <text class="iconfont icon-xinzengkehu enter-item-rightview"></text>
     </view>

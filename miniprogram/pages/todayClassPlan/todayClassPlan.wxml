@@ -1,0 +1,11 @@
+<view class="container">
+  <view class="item-view" bindtap="selectTeacher">
+         <image src="{{customer.avatar == undefined ? '../../images/yj.png':customer.avatar}}" class="left-image"></image>
+         <text class="text-view">{{customer.name == undefined ?'选择瑜伽老师':customer.name}}</text>
+  </view>
+
+ 
+  <view class="placehold-view">
+    <text>今天无课程安排，请微信联系你的上课老师吧</text>
+  </view>
+</view>
