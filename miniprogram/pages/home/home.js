@@ -75,21 +75,7 @@ Page({
     })
   },
   signIn(e){
-    wx.requestSubscribeMessage({
-      tmplIds: ['UgxSFEgfxASQgj6E1IW_vLyQu07aasNidkbeQqHq-Ig'],
-      success:res=> { 
-        console.log('授权成功', res)
-        this.senCustomerMessage()
-      },fail:res=>{
-        console.log('授权失败', res)
-      }
-    })
-
-    return;
-
-
-
-    if(!this.toMine())return;
+   if(!this.toMine())return;
     wx.navigateTo({
       url: '../siginInList/siginInList',
     })
@@ -106,6 +92,7 @@ Page({
   },
   s_bookClick(){
     if(!this.toMine())return;
+    this.askCutomerToOpenMessagePush()
     wx.navigateTo({
       url: '../../pages/todayClassPlan/todayClassPlan',
     })
@@ -151,9 +138,19 @@ Page({
       console.log(err)
      
     })
+   },
+   askCutomerToOpenMessagePush(){
+    wx.requestSubscribeMessage({
+      tmplIds: ['UgxSFEgfxASQgj6E1IW_vLyQu07aasNidkbeQqHq-Ig'],
+      success:res=> { 
+        console.log('授权成功', res)
+        
+      },fail:res=>{
+        console.log('授权失败', res)
+      }
+    })
 
-    
-  },
+   },
 
 
 
