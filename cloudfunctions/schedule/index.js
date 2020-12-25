@@ -146,7 +146,7 @@ exports.main = async (event, context) => {
     var arr = []
     if(repeats != undefined && repeats.length >0){
       var repeatLessions  =   repeats[0].lessions
-      var  schedule = []
+      var  schedule 
       if(schedules!=undefined && schedules.length>0){
         schedule = schedules[0]
       }
@@ -156,16 +156,20 @@ exports.main = async (event, context) => {
          var time2 = new Date(workdate).getTime()
          var findIdx = -1
          if(time2 > time1){
-             for(var j = 0; j < schedule.length;j++){
-               var lession = schedule.lessions[j]
-               if((repeat.worktime_begin.split(" ")[1] == lession.worktime_begin.split(" ")[1])&&(lession.worktime_end.split(" ")[1] == lession.worktime_end.split(" ")[1])){
-                findIdx = j 
-                break;
-               }
-              }
-         }
-         if(findIdx==-1){
-           arr.push(repeat)
+             if(schedule!=undefined && schedule.lessions!=undefined && schedule.lessions.length>0){
+                for(var j = 0; j < schedule.lessions.length;j++){
+                    var lession = schedule.lessions[j]
+                    if((repeat.worktime_begin.split(" ")[1] == lession.worktime_begin.split(" ")[1])&&(repeat.worktime_end.split(" ")[1] == lession.worktime_end.split(" ")[1])){
+                        findIdx = j 
+                        break;
+                    }
+                }
+                if(findIdx==-1){
+                    arr.push(repeat)
+                }
+             }else{
+                arr.push(repeat)
+             }
          }
       }
 
@@ -180,8 +184,8 @@ exports.main = async (event, context) => {
       var repeatLessions = []
       for(var i = 0 ; i < arr.length;i++){
          var temp = arr[i]
-         var worktime_begin = workdate + temp.worktime_begin.split(" ")[1]
-         var worktime_end = workdate + temp.worktime_end.split(" ")[1]
+         var worktime_begin = workdate + " " +  temp.worktime_begin.split(" ")[1]
+         var worktime_end = workdate + " " + temp.worktime_end.split(" ")[1]
          var customer_id = temp.customer_id
          var name = temp.name
          var customer_openid = customer_openid
@@ -208,12 +212,13 @@ exports.main = async (event, context) => {
         .then(res=>{
            return res.data
          })
+         schedules = [schedule]
         //  "创建当天第一个lession"
       }else{
         var oldSchedule = schedules[0]
         var oldLessions  =  oldSchedule.lessions 
         var newLessions  = oldLessions.concat(repeatLessions)
-        oldLessions.lessions = newLessions
+        oldSchedule.lessions = newLessions
         await scheduleCollection
         .doc(oldSchedule._id)
         .update({
