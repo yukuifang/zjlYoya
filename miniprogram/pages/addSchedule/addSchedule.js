@@ -1,7 +1,6 @@
 import util from '../../util/util'
 const db = wx.cloud.database()
 var dateJson;
-var isEdit = false
 var edit_customer_id = ''
 Page({
 
@@ -13,7 +12,8 @@ Page({
      beginDate:'',
      endDate:'',
      customer:'',
-     isRepetition:false
+     isRepetition:false,
+     isEdit:false
   },
 
   /**
@@ -24,10 +24,14 @@ Page({
     const undecode_customer = options.customer
     const beginDate = options.show_worktime_begin
     const endDate = options.show_worktime_end
-    isEdit = false
+    this.setData({
+      isEdit:false
+    })
     if(undecode_customer!=undefined && beginDate.length >0 && endDate.length > 0){
       const customer =  JSON.parse(decodeURIComponent(undecode_customer))
-      isEdit = true
+      this.setData({
+        isEdit:true
+      })
       edit_customer_id = customer._id
        this.setData({
            customer,
@@ -155,7 +159,7 @@ Page({
         customer_id:this.data.customer._id,
         customer_openid : (this.data.customer.is_from_wx ? this.data.customer._openid:''),
         edit_customer_id,
-        $url: isEdit?'editCurrentSchedule':'updateSchedule'
+        $url: this.data.isEdit?'editCurrentSchedule':'updateSchedule'
       }//参数
     }).then(res=>{
        console.log(res)
@@ -168,7 +172,11 @@ Page({
       })
 
 
-    var pages = getCurrentPages();
+      if(this.data.isRepetition){
+        this.addRepeat()
+      }
+
+     var pages = getCurrentPages();
      var currPage = pages[pages.length - 1];   //当前页面
      var prevPage = pages[pages.length - 2];  //上一个页面
      prevPage.getCurrentSchedule()
@@ -186,7 +194,79 @@ Page({
 
   
   },
+  postAddSchedule(){
+    wx.cloud.callFunction({
+      name: 'schedule',// 云函数的名称
+      data: {
+        workdate,
+        worktime_begin,
+        worktime_end,
+        name:this.data.customer.name,
+        customer_id:this.data.customer._id,
+        customer_openid : (this.data.customer.is_from_wx ? this.data.customer._openid:''),
+        edit_customer_id,
+        $url: this.data.isEdit?'editCurrentSchedule':'updateSchedule'
+      }//参数
+    }).then(res=>{
+       console.log(res)
+       wx.hideLoading()
+       wx.showToast({
+       title: '提交成功',
+       icon:'none'
+      }).catch(err=>{
+        console.log(err)
+      })
+
+
+      if(this.data.isRepetition){
+        this.addRepeat()
+      }
+
+     var pages = getCurrentPages();
+     var currPage = pages[pages.length - 1];   //当前页面
+     var prevPage = pages[pages.length - 2];  //上一个页面
+     prevPage.getCurrentSchedule()
+      wx.navigateBack({
+        delta: 0,
+      })
+    }).catch(err=>{
+      console.log(err)
+      wx.hideLoading()
+      wx.showToast({
+       title: err,
+       icon:'none'
+     })
+    })
+
+
+  },
   changeSwitch(e){
-     
+    this.data.isRepetition =  !this.data.isRepetition 
+  },
+  addRepeat(){
+    
+    const {year,month,date,week}= dateJson
+    console.log(week)
+    const record_date = year + '-' + month + '-' + date
+    const worktime_begin = record_date + ' ' +  this.data.beginDate 
+    const worktime_end =  record_date + ' ' +  this.data.endDate
+    wx.cloud.callFunction({
+      name: 'weekrepeat',// 云函数的名称
+      data: {
+        worktime_begin,
+        worktime_end,
+        name:this.data.customer.name,
+        customer_id:this.data.customer._id,
+        customer_openid : (this.data.customer.is_from_wx ? this.data.customer._openid:''),
+        week,
+        $url: 'recordRepeat'
+      }//参数
+    }).then(res=>{
+       console.log(res)
+    }).catch(err=>{
+      console.log(err)
+    })
   }
+
+
 })

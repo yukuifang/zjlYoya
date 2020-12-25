@@ -6,6 +6,7 @@ cloud.init()
 
 const db = cloud.database()
 const scheduleCollection =  db.collection('schedule')
+const repeatCollection =  db.collection('weekrepeat')
 const cm = db.command
 
 
@@ -111,12 +112,25 @@ exports.main = async (event, context) => {
   })
 
   app.router('getCurrentSchedule', async (ctx, next) => {
+    console.log('hello nodeJs')
     var workdate = event.workdate
-    if(workdate== undefined || workdate.length == 0){
+    if(workdate== undefined || workdate.length == 0){ //如果workdate是空值 ，获取当天签到
        var d =  new Date()
        workdate = getYYMMDD(d)
     }
-    ctx.body = await cloud.database().collection('schedule')
+    const week  = new Date(workdate).getDay()
+
+    var repeats = await repeatCollection
+    .where({
+      _openid,
+      week
+    })
+    .get()
+    .then(res => {
+      return res.data
+    })
+
+    var schedules = await cloud.database().collection('schedule')
     .where({
       _openid,
       workdate
@@ -125,6 +139,116 @@ exports.main = async (event, context) => {
     .then(res => {
       return res.data
     })
+
+
+    
+    
+    var arr = []
+    if(repeats != undefined && repeats.length >0){
+      var repeatLessions  =   repeats[0].lessions
+      var  schedule = []
+      if(schedules!=undefined && schedules.length>0){
+        schedule = schedules[0]
+      }
+      for(var i = 0;i< repeatLessions.length;i++){
+         var repeat  = repeatLessions[i]
+         var time1 = new Date(repeat.record_date).getTime()
+         var time2 = new Date(workdate).getTime()
+         var findIdx = -1
+         if(time2 > time1){
+             for(var j = 0; j < schedule.length;j++){
+               var lession = schedule.lessions[j]
+               if((repeat.worktime_begin.split(" ")[1] == lession.worktime_begin.split(" ")[1])&&(lession.worktime_end.split(" ")[1] == lession.worktime_end.split(" ")[1])){
+                findIdx = j 
+                break;
+               }
+              }
+         }
+         if(findIdx==-1){
+           arr.push(repeat)
+         }
+      }
+
+
+
+
+
+    }
+
+
+    if(arr.length > 0){
+      var repeatLessions = []
+      for(var i = 0 ; i < arr.length;i++){
+         var temp = arr[i]
+         var worktime_begin = workdate + temp.worktime_begin.split(" ")[1]
+         var worktime_end = workdate + temp.worktime_end.split(" ")[1]
+         var customer_id = temp.customer_id
+         var name = temp.name
+         var customer_openid = customer_openid
+         var repeatLession = {
+          worktime_begin,
+          worktime_end,
+          customer_id,
+          customer_openid,
+          name
+         }
+         repeatLessions.push(repeatLession)
+      }
+      var schedule; 
+      if(schedules==undefined ||  schedules.length == 0){
+        schedule = {
+          workdate,
+          _openid,
+          lessions:repeatLessions
+        }
+        await scheduleCollection
+        .add({
+          data:schedule
+        })
+        .then(res=>{
+           return res.data
+         })
+        //  "创建当天第一个lession"
+      }else{
+        var oldSchedule = schedules[0]
+        var oldLessions  =  oldSchedule.lessions 
+        var newLessions  = oldLessions.concat(repeatLessions)
+        oldLessions.lessions = newLessions
+        await scheduleCollection
+        .doc(oldSchedule._id)
+        .update({
+          data:{
+            newLessions
+          }
+        })
+        .then(res=>{
+           return res.data
+         })
+        //  ctx.body = "更新"
+      }
+      ctx.body = schedules
+    }else{
+      ctx.body = schedules
+    }
+    
+
+
+    
+
+
+
+
+
+
+    // ctx.body = await cloud.database().collection('schedule')
+    // .where({
+    //   _openid,
+    //   workdate
+    // })
+    // .get()
+    // .then(res => {
+    //   return res.data
+    // })
   })
 
   app.router('updateSchedule', async (ctx, next) => {
