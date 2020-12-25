@@ -12,7 +12,8 @@ Page({
   data: {
      beginDate:'',
      endDate:'',
-     customer:''
+     customer:'',
+     isRepetition:false
   },
 
   /**
@@ -152,6 +153,7 @@ Page({
         worktime_end,
         name:this.data.customer.name,
         customer_id:this.data.customer._id,
+        customer_openid : (this.data.customer.is_from_wx ? this.data.customer._openid:''),
         edit_customer_id,
         $url: isEdit?'editCurrentSchedule':'updateSchedule'
       }//参数
@@ -183,5 +185,8 @@ Page({
     })
 
   
+  },
+  changeSwitch(e){
+     
   }
 })

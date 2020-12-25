@@ -17,7 +17,12 @@
              <view>{{endDate.length>0?endDate:'选择预约结束时间'}}</view>
          </picker>
     </view>
+    <view class="switch-view">
+        <view>每周重复</view>
+        <switch class="switch" checked="{{isRepetition}}" bindchange="changeSwitch"/>
+    </view>
    </view>
+   
    <button  class="submit-view" style="width:80%" bindtap="addSchedule">预约</button>
    
 </view>

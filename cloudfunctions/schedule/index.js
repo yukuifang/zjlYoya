@@ -132,6 +132,7 @@ exports.main = async (event, context) => {
     const worktime_begin = event.worktime_begin
     const worktime_end = event.worktime_end
     const customer_id = event.customer_id
+    const customer_openid = event.customer_openid
     const name = event.name
     var json =  await cloud.database().collection('schedule')
     .where({
@@ -154,6 +155,7 @@ exports.main = async (event, context) => {
             worktime_begin,
             worktime_end,
             customer_id,
+            customer_openid,
             name
           }
         ]
@@ -174,6 +176,7 @@ exports.main = async (event, context) => {
         worktime_begin,
         worktime_end,
         customer_id,
+        customer_openid,
         name
       }
       await cloud.database().collection('schedule')
@@ -196,6 +199,7 @@ exports.main = async (event, context) => {
     const worktime_begin = event.worktime_begin
     const worktime_end = event.worktime_end
     const customer_id = event.customer_id
+    const customer_openid = event.customer_openid
     const name = event.name
     const edit_customer_id =  event.edit_customer_id
     var json =  await cloud.database().collection('schedule')
@@ -225,6 +229,7 @@ exports.main = async (event, context) => {
           worktime_begin,
           worktime_end,
           customer_id,
+          customer_openid,
           name
         }
       }
