@@ -70,6 +70,7 @@ Page({
   },
   schedulePlan(e){
     if(!this.toMine())return;
+    // this.askCutomerToOpenMessagePush()
     wx.navigateTo({
       url: '../memberschedule/memberschedule',
     })
@@ -126,12 +127,10 @@ Page({
        console.log(err)
     })
   },
-  senCustomerMessage(){
+  sendCustomerMessage(){
     wx.cloud.callFunction({
-      name: 'schedule',// 云函数的名称
-      data: {
-        $url:'sendCustomerMessage'
-      }//参数
+      name: 'autosendmessage',// 云函数的名称
+      
     }).then((res) => {
       console.log(res)
     }).catch(err=>{
@@ -140,16 +139,39 @@ Page({
     })
    },
    askCutomerToOpenMessagePush(){
+    var tmpl_id = "UgxSFEgfxASQgj6E1IW_vLyQu07aasNidkbeQqHq-Ig"
+    wx.getSetting({
+      withSubscriptions: true,
+      success:res => {
+        var itemSettings = res.subscriptionsSetting.itemSettings
+        if (itemSettings) {
+          console.log(itemSettings)
+          if (itemSettings[tmpl_id] === 'accept') {
+             console.log('is accredit：ok')
+          }else{
+             this.requestSubscribeMessage()
+          }
+        }else{
+          this.requestSubscribeMessage()
+        }
+      },fail:res=>{
+        console.log(res)
+        this.requestSubscribeMessage()
+      }
+    })
+   
+
+   },
+  requestSubscribeMessage(){
+    var tmpl_id = "UgxSFEgfxASQgj6E1IW_vLyQu07aasNidkbeQqHq-Ig"
     wx.requestSubscribeMessage({
-      tmplIds: ['UgxSFEgfxASQgj6E1IW_vLyQu07aasNidkbeQqHq-Ig'],
+      tmplIds: [tmpl_id],
       success:res=> { 
         console.log('授权成功', res)
-        
       },fail:res=>{
         console.log('授权失败', res)
       }
     })
-
    },
 
 
