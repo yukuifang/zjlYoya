@@ -4,8 +4,37 @@
          <text class="text-view">{{customer.name == undefined ?'选择瑜伽老师':customer.name}}</text>
   </view>
 
- 
-  <view class="placehold-view">
-    <text>今天无课程安排，请微信联系你的上课老师吧</text>
+
+  <block wx:if="{{lessions.length>0}}" wx:for="{{lessions}}" wx:key='index'>
+    <view class="plan-view">
+     <view class="plan-item-view">
+        <text>预约人: </text>
+        <text>{{item.name}}</text>
+     </view>
+     <view class="plan-item-view">
+        <text>预约老师: </text>
+        <text>{{customer.name}}</text>
+     </view>
+     <view class="plan-item-view">
+        <text>预约地点: </text>
+        <text>亚玛瑜伽</text>
+     </view>
+     <view class="plan-item-view">
+        <text>预约时间: </text>
+        <text>{{item.worktime_begin + '-' + item.worktime_end}}</text>
+     </view>
+
+     <view class="plan-item-view">
+        <text>温馨提醒: </text>
+        <text>亲爱的会员，请明天准时参加上课</text>
+     </view>
+
   </view>
+    
+  </block>
+
+ 
+  <!-- <view class="placehold-view">
+    <text>今天无课程安排，请微信联系你的上课老师吧</text>
+  </view> -->
 </view>

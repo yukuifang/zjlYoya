@@ -20,6 +20,35 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   var _openid = wxContext.OPENID
 
+ 
+  // 学生获取今天和明天的上课
+  app.router('getJMClassPlan', async (ctx, next) => {
+    var d =  new Date()
+    const workdate = getYYMMDD(d)
+    var teacher_openid = event.teacher_openid
+    var schedules =  await scheduleCollection
+    .where({
+      _openid:teacher_openid,
+      workdate
+    })
+    .get()
+    .then(res=>{
+       return res.data
+     })
+
+    var result = [] 
+    if(schedules!=undefined && schedules.length>0){
+      var schedule = schedules[0]
+      for (let j = 0; j < schedule.lessions.length; j++) {
+        const ele  = schedule.lessions[j];
+        if(ele.customer_openid == _openid){
+            result.push(ele)
+        }
+      }
+    }
+    ctx.body = result
+  })
+
 
   
 

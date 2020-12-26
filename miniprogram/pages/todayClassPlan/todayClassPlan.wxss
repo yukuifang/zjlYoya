@@ -33,3 +33,16 @@
   color: rgb(189, 189, 236);
 
 }
+.plan-view{
+  background-color:rgb(163, 164, 250);
+  font-size: 38rpx;
+  color: white;
+  margin: 30rpx;
+  border: 1rpx dashed orange;
+
+}
+
+.plan-item-view{
+   width: 100%;
+   padding: 10rpx;
+}
