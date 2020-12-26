@@ -34,15 +34,29 @@
 
 }
 .plan-view{
-  background-color:rgb(163, 164, 250);
+  
   font-size: 38rpx;
-  color: white;
+  color: orange;
   margin: 30rpx;
-  border: 1rpx dashed orange;
-
+  /* background-color: slateblue; */
+  
 }
 
 .plan-item-view{
    width: 100%;
    padding: 10rpx;
+   
+}
+
+.plan-item-view text:nth-of-type(1){
+   width: 100rpx;
+}
+
+.item-imgae-view{
+  color: rgb(182, 40, 120);
+  margin-right: 20rpx;
+  width: 100rpx;
+  height: 100rpx;
+  text-align: center;
+  font-size: 50rpx;
 }

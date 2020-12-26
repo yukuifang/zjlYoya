@@ -1,31 +1,27 @@
 <view class="container">
-  <view class="item-view" bindtap="selectTeacher">
+  <!-- <view class="item-view" bindtap="selectTeacher">
          <image src="{{customer.avatar == undefined ? '../../images/yj.png':customer.avatar}}" class="left-image"></image>
          <text class="text-view">{{customer.name == undefined ?'选择瑜伽老师':customer.name}}</text>
-  </view>
+  </view> -->
 
 
   <block wx:if="{{lessions.length>0}}" wx:for="{{lessions}}" wx:key='index'>
     <view class="plan-view">
      <view class="plan-item-view">
-        <text>预约人: </text>
-        <text>{{item.name}}</text>
+        <text class="iconfont icon-touxiang- item-imgae-view"></text>
+        <text>{{customer.name + '老师'}}</text>
      </view>
      <view class="plan-item-view">
-        <text>预约老师: </text>
-        <text>{{customer.name}}</text>
-     </view>
-     <view class="plan-item-view">
-        <text>预约地点: </text>
+        <text class="iconfont icon-didian item-imgae-view"></text>
         <text>亚玛瑜伽</text>
      </view>
      <view class="plan-item-view">
-        <text>预约时间: </text>
+        <text class="iconfont icon-shijian item-imgae-view"></text>
         <text>{{item.worktime_begin + '-' + item.worktime_end}}</text>
      </view>
 
      <view class="plan-item-view">
-        <text>温馨提醒: </text>
+        <text class="iconfont icon-xinaixin-copy item-imgae-view"></text>
         <text>亲爱的会员，请明天准时参加上课</text>
      </view>
 

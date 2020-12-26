@@ -17,15 +17,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-      wx.getStorage({
-        key: 'userInfo',
-        success:res=>{
-          console.log(res)
-        }
-      })
-
-
-
+    this.getJMClassPlan()
+    
   },
 
   
@@ -41,9 +34,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-     if(this.data.customer!=undefined){
-      this.getJMClassPlan()
-     }
+    //  if(this.data.customer!=undefined){
+    //   this.getJMClassPlan()
+    //  }
      
 
   },
@@ -82,19 +75,16 @@ Page({
   onShareAppMessage: function () {
 
   },
-  selectTeacher(){
+  selectTeacher(e){
+    console.log('selectTeacher')
      wx.navigateTo({
        url: '../../pages/teacherList/teacherList',
      })
   },
   getJMClassPlan(){
-    console.log('getJMClassPlan')
-    console.log(this.data.customer)
-    const teacher_openid = this.data.customer._openid
     wx.cloud.callFunction({
       name: 'schedule',// 云函数的名称
       data: {
-        teacher_openid,
         $url: 'getJMClassPlan'
       }//参数
     }).then(res=>{
@@ -102,7 +92,8 @@ Page({
        this.setData({
          lessions:res.result
        })
-       console.log(res)
+       console.log('777')
+       console.log(this.data.lessions)
     }).catch(err=>{
       console.log(err)
     })

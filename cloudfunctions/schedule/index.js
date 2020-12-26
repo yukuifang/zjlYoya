@@ -25,10 +25,8 @@ exports.main = async (event, context) => {
   app.router('getJMClassPlan', async (ctx, next) => {
     var d =  new Date()
     const workdate = getYYMMDD(d)
-    var teacher_openid = event.teacher_openid
     var schedules =  await scheduleCollection
     .where({
-      _openid:teacher_openid,
       workdate
     })
     .get()
@@ -38,13 +36,17 @@ exports.main = async (event, context) => {
 
     var result = [] 
     if(schedules!=undefined && schedules.length>0){
-      var schedule = schedules[0]
-      for (let j = 0; j < schedule.lessions.length; j++) {
-        const ele  = schedule.lessions[j];
-        if(ele.customer_openid == _openid){
-            result.push(ele)
+        for(var i = 0;i < schedules.length;i++){
+          var schedule = schedules[i]
+          for (let j = 0; j < schedule.lessions.length; j++) {
+            const ele  = schedule.lessions[j];
+            if(ele.customer_openid == _openid){
+                result.push(ele)
+            }
+          }
+
         }
-      }
+
     }
     ctx.body = result
   })
