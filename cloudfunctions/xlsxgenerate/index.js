@@ -15,9 +15,9 @@ exports.main = async (event, context) => {
   })
   
   app.router('signXlsx', async (ctx, next) => {
-    
-    var d =  new Date()
-    const workdate = getYYMM(d)
+    var  workdate = event.workdate
+    var d =  new Date(workdate)
+    workdate = getYYMM(d)
     var json =  await db.collection('schedule')
     .where({
       workdate:new db.RegExp({

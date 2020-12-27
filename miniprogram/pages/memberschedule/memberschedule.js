@@ -16,7 +16,7 @@ plugin
   .use(holidays)
 
 
-
+var currentMonth = '';
 Page({
 
   /**
@@ -115,6 +115,10 @@ Page({
     const calendar = this.selectComponent('#calendar').calendar
     const selected = calendar.getSelectedDates()
     console.log(selected)
+
+    var {curYear,curMonth,curDate} = e.detail.calendar
+    currentMonth =  curYear+'-'+curMonth+'-'+curDate
+    console.log(currentMonth)
     
   },
   /**
@@ -158,6 +162,10 @@ Page({
   whenChangeMonth(e) {
     console.log('whenChangeMonth', e.detail)
     // => { current: { month: 3, ... }, next: { month: 4, ... }}
+
+    var {year,month} = e.detail.next
+    currentMonth =  year+'-'+month+'-'+'01'
+    console.log(currentMonth)
   },
 
 
@@ -186,12 +194,14 @@ Page({
   },
   getSiginXslClick(e){
 
+    var workdate = currentMonth
     wx.showLoading({
       title: '正在导出',
     })
     wx.cloud.callFunction({
       name:'xlsxgenerate',
       data:{
+        workdate,
         $url:'signXlsx'
       },
     }).then(res=>{
