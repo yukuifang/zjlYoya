@@ -6,7 +6,8 @@
           <view class="right-view">
             <image src="{{item.avatar}}" mode="aspectFill" class="avatar-view"></image>
             <text class="name-view">{{item.name}}</text>
-            <text class="iconfont icon-shanchuanniu delete-view" catchtap="delecteClick" data-idx="{{index}}"></text>
+            <text wx:if="{{daySchedule[index].is_sigin_in}}" class="sigin-text">已签到</text>
+            <text wx:else class="iconfont icon-shanchuanniu delete-view" catchtap="delecteClick" data-idx="{{index}}"></text>
           </view>
        </view>
    </block>

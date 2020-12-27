@@ -26,88 +26,26 @@ Page({
     wx.cloud.callFunction({
       name:'schedule',
       data:{
-        $url:'getCurrentSchedule'
+        $url:'getScheduleAndCustomerByDate'
       },
-      
     }).then(res=>{
-       console.log(res)
-       if(res.result.length>0){
-        this.data.daySchedule = res.result[0].lessions
-        this.getCustomerById()
-       }
+      console.log(res)
+       this.setData({
+        daySchedule:res.result[0],
+        customers:res.result[1]
+       })
        wx.hideLoading()
     }).catch(err=>{
       console.log(err)
       wx.hideLoading()
     })
+    
   },
 
-  getCustomerById(){
-    var that = this
-    for (let index = 0; index < this.data.daySchedule.length; index++) {
-       var customerJson = this.data.daySchedule[index]
-       customerJson.show_worktime_begin =customerJson.worktime_begin.split(" ")[1]
-       customerJson.show_worktime_end =customerJson.worktime_end.split(" ")[1]
-    }
-    wx.showLoading({
-      title: '加载中..',
-    })
-    wx.cloud.callFunction({
-      name:'customer',
-      data:{
-        daySchedule:this.data.daySchedule,
-        $url:'getCustomersWithIds'
-      },
-      
-    }).then(res=>{
-        that.dealPaixu(res).then((c)=>{
-           that.setData({
-              customers:c,
-              daySchedule:that.data.daySchedule
-           })
-           wx.hideLoading()
-        })
-        
-       
-    }).catch(err=>{
-      console.log(err)
-      wx.hideLoading()
-    })
-  },
-  dealPaixu(res){
-    var that = this
-    return new Promise(function(resolve, reject){
-       var  customers =  res.result.data
-       var  daySchedule = that.data.daySchedule
-       var new_customers = []
-        // 时间排序
-        daySchedule.sort(function(a,b) {
-          return Date.parse(a.worktime_begin.replace(/-/g,"/"))-Date.parse(b.worktime_begin.replace(/-/g,"/"))
-        })
-        // 客户对应排序
-        for(var i = 0;i < daySchedule.length;i++){
-           var d =  daySchedule[i]
-           for(var j= 0;j < customers.length;j++){
-             var c = customers[j]
-             if(d.customer_id == c._id){
-               new_customers.push(c)
-               break
-             }
-           }
-        }
-        resolve(new_customers)
-      });
-       
-  },
+ 
+  
   itemClick(e){
-    const idx = e.currentTarget.dataset.idx
-    const customer =  this.data.customers[idx]
-    const {show_worktime_begin,show_worktime_end} = this.data.daySchedule[idx]
-    console.log(customer._id)
-    let item = JSON.stringify(customer)
-    wx.navigateTo({
-      url: '../addSchedule/addSchedule?dateJson=' + JSON.stringify(dateJson) + '&customer=' + encodeURIComponent(item) + '&show_worktime_begin=' + show_worktime_begin + '&show_worktime_end=' + show_worktime_end,
-    })
+    
   },
   signinClick(e){
     const idx = e.currentTarget.dataset.idx

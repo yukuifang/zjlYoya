@@ -1,4 +1,5 @@
 // pages/editSchedule/editSchedule.js
+import {dateToYYMMDD} from '../../util/util'
 
 var dateJson;
 var  daySchedule_tomorrow = []
@@ -19,13 +20,68 @@ Page({
    */
   onLoad: function (options) {
     dateJson = JSON.parse(options.dateJson)
-    this.getCurrentSchedule()
-    // this.getTomorrowSchedule()
+    this.getCurrentSchedule2()
+    this.getTomorrowSchedule()
+   
 
   },
   onShow: function () {
     
   },
+  getTomorrowSchedule(){
+    const{ year,month,date } = dateJson
+    var workdate = year + '-' + month + '-' + date
+    var day = new Date(workdate)
+    day.setTime(day.getTime()+24*60*60*1000)
+    workdate = dateToYYMMDD(day)
+    wx.showLoading({
+      title: '加载中..',
+    })
+    wx.cloud.callFunction({
+      name:'schedule',
+      data:{
+        workdate,
+        $url:'getScheduleAndCustomerByDate'
+      },
+    }).then(res=>{
+       daySchedule_tomorrow = res.result[0]
+       customers_tomorrow = res.result[1]
+       console.log(res)
+       wx.hideLoading()
+    }).catch(err=>{
+      console.log(err)
+      wx.hideLoading()
+    })
+    
+  },
+  getCurrentSchedule2(){
+    const{ year,month,date } = dateJson
+    var workdate = year + '-' + month + '-' + date
+    wx.showLoading({
+      title: '加载中..',
+    })
+    wx.cloud.callFunction({
+      name:'schedule',
+      data:{
+        workdate,
+        $url:'getScheduleAndCustomerByDate'
+      },
+    }).then(res=>{
+      console.log(res)
+       this.setData({
+        daySchedule:res.result[0],
+        customers:res.result[1]
+       })
+       wx.hideLoading()
+    }).catch(err=>{
+      console.log(err)
+      wx.hideLoading()
+    })
+    
+  },
+
+
+
   getCurrentSchedule(){
     const{ year,month,date } = dateJson
     const workdate = year + '-' + month + '-' + date
@@ -122,7 +178,10 @@ Page({
   itemClick(e){
     const idx = e.currentTarget.dataset.idx
     const customer =  this.data.customers[idx]
-    const {show_worktime_begin,show_worktime_end} = this.data.daySchedule[idx]
+    const {show_worktime_begin,show_worktime_end,is_sigin_in} = this.data.daySchedule[idx]
+    if(is_sigin_in!=undefined && is_sigin_in == true){
+       return;
+    }
     console.log(customer._id)
     let item = JSON.stringify(customer)
     wx.navigateTo({
@@ -156,11 +215,13 @@ Page({
 
   },
   dayPlanClick(e){
-     this.data.copystr = '今日课程:\n'
-     for (let index = 0; index < this.data.customers.length; index++) {
-       const element = this.data.customers[index]
-       this.data.copystr +=( index + '.' + element.name  + '\n')
+     this.data.copystr = '今日课程:\n明日课程:\n'
+     for (let index = 0; index < customers_tomorrow.length; index++) {
+       const element = customers_tomorrow[index]
+       this.data.copystr +=( daySchedule_tomorrow[index].show_worktime_begin + '.' + element.name  + '\n')
      }
+     this.data.copystr += ('本月目标:\n今日完成:\n累计完成:\n')
+
      console.log(this.data.copystr)
      this.copyFileUrl(this.data.copystr)
      
