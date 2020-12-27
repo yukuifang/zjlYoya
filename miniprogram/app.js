@@ -95,14 +95,16 @@ App({
   },
   toHome(){
     console.log('home')
-    const url = '../../pages/home/home'
-    wx.switchTab({
-      url
-    })
+    setTimeout(function(){
+       const url = '../../pages/home/home'
+        wx.switchTab({
+          url
+        })
+    },1000)
+   
   },
   toStart(){
-
-    console.log("tostart")
+   console.log("tostart")
    console.log(this.globalData.isTeacher)
     var pages = getCurrentPages()
     var currentPage = pages[pages.length - 1]

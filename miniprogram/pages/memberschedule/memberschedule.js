@@ -244,7 +244,10 @@ Page({
           success(res) {
             console.log("复制成功",res.data) // data
             wx.showToast({
-              title: '复制成功',
+              title: '签到表生成,链接已经复制了，去浏览器粘贴链接并下载',
+              duration:4000,
+              icon:'none'
+
             })
           }
         })

@@ -11,6 +11,7 @@
   right: 50%;
   transform: translate(-50%, -50%);
   font-weight: 200;
+  font-size: 32rpx;
 
 }
 
@@ -20,6 +21,6 @@
   color: red;
   align-items: center;
   margin: 40rpx;
-  font-size: 30rpx;
+  font-size: 25rpx;
 
 }
