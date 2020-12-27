@@ -78,6 +78,7 @@ Page({
       app.globalData.isAuthoried = false
     }else{
       app.globalData.isAuthoried = true
+      app.globalData.userInfo = userInfo
       wx.setStorageSync('userInfo', userInfo)
       this.uploadUserMessage(userInfo)
     }

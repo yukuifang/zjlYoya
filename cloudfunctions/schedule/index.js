@@ -294,8 +294,9 @@ exports.main = async (event, context) => {
     const worktime_end = event.worktime_end
     const customer_id = event.customer_id
     const customer_openid = event.customer_openid
-    const name = event.name
-    var json =  await cloud.database().collection('schedule')
+    const name = event.name // 会员名字
+    const teacher_name = event.teacher_name
+    var json =  await scheduleCollection
     .where({
       _openid,
       workdate
@@ -311,6 +312,7 @@ exports.main = async (event, context) => {
       schedule = {
         workdate,
         _openid,
+        name:teacher_name,
         lessions:[
           {
             worktime_begin,
@@ -322,14 +324,14 @@ exports.main = async (event, context) => {
         ]
 
       }
-      await cloud.database().collection('schedule')
+      await scheduleCollection
       .add({
         data:schedule
       })
       .then(res=>{
          return res.data
        })
-       ctx.body = "创建当天安排"
+       ctx.body = "创建第一条安排"
     }else{
       var oldSchedule = json[0]
       var lessions  =  oldSchedule.lessions 
@@ -340,7 +342,7 @@ exports.main = async (event, context) => {
         customer_openid,
         name
       }
-      await cloud.database().collection('schedule')
+      await scheduleCollection
       .doc(oldSchedule._id)
       .update({
         data:{
@@ -350,7 +352,7 @@ exports.main = async (event, context) => {
       .then(res=>{
          return res.data
        })
-       ctx.body = "更新"
+       ctx.body = "新增一条安排"
     }
   })
 
@@ -363,7 +365,7 @@ exports.main = async (event, context) => {
     const customer_openid = event.customer_openid
     const name = event.name
     const edit_customer_id =  event.edit_customer_id
-    var json =  await cloud.database().collection('schedule')
+    var json =  await scheduleCollection
     .where({
       _openid,
       workdate

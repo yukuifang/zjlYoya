@@ -2,3 +2,24 @@
   border-bottom:1px dashed rgb(180, 149, 103);
 }
 
+.get-sigin-view{
+  position:fixed;
+  bottom: 60rpx;
+  background-color: rgb(163, 164, 250);
+  color: white;
+  left: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 200;
+
+}
+
+.warn-view{
+  display: flex;
+  flex-direction: row;
+  color: red;
+  align-items: center;
+  margin: 40rpx;
+  font-size: 30rpx;
+
+}

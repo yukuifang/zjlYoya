@@ -2,6 +2,7 @@ import util from '../../util/util'
 const db = wx.cloud.database()
 var dateJson;
 var edit_customer_id = ''
+const app = getApp()
 Page({
 
   /**
@@ -153,6 +154,7 @@ Page({
       name: 'schedule',// 云函数的名称
       data: {
         workdate,
+        teacher_name:app.globalData.userInfo.nickName,
         worktime_begin,
         worktime_end,
         name:this.data.customer.name,

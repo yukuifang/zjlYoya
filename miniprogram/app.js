@@ -1,3 +1,5 @@
+
+
 //app.js
 App({
   onLaunch: function () {
@@ -16,6 +18,15 @@ App({
     }
     this.globalData = {}
     this.userAuthoried()
+    wx.getStorage({
+      key: 'userInfo',
+      success:res=>{
+        if(res.data!=undefined){
+          this.globalData.userInfo = res.data
+        }
+      }
+         
+    })
 
 
   },
@@ -61,6 +72,7 @@ App({
 
       Promise.all([a, b,c]).then((result) => {
         console.log('123')
+        console.log(that.globalData.isTeacher)
         if(that.globalData.isTeacher != undefined){
           that.toHome()
         } else{
@@ -82,16 +94,14 @@ App({
     
   },
   toHome(){
+    console.log('home')
     const url = '../../pages/home/home'
     wx.switchTab({
       url
     })
   },
   toStart(){
-    // const url = '../../pages/start/start'
-    // wx.navigateTo({
-    //   url,
-    // })
+
     console.log("tostart")
    console.log(this.globalData.isTeacher)
     var pages = getCurrentPages()

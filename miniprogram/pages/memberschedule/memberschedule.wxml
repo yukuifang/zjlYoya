@@ -8,9 +8,15 @@
   bind:onSwipe="onSwipe"
   bind:whenChangeMonth="whenChangeMonth"
 />
+<view class="warn-view">
+  <text class="iconfont icon-xinaixin-copy"></text>
+  <text>点击日历某一天进行日程安排</text>
+</view>
 
 
-<button bindtap="getSiginXslClick">获取当月签到表</button>
+
+
+<button class="get-sigin-view" bindtap="getSiginXslClick">获取当月签到表</button>
 
 
 

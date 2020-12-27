@@ -88,3 +88,6 @@
 
 
 }
+.no-schedule-view text:nth-of-type(2){
+  margin:20rpx
+}
