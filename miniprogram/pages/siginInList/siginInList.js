@@ -49,7 +49,7 @@ Page({
   },
   signinClick(e){
     const idx = e.currentTarget.dataset.idx
-    const {customer_id,is_sigin_in} = this.data.daySchedule[idx]
+    const {customer_id,is_sigin_in,worktime_begin,worktime_end} = this.data.daySchedule[idx]
     const {name} = this.data.customers[idx]
     var that = this
 
@@ -66,16 +66,18 @@ Page({
       success:function(res){
          if(res.confirm){
            console.log('点击了确认')
-           that.toSigin(customer_id)
+           that.toSigin(customer_id,worktime_begin,worktime_end)
          }
 
       }
     })
   },
-  toSigin(customer_id){
+  toSigin(customer_id,worktime_begin,worktime_end){
     wx.cloud.callFunction({
       name:'schedule',
       data:{
+        worktime_begin,
+        worktime_end,
         customer_id,
         $url:'siginIn'
       },

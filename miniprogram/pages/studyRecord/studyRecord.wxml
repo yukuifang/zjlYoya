@@ -1,0 +1,28 @@
+<view class="container">
+  <!-- <view class="item-view" bindtap="selectTeacher">
+         <image src="{{customer.avatar == undefined ? '../../images/yj.png':customer.avatar}}" class="left-image"></image>
+         <text class="text-view">{{customer.name == undefined ?'选择瑜伽老师':customer.name}}</text>
+  </view> -->
+
+
+  <block wx:if="{{customer.sigins!=undefined}}" wx:for="{{customer.sigins}}" wx:key='index'>
+    <view class="plan-view">
+    
+    
+     <view class="plan-item-view">
+        <text>上课时间:</text>
+        <text>{{item}}</text>
+     </view>
+
+     <image class="gostudy-view" src="../../images/gostudy.png"></image>
+
+  </view>
+    
+  </block>
+
+ 
+  <view wx:if="{{customer.sigins==undefined}}" class="placehold-view">
+    <image class="no-course-imgae" src="../../images/kebiao.png"></image> 
+    <text>暂无打卡记录，行动记录美好生活~</text>
+  </view>
+</view>

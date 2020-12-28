@@ -27,7 +27,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // this.sendCustomerMessage()
+    this.sendCustomerMessage()
     this.getSendMessageDate()
     this.getConfig()
     this.getlogin()
@@ -102,6 +102,15 @@ Page({
     wx.navigateTo({
       url: '../../pages/todayClassPlan/todayClassPlan',
     })
+
+  },
+  s_lookRecord(){
+    if(!this.toMine())return;
+    this.askCutomerToOpenMessagePush()
+    wx.navigateTo({
+      url: '../../pages/studyRecord/studyRecord',
+    })
+
 
   },
   getConfig(){

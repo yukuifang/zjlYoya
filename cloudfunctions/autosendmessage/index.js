@@ -4,6 +4,7 @@ cloud.init()
 
 const db = cloud.database()
 const scheduleCollection =  db.collection('schedule')
+const customerCollection =  db.collection('customer')
 const cm = db.command
 
 // 云函数入口函数
@@ -101,6 +102,40 @@ exports.main = async (event, context) => {
             .then(res=>{
               return res.data
             })
+
+
+            
+            // 签到记录到客户数据里面
+            wholeDate = tmp.worktime_begin + ' ' + tmp.worktime_end
+            var customers =  await customerCollection
+            .where({
+              _id:tmp.customer_id
+            })
+            .get()
+            .then(res=>{
+              return res.data
+            })
+            var sigins = []
+            if(customers!= undefined && customers.length > 0){
+              var customer = customers[0]
+              sigins = customer.sigins
+              if(sigins!=undefined && sigins.length > 0){
+                sigins.push(wholeDate)
+              }else{
+                sigins = [wholeDate]
+              }
+            }
+            await customerCollection
+            .doc(tmp.customer_id)
+            .update({
+              data:{
+                sigins
+              }
+            })
+            .then(res=>{
+              return res.data
+            })
+            // 签到记录到客户数据里面
           }
 
       }

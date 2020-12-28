@@ -57,6 +57,8 @@ exports.main = async (event, context) => {
 
   app.router('siginIn', async (ctx, next) => {
     const customer_id = event.customer_id
+    const worktime_begin = event.worktime_begin
+    const worktime_end = event.worktime_end
     var d =  new Date()
     const workdate = getYYMMDD(d)
     var json =  await cloud.database().collection('schedule')
@@ -69,16 +71,17 @@ exports.main = async (event, context) => {
        return res.data
      })
 
-
+     var wholeDate = '' 
      var oldSchedule = json[0]
       var lessions  =  oldSchedule.lessions 
       var findId = -1;
       for(var i= 0 ; i < lessions.length; i++){
          var tmp = lessions[i]
          console.log(tmp.customer_id)
-         if(tmp.customer_id == customer_id){
+         if(tmp.customer_id == customer_id && tmp.worktime_begin == worktime_begin && tmp.worktime_end == worktime_end){
            findId = i
            console.log('找到了')
+           wholeDate = tmp.worktime_begin + ' ' + tmp.worktime_end
            break
          }
       }
@@ -95,6 +98,37 @@ exports.main = async (event, context) => {
       .then(res=>{
          return res.data
        })
+
+       // 签到记录到客户数据里面
+      var customers =  await customerCollection
+      .where({
+        _id:customer_id
+      })
+      .get()
+      .then(res=>{
+        return res.data
+      })
+      var sigins = []
+      if(customers!= undefined && customers.length > 0){
+        var customer = customers[0]
+        sigins = customer.sigins
+        if(sigins!=undefined && sigins.length > 0){
+           sigins.push(wholeDate)
+        }else{
+           sigins = [wholeDate]
+        }
+      }
+      await customerCollection
+      .doc(customer_id)
+      .update({
+        data:{
+          sigins
+        }
+      })
+      .then(res=>{
+        return res.data
+      })
+
        ctx.body = "签到好了"
 
   })

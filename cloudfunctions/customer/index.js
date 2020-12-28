@@ -17,6 +17,18 @@ exports.main = async (event, context) => {
     event
   })
 
+  // 获取自己的信息
+  app.router('getMyProfile', async (ctx, next) => {
+    ctx.body = await customerCollection
+    .where({
+      _openid
+    })
+    .get()
+    .then(res => {
+      return res.data
+    })
+  })
+
 
   app.router('wxcustomerlist', async (ctx, next) => {
     ctx.body = await customerCollection

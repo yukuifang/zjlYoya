@@ -40,7 +40,7 @@
        </view>
        <text class="iconfont icon-xinzengkehu enter-item-rightview"></text>
     </view>
-    <view class="enter-item-view" bindtap="showCustomes">
+    <view class="enter-item-view" bindtap="s_lookRecord">
        <view class="enter-item-leftview">
          <text class="enter-text1">打卡记录</text>
          <text class="enter-text2">康康您的上课足迹吧</text>
