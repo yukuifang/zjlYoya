@@ -82,6 +82,9 @@ Page({
      })
   },
   getJMClassPlan(){
+    wx.showLoading({
+      title: '加载中...',
+    }) 
     wx.cloud.callFunction({
       name: 'schedule',// 云函数的名称
       data: {
@@ -89,13 +92,18 @@ Page({
       }//参数
     }).then(res=>{
        console.log(res)
+       var  lessions = res.result
+       for (let i  = 0; i  < lessions.length; i ++) {
+         const element = lessions[i]
+         element.show_date = element.worktime_begin.split(" ")[0]+' ' +  element.worktime_begin.split(" ")[1] + "-" +  element.worktime_end.split(" ")[1]
+        }
        this.setData({
          lessions:res.result
        })
-       console.log('777')
-       console.log(this.data.lessions)
+       wx.hideLoading()
     }).catch(err=>{
       console.log(err)
+      wx.hideLoading()
     })
     
   }

@@ -8,22 +8,24 @@
   <block wx:if="{{lessions.length>0}}" wx:for="{{lessions}}" wx:key='index'>
     <view class="plan-view">
      <view class="plan-item-view">
-        <text class="iconfont icon-touxiang- item-imgae-view"></text>
+        <text>瑜伽老师:</text>
         <text>{{item.teacher_name + '老师'}}</text>
      </view>
      <view class="plan-item-view">
-        <text class="iconfont icon-didian item-imgae-view"></text>
+        <text>上课地点:</text>
         <text>亚玛瑜伽</text>
      </view>
      <view class="plan-item-view">
-        <text class="iconfont icon-shijian item-imgae-view"></text>
-        <text>{{item.worktime_begin + '-' + item.worktime_end}}</text>
+        <text>上课时间:</text>
+        <text>{{item.show_date}}</text>
      </view>
 
      <view class="plan-item-view">
-        <text class="iconfont icon-xinaixin-copy item-imgae-view"></text>
+        <text>温馨提醒:</text>
         <text>亲爱的会员，请明天准时参加上课</text>
      </view>
+
+     <image class="gostudy-view" src="../../images/gostudy.png"></image>
 
   </view>
     
