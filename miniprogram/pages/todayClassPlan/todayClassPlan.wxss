@@ -27,11 +27,17 @@
 .placehold-view{
   flex: 1;
   display:flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: 28rpx;
   color: rgb(189, 189, 236);
 
+}
+.no-course-imgae{
+  width: 120rpx;
+  height: 120rpx;
+  margin-bottom: 60rpx;
 }
 .plan-view{
   

@@ -1,4 +1,6 @@
+
 // pages/home/home.js
+import {dateToYYMMDD} from '../../util/util'
 const app = getApp()
 
 const MAX_LIMIT = 15
@@ -10,7 +12,8 @@ Page({
   data: {
     customerlist:[],
     isTeacher:'',
-    config:''
+    config:'',
+    sendMessageSwitch:true
     
   },
   toAddUser(){
@@ -25,6 +28,7 @@ Page({
    */
   onLoad: function (options) {
     // this.sendCustomerMessage()
+    this.getSendMessageDate()
     this.getConfig()
     this.getlogin()
      wx.getStorage({
@@ -149,29 +153,65 @@ Page({
           console.log(itemSettings)
           if (itemSettings[tmpl_id] === 'accept') {
              console.log('is accredit：ok')
+             console.log('订阅通知已经授权')
           }else{
              this.requestSubscribeMessage()
+             console.log('订阅通知没有授权1')
           }
         }else{
           this.requestSubscribeMessage()
+          console.log('订阅通知没有授权2')
         }
       },fail:res=>{
         console.log(res)
         this.requestSubscribeMessage()
+        console.log('订阅通知没有授权3')
       }
     })
    
 
    },
   requestSubscribeMessage(){
+    if(!this.data.sendMessageSwitch){
+      return;
+    }
     var tmpl_id = "UgxSFEgfxASQgj6E1IW_vLyQu07aasNidkbeQqHq-Ig"
     wx.requestSubscribeMessage({
       tmplIds: [tmpl_id],
       success:res=> { 
         console.log('授权成功', res)
+        this.data.sendMessageSwitch = false
       },fail:res=>{
         console.log('授权失败', res)
+        this.data.sendMessageSwitch = true
       }
+    })
+   },
+
+   getSendMessageDate(){
+    var currentDate =  dateToYYMMDD(new Date())
+    wx.getStorage({
+      key: 'sendMessageDate',
+      success:res=>{
+         var localDate = res.data
+         if(currentDate!=localDate){
+           this.data.sendMessageSwitch = true
+           wx.setStorage({
+            data: currentDate,
+            key: 'key',
+           })
+         }else{
+          this.data.sendMessageSwitch = false
+         }
+      },
+      fail:err=>{
+        this.data.sendMessageSwitch = true
+        wx.setStorage({
+           data: currentDate,
+           key: 'key',
+        })
+      }
+      
     })
    },
 

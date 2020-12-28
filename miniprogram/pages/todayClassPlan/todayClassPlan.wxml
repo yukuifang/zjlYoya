@@ -9,7 +9,7 @@
     <view class="plan-view">
      <view class="plan-item-view">
         <text class="iconfont icon-touxiang- item-imgae-view"></text>
-        <text>{{customer.name + '老师'}}</text>
+        <text>{{item.teacher_name + '老师'}}</text>
      </view>
      <view class="plan-item-view">
         <text class="iconfont icon-didian item-imgae-view"></text>
@@ -30,7 +30,8 @@
   </block>
 
  
-  <!-- <view class="placehold-view">
-    <text>今天无课程安排，请微信联系你的上课老师吧</text>
-  </view> -->
+  <view wx:if="{{lessions.length==0}}" class="placehold-view">
+    <image class="no-course-imgae" src="../../images/kebiao.png"></image> 
+    <text>今天无课程安排，请微信联系你的上课老师吧~</text>
+  </view>
 </view>

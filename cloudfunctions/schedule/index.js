@@ -41,6 +41,7 @@ exports.main = async (event, context) => {
           for (let j = 0; j < schedule.lessions.length; j++) {
             const ele  = schedule.lessions[j];
             if(ele.customer_openid == _openid){
+                ele.teacher_name = schedule.name
                 result.push(ele)
             }
           }
@@ -347,7 +348,7 @@ exports.main = async (event, context) => {
              }
            }
         }
-        ctx.body = [lessions,customers]
+        ctx.body = [lessions,new_customers]
     }else{
       ctx.body = [[],[]]
     }

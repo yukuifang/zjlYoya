@@ -28,7 +28,7 @@ App({
          
     })
 
-
+    
   },
   userAuthoried(){
       var that = this
