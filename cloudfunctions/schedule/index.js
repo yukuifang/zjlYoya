@@ -3,7 +3,9 @@ const cloud = require('wx-server-sdk')
 const TcbRouter = require('tcb-router')
 
 cloud.init({
-  env: "product-env-4gxq75gu2a5a651d"
+  // env: "product-env-4gxq75gu2a5a651d"
+
+  env: cloud.DYNAMIC_CURRENT_ENV
 })
 
 const db = cloud.database()
@@ -255,6 +257,10 @@ exports.main = async (event, context) => {
         customer_openid,
         name
       }
+      // 时间排序
+      lessions.sort(function(a,b) {
+        return Date.parse(a.worktime_begin.replace(/-/g,"/"))-Date.parse(b.worktime_begin.replace(/-/g,"/"))
+      })
       await scheduleCollection
       .doc(oldSchedule._id)
       .update({

@@ -202,7 +202,7 @@ Page({
       name:'xlsxgenerate',
       data:{
         workdate,
-        $url:'signXlsx'
+        $url:'signXlsx2'
       },
     }).then(res=>{
       console.log(res)

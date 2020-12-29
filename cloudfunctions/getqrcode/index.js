@@ -2,7 +2,8 @@
 const cloud = require('wx-server-sdk')
 
 cloud.init({
-  env: "product-env-4gxq75gu2a5a651d"
+  // env: "product-env-4gxq75gu2a5a651d"
+  env: cloud.DYNAMIC_CURRENT_ENV
 })
 
 // 云函数入口函数
