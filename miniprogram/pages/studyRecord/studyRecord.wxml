@@ -5,7 +5,7 @@
         <text>打卡时间:</text>
         <text>{{item}}</text>
         <image class="gostudy-view" src="../../images/xingxing.png"></image>
-     </view>
+    </view>
   </view>
     
   </block>

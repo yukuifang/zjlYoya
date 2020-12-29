@@ -1,5 +1,5 @@
 <view class="container-view">
-  <block wx:for="{{customerlist}}" wx:key="index">
+  <block wx:if="{{customerlist.length > 0 }}" wx:for="{{customerlist}}" wx:key="index">
     <view class="item-view" bindtap="itemClick" data-idx="{{index}}">
       <image mode="aspectFill" class="avatar" src="{{item.avatar.length>0?item.avatar:'../../images/selecte-avatar.png'}}"></image>
       <view class="content-view">
@@ -9,4 +9,9 @@
       <view class="dotline-view"></view>
     </view>
   </block>
+
+  <view class="enpty-customer-view" wx:if="{{customerlist.length == 0 }}">
+     <image class="enpty-image" src="../../images/huiyuan.png"></image>
+     <text>暂时没有会员,去邀请你的可爱会员使用小程序吧～</text>
+  </view>
 </view>
