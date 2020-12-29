@@ -1,7 +1,9 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk')
 
-cloud.init()
+cloud.init({
+  env: "product-env-4gxq75gu2a5a651d"
+})
 
 // 云函数入口函数
 exports.main = async (event, context) => {

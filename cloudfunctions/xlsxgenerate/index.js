@@ -4,7 +4,9 @@ const TcbRouter = require('tcb-router')
 const nodeExcel = require('excel-export')
 const path = require('path')
 
-cloud.init()
+cloud.init({
+  env: "product-env-4gxq75gu2a5a651d"
+})
 
 const db = cloud.database()
 

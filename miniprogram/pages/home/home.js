@@ -30,7 +30,7 @@ Page({
     this.sendCustomerMessage()
     this.getSendMessageDate()
     this.getConfig()
-    this.getlogin()
+    // this.getlogin()
      wx.getStorage({
        key: 'is_teacher',
        success:res=>{
