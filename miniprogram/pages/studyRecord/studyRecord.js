@@ -28,8 +28,20 @@ Page({
     }).then((res) => {
       var a = res.result
       if(a != undefined && a.length > 0){
+        var customer = a[0]
+        var newSigins = []
+        if(customer.sigins!= undefined && customer.sigins.length>0){
+           for (let i = 0; i < customer.sigins.length; i++) {
+             const ele = customer.sigins[i]
+              var r  = ele.split(' ')
+              var n = r[0] + ' ' + r[1] + '-' + r[3]
+              newSigins.push(n)
+           }
+           customer.sigins = newSigins
+        }
+        console.log(customer.sigins)
         this.setData({
-          customer:a[0]
+          customer
         })
       }
       console.log(res)

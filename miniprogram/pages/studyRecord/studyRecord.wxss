@@ -63,15 +63,16 @@
    position: absolute;
    right: 44rpx;
    width: 80rpx;
-   height: 80rpx;
-   top: 44rpx;
-
-   
+   height: 80rpx; 
 }
 
 .plan-item-view{
+  position: relative;
+  display: flex;
+  align-items: center;
    width: 100%;
    padding: 4rpx;
+   height: 80rpx;
    
 }
 
