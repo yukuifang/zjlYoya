@@ -12,7 +12,9 @@ Page({
   data: {
      daySchedule:[],
      customers:[],
-     copystr:''
+     copystr:'',
+     isShowCopy:false
+
   },
 
   /**
@@ -22,6 +24,29 @@ Page({
     dateJson = JSON.parse(options.dateJson)
     this.getCurrentSchedule()
     this.getTomorrowSchedule()
+
+
+    const{ year,month,date } = dateJson
+    var workdate = new Date(year + '-' + month + '-' + date)
+    var currentDate = new Date()
+    if(workdate.getTime() > currentDate.getTime()){
+      this.setData({
+        isShowCopy:true
+      })
+    }else
+    {
+      this.setData({
+        isShowCopy:false
+      })
+
+    }
+
+
+
+
+
+    
+
   },
   onShow: function () {
     

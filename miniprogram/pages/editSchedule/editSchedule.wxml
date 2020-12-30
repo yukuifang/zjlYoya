@@ -24,6 +24,6 @@
    
 </view>
 
-<image src="../../images/box.png" class="yinyong-image" bindtap="yinyongClick"></image>
+<image wx:if="{{isShowCopy}}" src="../../images/box.png" class="yinyong-image" bindtap="yinyongClick"></image>
 <text class="iconfont icon-tianjia tianjia" bindtap="addSchedule"></text>
 <view wx:if="{{customers.length >0}}" class="copy-view"  bindtap="dayPlanClick">复制今日计划</view>
