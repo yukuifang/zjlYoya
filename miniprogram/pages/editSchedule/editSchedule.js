@@ -20,10 +20,8 @@ Page({
    */
   onLoad: function (options) {
     dateJson = JSON.parse(options.dateJson)
-    this.getCurrentSchedule2()
+    this.getCurrentSchedule()
     this.getTomorrowSchedule()
-   
-
   },
   onShow: function () {
     
@@ -54,7 +52,7 @@ Page({
     })
     
   },
-  getCurrentSchedule2(){
+  getCurrentSchedule(){
     const{ year,month,date } = dateJson
     var workdate = year + '-' + month + '-' + date
     wx.showLoading({
@@ -78,96 +76,6 @@ Page({
       wx.hideLoading()
     })
     
-  },
-
-
-
-  getCurrentSchedule(){
-    const{ year,month,date } = dateJson
-    const workdate = year + '-' + month + '-' + date
-    wx.showLoading({
-      title: '加载中..',
-    })
-    wx.cloud.callFunction({
-      name:'schedule',
-      data:{
-        workdate,
-        $url:'getCurrentSchedule'
-      },
-      
-    }).then(res=>{
-       console.log(res)
-       if(res.result.length>0){
-        this.data.daySchedule = res.result[0].lessions
-        this.getCustomerById()
-       }
-       
-       wx.hideLoading()
-      
-    }).catch(err=>{
-      console.log(err)
-      wx.hideLoading()
-    })
-  },
-
-  getCustomerById(){
-    var that = this
-    // var ids = []
-    for (let index = 0; index < this.data.daySchedule.length; index++) {
-       var customerJson = this.data.daySchedule[index]
-       customerJson.show_worktime_begin =customerJson.worktime_begin.split(" ")[1]
-       customerJson.show_worktime_end =customerJson.worktime_end.split(" ")[1]
-      //  ids.push(customerJson.customer_id)
-    }
-    wx.showLoading({
-      title: '加载中..',
-    })
-    wx.cloud.callFunction({
-      name:'customer',
-      data:{
-        daySchedule:this.data.daySchedule,
-        $url:'getCustomersWithIds'
-      },
-      
-    }).then(res=>{
-        that.dealPaixu(res).then((c)=>{
-           that.setData({
-              customers:c,
-              daySchedule:that.data.daySchedule
-           })
-           wx.hideLoading()
-        })
-        
-       
-    }).catch(err=>{
-      console.log(err)
-      wx.hideLoading()
-    })
-  },
-  dealPaixu(res){
-    var that = this
-    return new Promise(function(resolve, reject){
-       var  customers =  res.result.data
-       var  daySchedule = that.data.daySchedule
-       var new_customers = []
-        // 时间排序
-        daySchedule.sort(function(a,b) {
-          return Date.parse(a.worktime_begin.replace(/-/g,"/"))-Date.parse(b.worktime_begin.replace(/-/g,"/"))
-        })
-        // 客户对应排序
-        for(var i = 0;i < daySchedule.length;i++){
-           var d =  daySchedule[i]
-           for(var j= 0;j < customers.length;j++){
-             var c = customers[j]
-             if(d.customer_id == c._id){
-               new_customers.push(c)
-               break
-             }
-           }
-        }
-        resolve(new_customers)
-      });
-       
   },
   addSchedule(){
    wx.navigateTo({
@@ -241,6 +149,53 @@ Page({
       }
     })
   },
+  yinyongClick(){
+    const{ year,month,date,week } = dateJson
+    var w = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六']
+    var that = this
+    wx.showModal({
+      title:'复制模版',
+      content:'复制上周' + w[week] + '的模版',
+      success:function(res){
+         if(res.confirm){
+           console.log('点击了确认')
+           that.toYinyong()
+         }
+
+      }
+    })
+  },
+  toYinyong(){
+    const{ year,month,date,week} = dateJson
+    const workdate = year + '-' + month + '-' + date
+
+    var copyDate = new Date(workdate)
+    var dlt = 7 
+     copyDate.setTime(copyDate.getTime() - dlt * 24*60*60*1000)
+     copyDate  =  dateToYYMMDD(copyDate)
+     console.log(copyDate)
+
+     wx.showLoading({
+       title: '加载中',
+     })
+     wx.cloud.callFunction({
+      name:'schedule',
+      data:{
+        workdate,
+        copyWorkdate:copyDate,
+        $url:'copyScheduleByDate'
+      },
+      
+    }).then(res=>{
+       console.log(res)
+       this.getCurrentSchedule()
+       wx.hideLoading()
+    }).catch(err=>{
+      console.log(err)
+      wx.hideLoading()
+    })
+    
+  }
 
  
 })

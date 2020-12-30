@@ -50,6 +50,13 @@
   position: fixed;
   color:rgb(180, 149, 103);
 }
+.yinyong-image{
+  width: 80rpx;
+  height: 80rpx;
+  left: 44rpx;
+  bottom: 100rpx;
+  position: fixed;
+}
 
 .schedule-view{
   flex: 1;

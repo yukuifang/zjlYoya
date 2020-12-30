@@ -1,4 +1,4 @@
-import util from '../../util/util'
+import {dateToYYMMDD} from '../../util/util'
 const db = wx.cloud.database()
 var dateJson;
 var edit_customer_id = ''
@@ -14,7 +14,8 @@ Page({
      endDate:'',
      customer:'',
      isRepetition:false,
-     isEdit:false
+     isEdit:false,
+     isShowRepeat:false
   },
 
   /**
@@ -40,6 +41,60 @@ Page({
            endDate
       })
     }
+
+    
+     // 获取两周的开始时间
+     var two_week_first_day = app.globalData.serverDate?new Date(app.globalData.serverDate):new Date()
+     var day =  two_week_first_day.getDay()
+     if(day ==0 ) {
+       day = 7
+     }
+     two_week_first_day.setTime(two_week_first_day.getTime()-(day - 1) * 24*60*60*1000)
+     two_week_first_day = dateToYYMMDD(two_week_first_day)
+     console.log(two_week_first_day)
+
+     // 获取两周的结束时间
+     var two_week_last_day = app.globalData.serverDate?new Date(app.globalData.serverDate):new Date()
+     var day =  two_week_last_day.getDay()
+     var det = 0
+     if(day ==0 ) {
+       det = 0+7
+     }else{
+       det = (7- day) + 7
+     }
+     two_week_last_day.setTime(two_week_last_day.getTime()+det* 24*60*60*1000)
+     two_week_last_day = dateToYYMMDD(two_week_last_day)
+     console.log(two_week_last_day)
+
+
+
+
+     var f_d = new Date(two_week_first_day)
+     var l_d = new Date(two_week_last_day)
+
+     const {year,month,date}= dateJson
+    const workdate = year + '-' + month + '-' + date
+    var current_d = new Date(workdate)
+
+    if(current_d.getTime() <= l_d.getTime() && current_d.getTime() >= f_d.getTime()){
+      this.setData({
+        isShowRepeat:true
+      })
+    }else{
+      this.setData({
+        isShowRepeat:false
+      })
+    }
+
+
+
+
+
+
+
+
+
+
     
     
     
@@ -255,6 +310,7 @@ Page({
     wx.cloud.callFunction({
       name: 'weekrepeat',// 云函数的名称
       data: {
+        record_date,
         worktime_begin,
         worktime_end,
         name:this.data.customer.name,

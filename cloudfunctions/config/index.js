@@ -22,6 +22,7 @@ exports.main = async (event, context) => {
 
     if(json!=undefined && json.length > 0 ){
       var configJson=  json[0]
+      configJson.serverDate = new Date()
       ctx.body = configJson
     }
   })

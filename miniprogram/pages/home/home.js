@@ -121,6 +121,7 @@ Page({
       }//参数
     }).then((res) => {
       console.log(res)
+      app.globalData.serverDate = res.result.serverDate
       this.setData({
         config:res.result
       })
