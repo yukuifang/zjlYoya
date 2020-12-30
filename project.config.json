@@ -84,6 +84,12 @@
         {
           "name": "pages/todayClassPlan/todayClassPlan",
           "pathName": "pages/todayClassPlan/todayClassPlan",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/modifyNickName/modifyNickName",
+          "pathName": "pages/modifyNickName/modifyNickName",
           "scene": null
         }
       ]

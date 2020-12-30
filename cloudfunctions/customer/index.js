@@ -65,6 +65,8 @@ exports.main = async (event, context) => {
       ctx.body = '首次登陆成功'
  
     }else{
+      var oldCustomer = json[0]
+      customer.nick_name = oldCustomer.nick_name
       await customerCollection.where({
         _openid,
         is_from_wx:true
@@ -128,5 +130,39 @@ exports.main = async (event, context) => {
     }
     ctx.body = list
   })
+
+
+
+  app.router('modifyNickName', async (ctx, next) => {
+    var customer = event.customer
+    var nickName = event.nickName
+    customer._openid = _openid
+    var json  = await customerCollection.where({
+      _id:customer._id
+    })
+    .get()
+    .then(res=>{
+      return res.data
+    })
+
+    if(json != undefined && json.length >0){
+      await customerCollection
+      .doc(customer._id)
+      .update({
+        data:{
+          nick_name:nickName
+        }
+      }).then(res=>{
+        return res.data
+      })
+      ctx.body = '修改成功'
+      
+     }else{
+      ctx.body = '没找到，修改不成功'
+     }
+    
+
+  })
+
   return app.serve()
 }

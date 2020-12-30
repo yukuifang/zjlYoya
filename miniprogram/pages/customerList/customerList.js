@@ -97,6 +97,13 @@ Page({
 
   },
   itemClick(e){
+  var customer = this.data.customerlist[e.currentTarget.dataset.idx]
+  let item = JSON.stringify(customer)
+  wx.navigateTo({
+     url: '../../pages/modifyNickName/modifyNickName?customer=' + encodeURIComponent(item),
+  })
+   return
+
     console.log(e);
     var pages = getCurrentPages();var currPage = pages[pages.length - 1]; //当前页面
     var prevPage = pages[pages.length - 2]; //上一个页面

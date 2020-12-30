@@ -11,7 +11,8 @@
     "pages/siginInList/siginInList",
     "pages/teacherList/teacherList",
     "pages/todayClassPlan/todayClassPlan",
-    "pages/studyRecord/studyRecord"
+    "pages/studyRecord/studyRecord",
+    "pages/modifyNickName/modifyNickName"
    ],
   "window": {
     "backgroundColor": "#F6F6F6",

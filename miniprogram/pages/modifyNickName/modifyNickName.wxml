@@ -1,0 +1,7 @@
+<view class="container">
+  <view class="item-view">
+         <text class="iconfont icon-xingming item-name"></text>
+         <input type="text" placeholder="请输入昵称" class="item-input" bindinput="inputClick"/>
+  </view>
+  <button  class="submit-view" style="width:80%" bindtap="submitClick">提交</button>
+</view>
