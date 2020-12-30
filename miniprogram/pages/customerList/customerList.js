@@ -7,7 +7,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    customerlist:[]
+    customerlist:[],
+    isSelete:0
   },
   toAddUser(){
     wx.navigateTo({
@@ -19,6 +20,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options)
+    this.data.isSelete = options.isSelete
      this.getCustomerlist()
   },
   getCustomerlist(){
@@ -97,15 +100,16 @@ Page({
 
   },
   itemClick(e){
-  var customer = this.data.customerlist[e.currentTarget.dataset.idx]
-  let item = JSON.stringify(customer)
-  wx.navigateTo({
-     url: '../../pages/modifyNickName/modifyNickName?customer=' + encodeURIComponent(item),
-  })
-   return
-
-    console.log(e);
-    var pages = getCurrentPages();var currPage = pages[pages.length - 1]; //当前页面
+  if(this.data.isSelete == '0'){
+    var customer = this.data.customerlist[e.currentTarget.dataset.idx]
+    let item = JSON.stringify(customer)
+    wx.navigateTo({
+       url: '../../pages/modifyNickName/modifyNickName?customer=' + encodeURIComponent(item),
+    })
+    return
+  }  
+    var pages = getCurrentPages();
+    var currPage = pages[pages.length - 1]; //当前页面
     var prevPage = pages[pages.length - 2]; //上一个页面
     //直接调用上一个页面的setData()方法，把数据存到上一个页面中去
     prevPage.setData({ 

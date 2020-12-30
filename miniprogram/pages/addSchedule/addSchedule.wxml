@@ -3,7 +3,7 @@
    <view class="item-content-view">
      <view class="item-view" bindtap="selectCustomer">
          <image src="../../images/yujia.png" class="left-image"></image>
-         <text>{{customer.name.length>0?customer.name:'选择预约会员'}}</text>
+         <text>{{customer.name.length>0?(customer.nick_name.length > 0 ? customer.nick_name:customer.name):'选择预约会员'}}</text>
      </view>
      <view class="item-view">
          <image src="../../images/time.png" class="left-image"></image>

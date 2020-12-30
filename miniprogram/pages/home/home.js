@@ -70,7 +70,7 @@ Page({
   showCustomes(e){
     if(!this.toMine())return;
      wx.navigateTo({
-       url: '../customerList/customerList',
+       url: '../customerList/customerList?isSelete=0',
      })
   },
   schedulePlan(e){

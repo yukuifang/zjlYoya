@@ -152,7 +152,7 @@ Page({
   },
   selectCustomer(e){
       wx.navigateTo({
-        url: '../customerList/customerList',
+        url: '../customerList/customerList?isSelete=1',
       })
   },
   changeBeginTime(e){
