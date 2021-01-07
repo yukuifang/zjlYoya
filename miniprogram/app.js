@@ -17,7 +17,7 @@ App({
       })
     }
     this.globalData = {}
-    this.userAuthoried()
+    // this.userAuthoried()
     wx.getStorage({
       key: 'userInfo',
       success:res=>{
@@ -85,6 +85,15 @@ App({
           that.toStart()
         } 
 
+      }).finally(()=>{
+        wx.showToast({
+          title: 'finally',
+        })
+        if(that.globalData.isTeacher != undefined){
+          that.toHome()
+        } else{
+          that.toStart()
+        }
       })
 
       
@@ -105,12 +114,19 @@ App({
   },
   toStart(){
    console.log("tostart")
+   wx.showToast({
+     title: 'tostart',
+   })
    console.log(this.globalData.isTeacher)
+
+   setTimeout(()=>{
     var pages = getCurrentPages()
     var currentPage = pages[pages.length - 1]
     currentPage.setData({
       isLauchPage:(this.globalData.isTeacher == undefined ? false:true)
     })
+   },2000)
+    
   },
 
 })

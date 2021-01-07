@@ -34,7 +34,7 @@
 
 
 
-   <view class="company-view">感谢使用精灵瑜伽软件</view>  
+   <view class="company-view">感谢使用yu-vin软件</view>  
    </view>
 
 
@@ -42,7 +42,7 @@
 <view wx:else class="unlogin-view">
      <image src="../../images/unlogin.jpeg" class="logo-view"></image>
      <view class="text-0">
-       <text class="text-1">感谢您使用精灵瑜伽软件,需要您的确认授权以下信息</text>
+       <text class="text-1">感谢您使用yu-vin软件,需要您的确认授权以下信息</text>
        <text class="text-2">.获得你的公开信息(昵称、头像等)</text>
      </view>
      <button open-type="getUserInfo" bindgetuserinfo="onGotUserInfo" class="login-view" style="width:70%;">授权登陆</button>

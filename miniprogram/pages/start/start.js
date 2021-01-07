@@ -13,7 +13,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+     
   },
 
   /**
@@ -27,9 +27,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    //  this.setData({
-    //    isLauchPage:(app.globalData.isTeacher == undefined ? false:true)
-    //  })
+    this.userAuthoried()
   },
 
   /**
@@ -89,5 +87,99 @@ Page({
     })
     app.globalData.is_teacher = 0
     this.toHome()
-  }
+  },
+  userAuthoried(){
+    var that = this
+    var a = new Promise(function(resolve, reject){
+      wx.getStorage({
+        key: 'is_login',
+        success:res=>{
+           app.globalData.isLogin = (res.data == undefined?false:res.data)
+           resolve()
+        },
+        fail:err=>{
+          resolve()
+        }
+      })
+    })
+    var b = new Promise(function(resolve, reject){
+      wx.getSetting({
+        success:res=>{
+          var isAuthoried = res.authSetting['scope.userInfo']
+          app.globalData.isAuthoried = (isAuthoried == undefined ? false:isAuthoried)
+          resolve()
+        },
+        fail:err=>{
+          resolve()
+        }
+      })
+    })
+    var c = new Promise(function(resolve, reject){
+      wx.getStorage({ //获取本地缓存
+        key:"is_teacher",
+        success:res =>{
+          app.globalData.isTeacher = (res.data == undefined?false:res.data)
+          resolve()
+        },
+        fail:err=>{
+          resolve()
+
+        }
+      })
+    })
+
+    Promise.all([a, b,c]).then((result) => {
+      console.log('123')
+      console.log(app.globalData.isTeacher)
+      if(app.globalData.isTeacher != undefined){
+        that.toHome2()
+      } else{
+        that.toStart2()
+      }           
+    }).catch(err=>{
+      if(app.globalData.isTeacher != undefined){
+        that.toHome2()
+      } else{
+        that.toStart2()
+      } 
+
+    }).finally(()=>{
+      // wx.showToast({
+      //   title: 'finally',
+      // })
+
+      console.log('finally')
+      console.log(app.globalData)
+      if(app.globalData.isTeacher != undefined){
+        that.toHome2()
+      } else{
+        that.toStart2()
+      }
+    })
+
+    
+
+
+
+  
+},
+toHome2(){
+  console.log('home')
+  setTimeout(function(){
+     const url = '../../pages/home/home'
+      wx.switchTab({
+        url
+      })
+  },1000)
+ 
+},
+toStart2(){
+ console.log("tostart")
+ setTimeout(()=>{
+  this.setData({
+    isLauchPage:(app.globalData.isTeacher == undefined ? false:true)
+  })
+ },1000)
+  
+},
 })

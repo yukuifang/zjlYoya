@@ -59,7 +59,7 @@ exports.main = async (event, context) => {
                   
                       },
                       templateId: 'UgxSFEgfxASQgj6E1IW_vLyQu07aasNidkbeQqHq-Ig', //模板id
-                      miniprogramState: 'developer'
+                      // miniprogramState: 'developer'
                   })
               }
             }

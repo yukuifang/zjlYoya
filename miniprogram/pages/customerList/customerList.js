@@ -90,7 +90,8 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    this.getCustomerlist()
+    console.log('000000000')
   },
 
   /**
@@ -100,8 +101,8 @@ Page({
 
   },
   itemClick(e){
-  if(this.data.isSelete == '0'){
-    var customer = this.data.customerlist[e.currentTarget.dataset.idx]
+  var customer = this.data.customerlist[e.currentTarget.dataset.idx]
+  if(this.data.isSelete == '0' && customer.is_from_wx){
     let item = JSON.stringify(customer)
     wx.navigateTo({
        url: '../../pages/modifyNickName/modifyNickName?customer=' + encodeURIComponent(item),

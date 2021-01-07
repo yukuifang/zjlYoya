@@ -87,9 +87,9 @@ exports.main = async (event, context) => {
     ctx.body = await customerCollection
     .where(cm.or([
       {
-        _openid,
-        is_from_wx:false,
-        is_teacher:0
+        // _openid,
+        // is_from_wx:false,
+        // is_teacher:0
         
 
       },
