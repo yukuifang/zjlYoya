@@ -18,6 +18,51 @@ exports.main = async (event, context) => {
     event
   })
 
+
+
+  // 新增手动客户信息
+  app.router('addCustomerByMySelf', async (ctx, next) => {
+    const customer = event.customer
+    customer._openid = _openid
+    var customers = await customerCollection
+    .where({
+      _openid,
+      is_from_wx:false
+    })
+    .get()
+    .then(res => {
+      return res.data
+    })
+
+    var findIdx = -1
+    if(customers!=undefined && customers.length>0){
+       for(var i =0 ; i < customers.length ; i++){
+         var c = customers[i]
+         if(c.name == customer.name ){
+           findIdx = i
+           break;
+         }
+       }
+    }
+    if(findIdx >=0){
+      ctx.body = '已经有该用户了'
+    }else{
+      await customerCollection.add({
+        data:customer
+      }).then(res=>{
+         return res.data
+      })
+      ctx.body = '手动新增用户成功'
+      
+    }
+
+
+
+    
+
+
+  })
+
   // 获取自己的信息
   app.router('getMyProfile', async (ctx, next) => {
     ctx.body = await customerCollection
@@ -87,9 +132,9 @@ exports.main = async (event, context) => {
     ctx.body = await customerCollection
     .where(cm.or([
       {
-        // _openid,
-        // is_from_wx:false,
-        // is_teacher:0
+        _openid,
+        is_from_wx:false,
+        is_teacher:0
         
 
       },

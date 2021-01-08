@@ -38,6 +38,12 @@ Page({
       }//参数
     }).then((res) => {
       console.log(res)
+      if(res.result.length < MAX_LIMIT){
+         wx.showToast({
+           title: '没有数据啦...',
+           icon:'none'
+         })
+      }
       this.setData({
         customerlist:this.data.customerlist.concat(res.result)//在当前数据的基础上拼接
       })
@@ -91,7 +97,7 @@ Page({
    */
   onReachBottom: function () {
     this.getCustomerlist()
-    console.log('000000000')
+    
   },
 
   /**

@@ -120,22 +120,43 @@ Page({
        title: '提交中',
        mask:true
      })
-     db.collection('customer').add({
-       data:customer
-     }).then(res=>{
+    //  db.collection('customer').add({
+    //    data:customer
+    //  }).then(res=>{
+    //    wx.hideLoading()
+    //    wx.showToast({
+    //     title: '提交成功',
+    //     icon:'none'
+    //   })
+
+    wx.cloud.callFunction({
+      name: 'customer',// 云函数的名称
+      data: {
+        customer,
+        $url: 'addCustomerByMySelf'
+      }//参数
+    }).then(res=>{
+       console.log(res)
        wx.hideLoading()
        wx.showToast({
-        title: '提交成功',
-        icon:'none'
+       title: res.result,
+       icon:'none'
+      }).catch(err=>{
+        console.log(err)
       })
+      if(res.result == '手动新增用户成功'){
+        var pages = getCurrentPages();
+        var currPage = pages[pages.length - 1];   //当前页面
+        var prevPage = pages[pages.length - 2];  //上一个页面
+        prevPage.onPullDownRefresh()
+        wx.navigateBack({
+           delta: 0,
+        })
+      }
 
-      var pages = getCurrentPages();
-     var currPage = pages[pages.length - 1];   //当前页面
-     var prevPage = pages[pages.length - 2];  //上一个页面
-     prevPage.onPullDownRefresh()
-      wx.navigateBack({
-        delta: 0,
-      })
+    
+
+     
 
      }).catch(err=>{
       wx.hideLoading()

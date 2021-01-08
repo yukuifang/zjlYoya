@@ -1,5 +1,6 @@
 <view class="container-view">
-  <block wx:if="{{customerlist.length > 0 }}" wx:for="{{customerlist}}" wx:key="index">
+   <scroll-view  wx:if="{{customerlist.length > 0 }}">
+    <block wx:for="{{customerlist}}" wx:key="index">
     <view class="item-view" bindtap="itemClick" data-idx="{{index}}">
       <image mode="aspectFill" class="avatar" src="{{item.avatar.length>0?item.avatar:'../../images/selecte-avatar.png'}}"></image>
       <view class="content-view">
@@ -9,7 +10,8 @@
       </view>
       <view class="dotline-view"></view>
     </view>
-  </block>
+    </block>
+   </scroll-view>
 
   <view class="enpty-customer-view" wx:if="{{customerlist.length == 0 }}">
      <image class="enpty-image" src="../../images/huiyuan.png"></image>

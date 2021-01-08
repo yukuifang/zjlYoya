@@ -159,8 +159,24 @@ Page({
     //改变时间
     var time = e.detail.value;
     console.log("当前选择时间"+time);
+
+    const {year,month,date}= dateJson
+    const workdate = year + '-' + month + '-' + date + ' ' + time
+    var beginDate = new Date(workdate)
+    var d = new Date(beginDate.getTime() +  1 * 60 * 60 * 1000)
+    var hour=d.getHours()
+    if(hour < 10){
+      hour = '0' + hour
+    }
+    var minute=d.getMinutes()
+    if(minute < 10){
+      minute = '0' + minute
+    }
+
+    var endDate = hour + ':' + minute
     this.setData({
-      beginDate:time
+      beginDate:time,
+      endDate
     })
   },
   changeEndTime(e){

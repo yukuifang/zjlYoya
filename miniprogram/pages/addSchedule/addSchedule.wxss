@@ -41,3 +41,6 @@
 .switch{
   margin-left: 44rpx;
 }
+.timer-picker-view{
+  flex: 1;
+}

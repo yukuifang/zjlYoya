@@ -7,13 +7,13 @@
      </view>
      <view class="item-view">
          <image src="../../images/time.png" class="left-image"></image>
-         <picker mode="time"  bindchange='changeBeginTime'>
+         <picker mode="time"  bindchange='changeBeginTime' class="timer-picker-view">
              <view>{{beginDate.length>0?beginDate:'选择预约开始时间'}}</view>
          </picker>
     </view>
     <view class="item-view">
          <image src="../../images/time.png" class="left-image"></image>
-         <picker mode="time" bindchange='changeEndTime'>
+         <picker mode="time" bindchange='changeEndTime' class="timer-picker-view">
              <view>{{endDate.length>0?endDate:'选择预约结束时间'}}</view>
          </picker>
     </view>
