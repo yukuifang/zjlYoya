@@ -1,17 +1,14 @@
 {
-  "name": "customer",
+  "name": "miniprogram",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "pinyin": "^2.9.1",
-    "tcb-router": "^1.1.2",
-    "wl-pinyin": "^1.0.1",
-    "wx-server-sdk": "~2.3.2"
+    "wl-pinyin": "^1.0.1"
   }
 }

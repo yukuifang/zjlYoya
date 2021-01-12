@@ -26,4 +26,36 @@
 
 <image wx:if="{{isShowCopy}}" src="../../images/box.png" class="yinyong-image" bindtap="yinyongClick"></image>
 <text class="iconfont icon-tianjia tianjia" bindtap="addSchedule"></text>
-<view wx:if="{{customers.length >0}}" class="copy-view"  bindtap="dayPlanClick">复制今日计划</view>
+<view  class="copy-view"  bindtap="dayPlanClick">复制今日计划</view>
+
+
+
+
+    <view  class="yuyinBtn {{recordState == true ? 'yuyinBtnBg':''}}" >
+      <text  bindtouchstart="touchStart" bindtouchend="touchEnd" bindtouchcancel="touchEnd">按住 说话</text>
+      <!-- <text wx:else>松开 结束</text> -->
+    </view>
+  <!-- 开始语音 弹出语音图标表示正在录音 -->
+  <cover-view class="startYuyinImage" wx:if="{{recordState == true}}">
+    <cover-image src="../../images/luying.png"></cover-image>
+    <cover-view>开始语音</cover-view>
+  </cover-view>
+
+
+
+
+  <!--弹窗-->
+<view class="modal-mask" bindtap="hideModal" catchtouchmove="preventTouchMove" wx:if="{{showModal}}"></view>
+<view class="modal-dialog" wx:if="{{showModal}}">
+  <view class="modal-title">添加日程</view>
+  <view class="modal-content">
+    <view class="modal-input">
+      <input placeholder-class="input-holder"  value="{{content}}"  bindinput="inputChange" class="input" placeholder="请输入日程"></input>
+    </view>
+  </view>
+  <view class="modal-footer">
+    <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view>
+    <view class="btn-confirm" bindtap="onConfirm" data-status="confirm">确定</view>
+  </view>
+</view>
+

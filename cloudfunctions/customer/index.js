@@ -1,6 +1,9 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk')
 const TcbRouter = require('tcb-router')
+var pinyin = require("pinyin");
+
+
 
 cloud.init({
   // env: "product-env-4gxq75gu2a5a651d"
@@ -18,6 +21,38 @@ exports.main = async (event, context) => {
     event
   })
 
+  app.router('getMyCustomerByName', async (ctx, next) => {
+    var name  = event.name
+    var json = await customerCollection
+    .where({
+      _openid
+    })
+    .get()
+    .then(res => {
+      return res.data
+    })
+    var  n  = pinyin(name,{
+      style:pinyin.STYLE_NORMAL,
+      heteronym:false
+    }).join(' ')
+    var customer = undefined
+    if(json!=undefined && json.length > 0){
+      for(var i = 0 ; i< json.length ; i++){
+        var c  = json[i]
+        var  n2  = pinyin(c.name,{
+          style:pinyin.STYLE_NORMAL,
+          heteronym:false
+        }).join(' ')
+        if(n == n2){
+          customer = c
+          break
+        }
+      }
+      ctx.body = customer
+    }else{
+      ctx.body = undefined
+    }
+  })
 
 
   // 新增手动客户信息
