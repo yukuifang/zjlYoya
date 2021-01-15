@@ -55,13 +55,13 @@ Page({
      //识别语音
      this.initRecord()
 
-    //  var a = '防御奎，下午六点到七点。'
+     var a = '防御奎，下午八点半到10点半。'
      
 
-    //  this.setData({
-    //   content:a
-    // })
-    // this.showDialogBtn()
+     this.setData({
+      content:a
+    })
+    this.showDialogBtn()
   
 
 
@@ -136,6 +136,7 @@ Page({
   dealRecodeText(tmp){
     var that = this
     var hans = ['一','二','三','四','五','六','七','八','九','十','十一','十二']
+    var hans2 = ['1','2','3','4','5','6','7','8','9','10','11','12']
     var nums = ['01','02','03','04','05','06','07','08','09','10','11','12']
     var nums2 =['13','14','15','16','17','18','19','20','21','22','23','24']
     var  text = tmp.replace(/[\ |\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\，|\<|\。|\>|\/|\?]/g,"") 
@@ -172,12 +173,16 @@ Page({
      var [b1,b2] =  [...begin.split('点')]
      var idx1 = hans.indexOf(b1)
      if(idx1 == -1){
+       idx1 = hans2.indexOf(b1)
+     }
+     if(idx1 == -1){
       wx.showToast({
         title: '语音格式不对',
         icon:'none'
       })
-        return
+      return
      }
+     
      var b3 = (d == '下午' ? nums2[idx1] : nums[idx1])
      if(b2 == ''){
        b3 += ':00'
@@ -194,6 +199,9 @@ Page({
 
      var [e1,e2] =  [...end.split('点')]
      var idx2 = hans.indexOf(e1)
+     if(idx2 == -1){
+      idx2 = hans2.indexOf(e1)
+    }
      if(idx2 == -1){
       wx.showToast({
         title: '语音格式不对',
@@ -533,6 +541,48 @@ Page({
   },
   inputChange(e){
     this.data.content = e.detail.value
+  },
+
+  siginClick(){
+    var that = this
+    wx.showModal({
+      title:'当日签到',
+      content:'确定签到今日所有安排',
+      success:function(res){
+         if(res.confirm){
+           console.log('点击了确认')
+           that.toSigin()
+         }
+
+      }
+    })
+
+  },
+  toSigin(){
+    var that  = this
+    wx.showLoading({
+      title: '签到中..',
+      mask:true
+    })
+    const {year,month,date}= dateJson
+    const workdate = year + '-' + month + '-' + date
+    wx.cloud.callFunction({
+      name: 'schedule',// 云函数的名称
+      data: {
+        workdate,
+        $url: 'siginInByDate'
+      }//参数
+    }).then(res=>{
+       console.log(res)
+       that.getCurrentSchedule()
+       wx.hideLoading()
+       wx.showToast({
+       title: '签到成功',
+       icon:'none'
+      }).catch(err=>{
+        console.log(err)
+      })
+    })
   }
 
  

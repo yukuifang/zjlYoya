@@ -43,19 +43,10 @@
   position: relative;
 
 }
-.tianjia{
-  font-size: 60rpx;
-  right: 44rpx;
-  bottom: 100rpx;
-  position: fixed;
-  color:rgb(180, 149, 103);
-}
+
 .yinyong-image{
-  width: 80rpx;
-  height: 80rpx;
-  left: 44rpx;
-  bottom: 100rpx;
-  position: fixed;
+  width: 50rpx;
+  height: 50rpx;
 }
 
 .schedule-view{
@@ -79,22 +70,7 @@
   right: 44rpx;
   color: rgb(230, 196, 134);
 }
-.copy-view{
-  position:absolute;
-  bottom: 200rpx;
-  width: 200rpx;
-  height: 80rpx;
-  color: white;
-  font-size: 24rpx;
-  text-align: center;
-  line-height: 80rpx;
-  right: 20rpx; 
-  border-radius: 10rpx;
-  /* transform: translate(-50%, -50%); */
-  background-color: rgb(247, 186, 73);
 
-
-}
 .no-schedule-view text:nth-of-type(2){
   margin:20rpx
 }
@@ -155,17 +131,19 @@
  
 .yuyinBtn {
   position: fixed;
-  bottom: 200rpx;
-  width: 200rpx;
-  height: 80rpx;
-  color: white;
+  bottom: 100rpx;
+  width: 120rpx;
+  height: 120rpx;
   font-size: 24rpx;
   text-align: center;
   line-height: 80rpx;
-  left: 20rpx; 
-  border-radius: 10rpx;
-  /* transform: translate(-50%, -50%); */
-  background-color: rgb(109, 109, 243);
+  left: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%); 
+  border-radius: 60rpx;
+  background-color: white;
+  
+
 }
  
 .yuyinBtnBg {
@@ -276,4 +254,63 @@ input-holder {
   width: 50%;
   color: #ec5300;
   text-align: center;
+}
+
+
+.bottom-view{
+  position:fixed;
+  bottom: 0rpx;
+  left: 0rpx;
+  right: 0rpx;
+  height: 130rpx;
+  display: flex;
+  flex-direction: row;
+
+}
+.tianjia-view{
+   width: 50%;
+   height: 100%;
+   color: white;
+  font-size: 24rpx;
+  text-align: center;
+  border-radius: 10rpx;
+  background-color: rgb(247, 186, 73);
+
+
+}
+
+.tianjia{
+  font-size: 44rpx;
+  right: 44rpx;
+  color:white;
+  margin-bottom: 8rpx;
+}
+
+.copy-view{
+   width: 50%;
+   height: 100%;
+  color: white;
+  font-size: 24rpx;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+}
+.copy-view:nth-of-type(1){
+  background-color: rgb(163, 164, 250);
+}
+.copy-view:nth-of-type(2){
+  background-color: rgb(248, 196, 98);
+}
+.copy-view:nth-of-type(3){
+  background-color: rgb(163, 164, 250);
+}
+.copy-view:nth-of-type(4){
+  background-color: rgb(248, 196, 98);
+}
+.luyin-view{
+  width: 120rpx;
+  height: 120rpx;
 }

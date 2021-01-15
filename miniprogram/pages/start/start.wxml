@@ -3,10 +3,10 @@
      <view class="btn-view" bindtap="teacherClick">您是瑜伽老师</view>
      <view class="btn-view" bindtap="studentClick">您是瑜伽会员</view>
 </view>
-<view class="company-view">感谢使用yu-vin软件</view>
+<view class="company-view">感谢使用yu-vin软件,微信同声传译插件用于瑜伽日程安排语音添加功能</view>
 
 
 <view class="container" wx:if="{{isLauchPage}}">
      <image src="../../images/unlogin.jpeg" class="logo-view2"></image>
 </view>
-<view class="company-view">感谢使用yu-vin软件</view>
+<view class="company-view">感谢使用yu-vin软件,微信同声传译插件用于瑜伽日程安排语音添加功能</view>

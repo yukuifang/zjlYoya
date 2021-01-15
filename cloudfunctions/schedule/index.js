@@ -25,6 +25,90 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   var _openid = wxContext.OPENID
 
+
+  // 指定日期签到
+app.router('siginInByDate', async (ctx, next) => {
+  var  workdate = event.workdate
+  // 获取指定日期的计划
+  var today_schedules = await scheduleCollection
+ .where({
+  _openid,
+   workdate
+ })
+ .get()
+ .then(res => {
+   return res.data
+ })
+
+ if(today_schedules!=undefined && today_schedules.length >0){
+  for(var i = 0; i< today_schedules.length;i++){
+      var schedule = today_schedules[i]
+      if(schedule.lessions!=undefined && schedule.lessions.length>0){
+          for(var j = 0;j< schedule.lessions.length;j++){
+            var tmp =  schedule.lessions[j]
+            if(tmp.is_sigin_in!=undefined && tmp.is_sigin_in == true){
+              continue
+            }
+            tmp.is_sigin_in = true
+            await scheduleCollection
+            .doc(schedule._id)
+            .update({
+              data:{
+                lessions:schedule.lessions
+              }
+            })
+            .then(res=>{
+              return res.data
+            })
+
+
+            
+            // 签到记录到客户数据里面
+            wholeDate = tmp.worktime_begin + ' ' + tmp.worktime_end
+            var customers =  await customerCollection
+            .where({
+              _id:tmp.customer_id
+            })
+            .get()
+            .then(res=>{
+              return res.data
+            })
+            var sigins = []
+            if(customers!= undefined && customers.length > 0){
+              var customer = customers[0]
+              sigins = customer.sigins
+              if(sigins!=undefined && sigins.length > 0){
+                sigins.push(wholeDate)
+              }else{
+                sigins = [wholeDate]
+              }
+            }
+            await customerCollection
+            .doc(tmp.customer_id)
+            .update({
+              data:{
+                sigins
+              }
+            })
+            .then(res=>{
+              return res.data
+            })
+            // 签到记录到客户数据里面
+          }
+
+      }
+  } 
+ }
+
+ ctx.body = '指定签到日完成'
+
+
+
+
+})
+
+
+
  
   // 学生获取今天和明天的上课
   app.router('getJMClassPlan', async (ctx, next) => {

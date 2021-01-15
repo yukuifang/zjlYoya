@@ -24,17 +24,49 @@
    
 </view>
 
-<image wx:if="{{isShowCopy}}" src="../../images/box.png" class="yinyong-image" bindtap="yinyongClick"></image>
-<text class="iconfont icon-tianjia tianjia" bindtap="addSchedule"></text>
-<view  class="copy-view"  bindtap="dayPlanClick">复制今日计划</view>
+
+<view class="bottom-view">
+  <view  class="copy-view"  bindtap="yinyongClick">
+    <!-- <text class="iconfont icon-tianjia tianjia" ></text> -->
+    <image  src="../../images/box.png" class="yinyong-image"></image>
+    <text>快捷模版</text>
+  </view>
+  <view  class="copy-view"  bindtap="siginClick">
+    <text class="iconfont icon-qiandao1 tianjia" ></text>
+    <text>当日签到</text>
+  </view>
+  <view  class="copy-view"  bindtap="dayPlanClick">
+    <text class="iconfont icon-fuzhi tianjia" ></text>
+    <text>复制计划</text>
+  </view>
+  <view class="copy-view" bindtap="addSchedule">
+    <text class="iconfont icon-tianjia tianjia" ></text>
+    <text>新增日程</text>
+  </view>
+ 
+</view>
+
+<view  class="yuyinBtn {{recordState == true ? 'yuyinBtnBg':''}}" >
+      <image  class="luyin-view" src="../../images/ly.png" bindtouchstart="touchStart" bindtouchend="touchEnd" bindtouchcancel="touchEnd"></image>
+</view>
 
 
 
 
-    <view  class="yuyinBtn {{recordState == true ? 'yuyinBtnBg':''}}" >
-      <text  bindtouchstart="touchStart" bindtouchend="touchEnd" bindtouchcancel="touchEnd">按住 说话</text>
-      <!-- <text wx:else>松开 结束</text> -->
-    </view>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
   <!-- 开始语音 弹出语音图标表示正在录音 -->
   <cover-view class="startYuyinImage" wx:if="{{recordState == true}}">
     <cover-image src="../../images/luying.png"></cover-image>
