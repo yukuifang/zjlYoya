@@ -43,6 +43,11 @@
     <text class="iconfont icon-tianjia tianjia" ></text>
     <text>新增日程</text>
   </view>
+  <view  class="copy-view"  bindtap="chooseImage">
+    <!-- <text class="iconfont icon-tianjia tianjia" ></text> -->
+    <image  src="../../images/box.png" class="yinyong-image"></image>
+    <text>图片识别</text>
+  </view>
  
 </view>
 
@@ -82,7 +87,7 @@
   <view class="modal-title">添加日程</view>
   <view class="modal-content">
     <view class="modal-input">
-      <input placeholder-class="input-holder"  value="{{content}}"  bindinput="inputChange" class="input" placeholder="请输入日程"></input>
+      <textarea placeholder-class="input-holder"  value="{{content}}"  bindinput="inputChange" class="input" placeholder="请输入日程"></textarea>
     </view>
   </view>
   <view class="modal-footer">
@@ -91,3 +96,18 @@
   </view>
 </view>
 
+
+ <!--弹窗-->
+<view class="modal-mask" bindtap="hideModal" catchtouchmove="preventTouchMove" wx:if="{{showModal2}}"></view>
+<view class="modal-dialog" wx:if="{{showModal2}}">
+  <view class="modal-title">添加日程</view>
+  <view class="modal-content">
+    <view class="modal-input">
+      <textarea placeholder-class="input-holder"  value="{{content}}"  bindinput="inputChange2" class="input" placeholder="请输入日程"></textarea>
+    </view>
+  </view>
+  <view class="modal-footer">
+    <view class="btn-cancel" bindtap="onCancel" data-status="cancel">取消</view>
+    <view class="btn-confirm" bindtap="onConfirm2" data-status="confirm">确定</view>
+  </view>
+</view>

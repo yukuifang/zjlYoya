@@ -55,6 +55,52 @@ exports.main = async (event, context) => {
   })
 
 
+
+  app.router('getMyCustomersByNames', async (ctx, next) => {
+    var names  = event.names
+    var customers = []
+    var unfind_name = ''
+    for(var i = 0 ; i < names.length;i++){
+      var name = names[i]
+      var json = await customerCollection
+      .where({
+        _openid,
+        name
+      })
+      .get()
+      .then(res => {
+        return res.data
+      })
+      if(json!=undefined && json.length>0){
+         customers.push(json[0])
+      }else{
+        unfind_name = name
+        break;
+      }
+    }
+    if(unfind_name.length > 0 ){
+      ctx.body = {
+        code:1,
+        message:(unfind_name + '该会员未存在')
+      }
+    }else{
+      ctx.body = {
+        code:0,
+        result:customers
+      }
+    }
+
+
+    
+    
+  })
+
+
+
+
+
+
+
   // 新增手动客户信息
   app.router('addCustomerByMySelf', async (ctx, next) => {
     const customer = event.customer

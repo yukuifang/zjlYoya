@@ -624,6 +624,57 @@ app.router('siginInByDate', async (ctx, next) => {
   })
  
 
+  
+
+  app.router('orcToSchedule', async (ctx, next) => {
+    const workdate = event.workdate
+    const teacher_name = event.teacher_name
+    const schedules = event.schedules
+     
+
+    var json =  await scheduleCollection
+    .where({
+      _openid,
+      workdate
+    })
+    .get()
+    .then(res=>{
+       return res.data
+     })
+     if(json.length == 0){
+      schedule = {
+        workdate,
+        _openid,
+        name:teacher_name,
+        lessions:schedules
+      }
+      await scheduleCollection
+      .add({
+        data:schedule
+      })
+      .then(res=>{
+         return res.data
+       })
+       ctx.body = "ok"
+     }else{
+      var oldSchedule = json[0]
+      await scheduleCollection
+      .doc(oldSchedule._id)
+      .update({
+        data:{
+          lessions:schedules
+        }
+      })
+      .then(res=>{
+         return res.data
+       })
+       ctx.body = "ok"
+     }
+
+
+  })
+
+
   app.router('copyScheduleByDate', async (ctx, next) => {
     const workdate = event.workdate
     const copyWorkdate = event.copyWorkdate

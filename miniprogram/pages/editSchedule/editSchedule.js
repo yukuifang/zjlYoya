@@ -23,7 +23,10 @@ Page({
      recordState: false, //录音状态
      content:'',//内容
      showModal: false,
-     pinyin_customer:''
+     showModal2: false,
+     pinyin_customer:'',
+     orcs:[],
+     orc_customers:[]
 
 
   },
@@ -55,13 +58,13 @@ Page({
      //识别语音
      this.initRecord()
 
-     var a = '防御奎，下午八点半到10点半。'
+    //  var a = '防御奎，下午八点半到10点半。'
      
 
-     this.setData({
-      content:a
-    })
-    this.showDialogBtn()
+    //  this.setData({
+    //   content:a
+    // })
+    // this.showDialogBtn()
   
 
 
@@ -476,6 +479,11 @@ Page({
       showModal: true
     })
   },
+  showDialogBtn2: function () {
+    this.setData({
+      showModal2: true
+    })
+  },
   /**
    * 弹出框蒙层截断touchmove事件
    */
@@ -486,7 +494,8 @@ Page({
    */
   hideModal: function () {
     this.setData({
-      showModal: false
+      showModal: false,
+      showModal2: false,
     });
   },
   /**
@@ -502,6 +511,102 @@ Page({
     this.hideModal();
     this.dealRecodeText(this.data.content)
   },
+  onConfirm2: function () {
+    this.hideModal();
+    this.getCustomersByNames()
+    
+    
+  },
+  getCustomersByNames(){
+
+    var names = []
+    for(var i = 0 ;i < this.data.orcs.length;i++){
+        names.push(this.data.orcs[i].name)
+    }
+    wx.showLoading({
+      title: '加载中..',
+    })
+     wx.cloud.callFunction({
+      name:'customer',
+      data:{
+        names,
+        $url:'getMyCustomersByNames'
+      },
+    }).then(res=>{
+      if(res.result.code == 1){
+        wx.showToast({
+          title: res.result.message,
+          icon:'none'
+        })
+      }else{
+        this.data.orc_customers = res.result.result
+        this.postAddSchedules()
+      }
+      console.log(res.result)
+      wx.hideLoading()
+    }).catch(err=>{
+      console.log(err)
+      wx.hideLoading()
+    })
+
+  },
+
+  postAddSchedules(){
+    var that  = this
+    wx.showLoading({
+      title: '预约中..',
+      mask:true
+    })
+    const {year,month,date}= dateJson
+    const workdate = year + '-' + month + '-' + date
+    var schedules = []
+    for(var i = 0 ;i < this.data.orc_customers.length;i++){
+      var c = this.data.orc_customers[i]
+      var o = this.data.orcs[i]
+      var s = {
+        workdate,
+        teacher_name:app.globalData.userInfo.nickName,
+        worktime_begin:(workdate + ' ' +  o.beginDate) ,
+        worktime_end:(workdate + ' ' +  o.endDate) ,
+        name:c.name,
+        customer_id:c._id,
+        customer_openid : (c.is_from_wx ? c._openid:''),
+      }
+      schedules.push(s)
+    }
+
+  
+
+    wx.cloud.callFunction({
+      name: 'schedule',// 云函数的名称
+      data: {
+        workdate,
+        teacher_name:app.globalData.userInfo.nickName,
+        schedules,
+        $url: 'orcToSchedule'
+      }//参数
+    }).then(res=>{
+       console.log(res)
+       that.getCurrentSchedule()
+       wx.hideLoading()
+       wx.showToast({
+       title: '提交成功',
+       icon:'none'
+      }).catch(err=>{
+        console.log(err)
+      })
+    })
+
+
+
+
+
+
+
+  },
+
+
+
   postaddSchedule(beginDate,endDate){
     var that  = this
     wx.showLoading({
@@ -540,6 +645,9 @@ Page({
 
   },
   inputChange(e){
+    this.data.content = e.detail.value
+  },
+  inputChange2(e){
     this.data.content = e.detail.value
   },
 
@@ -583,7 +691,179 @@ Page({
         console.log(err)
       })
     })
-  }
+  },
+  chooseImage(){
+    let that = this;
+    wx.showActionSheet({
+      itemList: ['从相册中选择', '拍照'],
+      itemColor: "#CED63A",
+      success: function(res) {
+        if (!res.cancel) {
+          if (res.tapIndex == 0) {
+            that.chooseWxImage('album');
+          } else if (res.tapIndex == 1) {
+            that.chooseWxImage('camera');
+          }
+        }
+      }
+    })
+  },
+  /*打开相册、相机 */
+  chooseWxImage(type) {
+    let that = this;
+    wx.chooseImage({
+      count: that.data.countIndex,
+      sizeType: ['original', 'compressed'],
+      sourceType: [type],
+      success: function(res) {
+        // 选择图片后的完成确认操作
+        console.log('88666555')
+        console.log(res.tempFilePaths[0])
+        that.uploadPicture(res.tempFilePaths[0])
+       
+      }
+    })
+  },
+  uploadPicture(avatarUrl){
+    var that = this
+    let suffix = /\.\w+$/.exec(avatarUrl)[0]
+    wx.cloud.uploadFile({
+      cloudPath: 'pictureorc/' + 'pic' + suffix,
+      filePath:avatarUrl,
+      success:(res)=>{
+         console.log(res.fileID)
+         that.getTmpUrl(res.fileID)
+         wx.hideLoading()
+      },
+      fail: (err) => {
+        console.log(err)
+        wx.showToast({
+          title: err,
+          icon:'none'
+        })
+        wx.hideLoading()
+      }
+    })
+
+  },
+  getTmpUrl(fileID){
+    var that = this
+    wx.cloud.getTempFileURL({
+      fileList: [fileID],
+      success: res => {
+       console.log(res.fileList[0].tempFileURL)
+       that.printedText(res.fileList[0].tempFileURL)
+
+      },
+      fail: console.error
+    })
+
+  },
+  printedText(tempFileURL){
+    var that = this
+    wx.cloud.callFunction({
+      name:"pictureocr",
+      data:{
+        type:"photo",
+        imgUrl: encodeURI(tempFileURL)
+      },
+      success:function(res){
+        console.log(res)
+        that.getSchedule(res.result.items)
+      },
+      fail:function(e){
+        console.log(e)
+      }
+    })
+  },
+  getSchedule(items){
+    console.log(items)
+    var hans = ['1','2','3','4','5','6','7','8','9','10','11','12']
+    var nums1 = ['01','02','03','04','05','06','07','08','09','10','11','12']
+    var nums2 =['13','14','15','16','17','18','19','20','21','22','23','24']
+    var newItems = []
+    var orcs = []
+     for(var i = 0; i < items.length-2; i++){
+       var time1 = items[i].text
+       var name = items[i + 1].text
+       var time2 = items[i + 2].text
+
+
+       if((time1.indexOf('上午') != -1 || time1.indexOf('下午') != -1 || time1.indexOf('正午') != -1) && (time2.indexOf('上午') != -1 || time2.indexOf('下午') != -1 || time2.indexOf('正午') != -1) &&(name.indexOf('上午') == -1 && name.indexOf('下午') == -1 && name.indexOf('正午') == -1)){
+        time1 = time1.replace(/\s*/g,"")
+        time1 = time1.replace("-","")
+        time1 = time1.replace("时","")
+
+        time2 = time2.replace(/\s*/g,"")
+        time2 = time2.replace("-","")
+        time2 = time2.replace("时","")
+
+        name = name.replace(/\s*/g,"")
+
+        console.log(name + time1 + time2)
+
+        if(time1.indexOf('上午') != -1){
+          time1 = time1.replace("上午","")
+          time1 =  time1.split(":")[0]
+          time1 = nums1[hans.indexOf(time1)]
+        }else if(time1.indexOf('下午') != -1){
+          time1 = time1.replace("下午","")
+          time1 =  time1.split(":")[0]
+          time1 = nums2[hans.indexOf(time1)]
+        }else if(time1.indexOf('正午') != -1){
+          time1 = '12'
+        }
+
+        if(time2.indexOf('上午') != -1){
+          time2 = time2.replace("上午","")
+          time2 =  time2.split(":")[0]
+          time2 = nums1[hans.indexOf(time2)]
+        }else if(time2.indexOf('下午') != -1){
+          time2 = time2.replace("下午","")
+          time2 =  time2.split(":")[0]
+          time2 = nums2[hans.indexOf(time2)]
+        }else if(time2.indexOf('正午') != -1){
+          time2 = '12'
+        }
+
+        time1 = time1 + ':00'
+        time2 = time2 + ':00'
+
+        orcs.push({
+          name:name,
+          beginDate:time1,
+          endDate:time2
+        })
+        newItems.push(name +"-" + time1 + "-" + time2)
+       }
+     }
+
+     this.data.orcs = orcs
+
+
+     
+     
+     var str = ''
+     for(var j = 0;j< newItems.length;j++){
+        var item  = newItems[j]
+        str += (item + '\n')
+     }
+
+    
+
+    this.setData({
+      content:str
+    })
+    this.showDialogBtn2()
+     
+     console.log(newItems)
+
+
+
+
+
+  },
+
 
  
 })
