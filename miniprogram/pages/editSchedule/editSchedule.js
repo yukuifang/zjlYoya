@@ -519,10 +519,30 @@ Page({
   },
   getCustomersByNames(){
 
+    var orcs = []
     var names = []
-    for(var i = 0 ;i < this.data.orcs.length;i++){
-        names.push(this.data.orcs[i].name)
+    var contents = this.data.content.split('\n')
+
+
+    for(var i = 0 ;i < contents.length;i++){
+      var c = contents[i]
+      var a = c.split('-')
+      orcs.push({
+        name:a[0],
+        beginDate:a[1],
+        endDate:a[2]
+      })
+      names.push(a[0])
     }
+
+    this.data.orcs = orcs
+
+   
+
+    // var names = []
+    // for(var i = 0 ;i < this.data.orcs.length;i++){
+    //     names.push(this.data.orcs[i].name)
+    // }
     wx.showLoading({
       title: '加载中..',
     })
@@ -649,6 +669,7 @@ Page({
   },
   inputChange2(e){
     this.data.content = e.detail.value
+    
   },
 
   siginClick(){
@@ -782,7 +803,7 @@ Page({
     var nums1 = ['01','02','03','04','05','06','07','08','09','10','11','12']
     var nums2 =['13','14','15','16','17','18','19','20','21','22','23','24']
     var newItems = []
-    var orcs = []
+    
      for(var i = 0; i < items.length-2; i++){
        var time1 = items[i].text
        var name = items[i + 1].text
@@ -829,16 +850,12 @@ Page({
         time1 = time1 + ':00'
         time2 = time2 + ':00'
 
-        orcs.push({
-          name:name,
-          beginDate:time1,
-          endDate:time2
-        })
+        
         newItems.push(name +"-" + time1 + "-" + time2)
        }
      }
 
-     this.data.orcs = orcs
+     
 
 
      
