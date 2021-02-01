@@ -4,8 +4,20 @@
 
 .get-sigin-view{
   position:fixed;
-  bottom: 60rpx;
+  bottom: 150rpx;
   background-color: rgb(163, 164, 250);
+  color: white;
+  left: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 200;
+  font-size: 32rpx;
+
+}
+.get-sigin-view1{
+  position:fixed;
+  bottom: 50rpx;
+  background-color: rgb(238, 95, 95);
   color: white;
   left: 50%;
   right: 50%;

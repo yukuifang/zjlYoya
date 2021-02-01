@@ -1,0 +1,30 @@
+<view class="container-view">
+   
+
+  <view class="reverse-view">
+    <input class="message-view" value="{{message}}" type="text" bindinput="inputClick"/>
+    <button class="reverse-btn" style="width:200rpx" bindtap="reverseClick">预约</button>
+  </view> 
+
+   <view class="items-view">
+    <block wx:for="{{customerlist}}" wx:key="index">
+      <view class="item-view {{item.isSeleted?'item-seleted-view':''}}" bindtap="itemClick" data-idx="{{index}}">
+        <text class="name">{{item.nick_name.length > 0 ? item.nick_name:item.name}}</text>
+      </view>
+    </block>
+   </view>
+
+   <view class="times-view">
+    <block wx:for="{{times}}" wx:key="index">
+      <view class="time-view {{(item == selected_time1 || item == selected_time2) ?'item-seleted-view':''}}" bindtap="timeClick" data-idx="{{index}}">
+        <text class="name">{{item}}</text>
+      </view>
+    </block>
+   </view>
+   
+
+  <view class="enpty-customer-view" wx:if="{{customerlist.length == 0 }}">
+     <image class="enpty-image" src="../../images/huiyuan.png"></image>
+     <text>暂时没有会员,去邀请你的可爱会员使用小程序吧～</text>
+  </view>
+</view>

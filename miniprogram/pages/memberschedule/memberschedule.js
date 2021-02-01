@@ -191,9 +191,10 @@ Page({
     wx.navigateTo({
       url: '../editSchedule/editSchedule?dateJson=' + JSON.stringify(this.data.selectDateJson),
     })
+
   },
   getSiginXslClick(e){
-
+   var type = e.target.dataset.type
     var workdate = currentMonth
     wx.showLoading({
       title: '正在导出',
@@ -202,7 +203,7 @@ Page({
       name:'xlsxgenerate',
       data:{
         workdate,
-        $url:'signXlsx2'
+        $url:type == 1 ? 'signXlsx2' : 'signXlsx'
       },
     }).then(res=>{
       console.log(res)

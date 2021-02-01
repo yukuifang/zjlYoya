@@ -353,9 +353,12 @@ Page({
     
   },
   addSchedule(){
-   wx.navigateTo({
-      url: '../addSchedule/addSchedule?dateJson=' + JSON.stringify(dateJson),
-    })
+  //  wx.navigateTo({
+  //     url: '../addSchedule/addSchedule?dateJson=' + JSON.stringify(dateJson),
+  //   })
+  wx.navigateTo({
+    url: '../customers/customers?dateJson=' + JSON.stringify(dateJson),
+  })
   
   },
   itemClick(e){
@@ -553,17 +556,21 @@ Page({
         $url:'getMyCustomersByNames'
       },
     }).then(res=>{
+      wx.hideLoading()
       if(res.result.code == 1){
+        
         wx.showToast({
           title: res.result.message,
+          duration:4000,
           icon:'none'
         })
+        
       }else{
         this.data.orc_customers = res.result.result
         this.postAddSchedules()
       }
       console.log(res.result)
-      wx.hideLoading()
+      
     }).catch(err=>{
       console.log(err)
       wx.hideLoading()
@@ -747,6 +754,10 @@ Page({
   },
   uploadPicture(avatarUrl){
     var that = this
+    wx.showLoading({
+      title: '识别中..',
+      mask:true
+    })
     let suffix = /\.\w+$/.exec(avatarUrl)[0]
     wx.cloud.uploadFile({
       cloudPath: 'pictureorc/' + 'pic' + suffix,
@@ -769,19 +780,35 @@ Page({
   },
   getTmpUrl(fileID){
     var that = this
+    wx.showLoading({
+      title: '识别中..',
+      mask:true
+    })
     wx.cloud.getTempFileURL({
       fileList: [fileID],
       success: res => {
        console.log(res.fileList[0].tempFileURL)
        that.printedText(res.fileList[0].tempFileURL)
-
+       wx.hideLoading()
       },
-      fail: console.error
+      fail: err =>{
+        wx.hideLoading()
+        wx.showToast({
+          title: err,
+          duration:3000,
+          icon:'none'
+
+        })
+      }
     })
 
   },
   printedText(tempFileURL){
     var that = this
+    wx.showLoading({
+      title: '识别中..',
+      mask:true
+    })
     wx.cloud.callFunction({
       name:"pictureocr",
       data:{
@@ -790,14 +817,26 @@ Page({
       },
       success:function(res){
         console.log(res)
+        wx.hideLoading()
         that.getSchedule(res.result.items)
       },
       fail:function(e){
         console.log(e)
+        wx.hideLoading()
+        wx.showToast({
+          title: e,
+          duration:3000,
+          icon:'none'
+
+        })
       }
     })
   },
   getSchedule(items){
+    wx.showLoading({
+      title: '识别中..',
+      mask:true
+    })
     console.log(items)
     var hans = ['1','2','3','4','5','6','7','8','9','10','11','12']
     var nums1 = ['01','02','03','04','05','06','07','08','09','10','11','12']
@@ -874,6 +913,7 @@ Page({
     this.showDialogBtn2()
      
      console.log(newItems)
+     wx.hideLoading()
 
 
 

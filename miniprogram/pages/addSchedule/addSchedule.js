@@ -151,8 +151,11 @@ Page({
 
   },
   selectCustomer(e){
+      // wx.navigateTo({
+      //   url: '../customerList/customerList?isSelete=1',
+      // })
       wx.navigateTo({
-        url: '../customerList/customerList?isSelete=1',
+        url: '../customers/customers?isSelete=1',
       })
   },
   changeBeginTime(e){

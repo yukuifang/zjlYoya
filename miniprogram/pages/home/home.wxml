@@ -1,7 +1,7 @@
 <view class="container-view">
   <image class="banner-view" mode="aspectFill" src="../../images/banner.jpeg"></image>
   <view wx:if="{{isTeacher}}"  class="enter-view">
-   <view wx:if="{{config.addCustomerSwitch3}}" class="enter-item-view" bindtap="toAddUser">
+   <view wx:if="{{config.addCustomerSwitch}}" class="enter-item-view" bindtap="toAddUser">
        <view class="enter-item-leftview">
          <text class="enter-text1">新增会员</text>
          <text class="enter-text2">录入可爱的会员信息</text>

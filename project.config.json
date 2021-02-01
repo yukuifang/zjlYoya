@@ -26,15 +26,14 @@
       "disablePlugins": [],
       "outputPath": ""
     },
+    "enableEngineNative": false,
     "bundle": false,
     "useIsolateContext": true,
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": false,
-    "userConfirmedBundleSwitch": false,
     "packNpmManually": false,
     "packNpmRelationList": [],
-    "minifyWXSS": true,
-    "useApiHostProcess": false
+    "minifyWXSS": true
   },
   "appid": "wxf5369b614dceede6",
   "projectname": "zjl-yoga",
@@ -99,6 +98,12 @@
         {
           "name": "pages/modifyNickName/modifyNickName",
           "pathName": "pages/modifyNickName/modifyNickName",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/customers/customers",
+          "pathName": "pages/customers/customers",
           "scene": null
         }
       ]

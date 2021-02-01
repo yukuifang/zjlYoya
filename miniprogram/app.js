@@ -23,6 +23,9 @@ App({
       success:res=>{
         if(res.data!=undefined){
           this.globalData.userInfo = res.data
+
+          console.log('1234567890')
+          console.log(this.globalData.userInfo);
         }
       }
          

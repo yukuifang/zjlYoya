@@ -235,6 +235,37 @@ exports.main = async (event, context) => {
     })
   })
 
+  app.router('getAllCustomer', async (ctx, next) => {
+    let count  = await customerCollection
+    .where({
+      _openid,
+      is_from_wx:false,
+      is_teacher:0
+    }).count()
+    let time = Math.ceil(count.total/20)
+    var customers = []
+    for(var i = 0 ; i< time; i++){
+      var json =  await customerCollection
+      .where(
+        {
+          _openid,
+          is_from_wx:false,
+          is_teacher:0
+        }
+      ).skip(20 * i)
+      .limit(20)
+      .orderBy('createTime', 'desc')
+      .get()
+      .then(res => {
+        return res.data
+      })
+      customers = customers.concat(json)
+    }
+
+    ctx.body = customers
+
+  })
+
   app.router('getCustomersWithIds', async (ctx, next) => {
     var daySchedule = event.daySchedule
     const tasks = []
