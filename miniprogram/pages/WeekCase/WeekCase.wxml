@@ -1,0 +1,7 @@
+
+<view class="items-view">
+  <view class="item-view" wx:for="{{id_signsJson}}" wx:for-index='key' wx:key='item'>
+   <text class="text1">{{item[0].name}}</text>
+   <text class="text2">{{item.length}}次</text>
+  </view>
+</view>

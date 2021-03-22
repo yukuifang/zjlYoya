@@ -31,7 +31,15 @@ Page({
      this.getCustomerlist()
   },
   getCustomerlist(){
-    
+    if(app.globalData.customerlist !=undefined && app.globalData.customerlist.length >0) {
+      this.setData({
+        customerlist:app.globalData.customerlist
+      })
+      return;
+          
+    }
+
+
     wx.showLoading({
       title: '加载中',
     })
@@ -45,6 +53,7 @@ Page({
       this.setData({
         customerlist:this.data.customerlist.concat(res.result)//在当前数据的基础上拼接
       })
+      app.globalData.customerlist = res.result
       wx.hideLoading()
       wx.stopPullDownRefresh()//停止当前页面下拉刷新
     }).catch(err=>{

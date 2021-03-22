@@ -154,6 +154,7 @@ Page({
         })
       }
 
+      app.globalData.customerlist = undefined
     
 
      

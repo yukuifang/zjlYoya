@@ -26,6 +26,20 @@
   font-size: 32rpx;
 
 }
+.get-sigin-view2{
+  position:fixed;
+  bottom: 250rpx;
+  background-color: rgb(238, 236, 95);
+  color: black;
+  left: 50%;
+  right: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 200;
+  font-size: 32rpx;
+
+}
+
+
 
 .warn-view{
   display: flex;

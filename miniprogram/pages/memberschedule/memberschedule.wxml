@@ -14,7 +14,7 @@
 </view>
 
 
-
+<button class="get-sigin-view2" style="width:600rpx" bindtap="getWeekCaseClick" data-type="1">查看当周签到表</button>
 <button class="get-sigin-view" style="width:600rpx" bindtap="getSiginXslClick" data-type="1">获取当月每天签到表</button>
 <button class="get-sigin-view1" style="width:600rpx" bindtap="getSiginXslClick" data-type="2">获取当月会员总结表</button>
 

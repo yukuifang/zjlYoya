@@ -1,0 +1,19 @@
+.item-view{
+  display: flex;
+  width: 100%;
+  color: brown;
+
+
+
+}
+.items-view{
+   display: flex;
+   justify-content: center;
+   flex-direction: column;
+   padding:20rpx;  
+   align-items: center;
+}
+.text1{
+  width: 40%;
+  text-align: center;
+}

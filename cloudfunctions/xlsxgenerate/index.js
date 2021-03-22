@@ -202,8 +202,33 @@ exports.main = async (event, context) => {
     ctx.body =  result
 
   })
+
+
+  app.router('signXlsx3', async (ctx, next) => {
+    var  workdate = event.workdate
+    var allSchedules = []
+    for(var i = 0 ;i <7; i++){
+      var date = new Date(workdate)
+      date.setTime(date.getTime()+ i * 24*60*60*1000)
+      var s = getYYMMDD(date)
+      var schedules =  await db.collection('schedule')
+      .where({
+        _openid,
+        workdate:s
+      }).get()
+      .then(res=>{
+         return res.data
+      })
+
+      if(schedules!=undefined && schedules.length > 0){
+        allSchedules.push(schedules[0])
+      }
+    }
+    ctx.body =  allSchedules
+  })
   
 
+  
   
   return app.serve()
 }
@@ -218,4 +243,20 @@ function getYYMM(d){
   var year=d.getFullYear();
   var month=change(d.getMonth()+1);
   return year+'-'+month
+}
+function getYYMMDD(d){
+  function change(t){
+    if(t<10){
+     return "0"+t;
+    }else{
+     return t;
+    }
+  }
+  var year=d.getFullYear();
+  var month=change(d.getMonth()+1);
+  var day=change(d.getDate());
+  var hour=change(d.getHours());
+  var minute=change(d.getMinutes());
+  var second=change(d.getSeconds());
+  return year+'-'+month+'-'+day
 }

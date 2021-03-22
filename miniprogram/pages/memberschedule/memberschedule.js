@@ -338,7 +338,11 @@ delCloudFile(fileID){
     },
     fail: console.error
   })
+},
+getWeekCaseClick(){
+   wx.navigateTo({
+     url: '../WeekCase/WeekCase?dateJson=' + JSON.stringify(this.data.selectDateJson),
+   })
 }
-  
 
 })
